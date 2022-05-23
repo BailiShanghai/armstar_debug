@@ -63,7 +63,7 @@ extern int32_t mem_leak_check_init(void);
 
     apps_init();
 
-    main();
+    verification_main();
 finish:
     /* should not be here */
     while (1)

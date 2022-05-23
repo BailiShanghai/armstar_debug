@@ -33,14 +33,14 @@
 /*
  * Defines the SoC memory map
  */
-#define LAYOUT_ROM_NS_BASE          (0x06000000)
-#define LAYOUT_ROM_S_BASE           (0x16000000)
+#define LAYOUT_ROM_NS_BASE          (0x16000000)
+#define LAYOUT_ROM_S_BASE           (0x06000000)
 #define LAYOUT_TOTAL_ROM_SIZE       (0x00200000)
 #define LAYOUT_ROM_SIZE_S           (__LAYOUT_ROM_BASE_BLOCK_SIZE * 9) /* bootrom, bootloader, TEE, recovery bootloader */
 #define LAYOUT_ROM_SIZE_NS          (__LAYOUT_ROM_BASE_BLOCK_SIZE * 7) /* REE */
 
-#define LAYOUT_RAM_NS_BASE          (0x28000000)
-#define LAYOUT_RAM_S_BASE           (0x38000000)
+#define LAYOUT_RAM_NS_BASE          (0x18000000)
+#define LAYOUT_RAM_S_BASE           (0x08000000)
 #define LAYOUT_TOTAL_RAM_SIZE       (0x00200000)  //TODO fix me
 #define LAYOUT_RAM_SIZE_S           (LAYOUT_TOTAL_RAM_SIZE / 2)
 #define LAYOUT_RAM_SIZE_NS          (LAYOUT_TOTAL_RAM_SIZE / 2)

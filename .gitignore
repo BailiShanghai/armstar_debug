@@ -1,0 +1,8 @@
+*.si4project
+*.diff
+*.o
+*.d
+*.uvguix.*
+output
+
+
