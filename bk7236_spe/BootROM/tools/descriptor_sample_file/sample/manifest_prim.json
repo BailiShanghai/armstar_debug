@@ -1,0 +1,41 @@
+{
+    "//":                   "Manifest descriptor, arm CHINA",
+    "//":                   "This is the manifest descriptor of secure boot.",
+    "//":                   "There are three sections: mnft_desc_cfg, imgs, ext_bin (optional).",
+    "//":                   "mnft_desc_cfg - the configuration of the manifest file.",
+    "//":                   "imgs - the image information.",
+    "//":                   "ext_bin - the extended binary information",
+
+    "//":                   "This descriptor file is used for IPSS Class-B system demonstration sample.",
+    "//":                   "In primary boot path, we utilize the basic functionalities of secure boot:",
+    "//":                   "     1. image verification, with RSASSA_1024_PKCS_V15_SHA1 signature scheme and SHA224 image digest scheme",
+
+    "mnft_desc_cfg": {
+        "fmt_ver":          "0x00010001",
+        "mnft_ver":         "0x00000001",
+        "sec_boot":         true
+    },
+    "imgs": [
+        {
+            "is_enc":       false,
+            "static_addr":  "0x0E040000",
+            "load_addr":    "0x10040000",
+            "entry":        "0x10040000",
+            "path":         "prim_bl.bin"
+        },
+        {
+            "is_enc":       false,
+            "static_addr":  "0x0E080000",
+            "load_addr":    "0x10080000",
+            "entry":        "0x10080000",
+            "path":         "spe.bin"
+        },
+        {
+            "is_enc":       false,
+            "static_addr":  "0x0E200000",
+            "load_addr":    "0x00200000",
+            "entry":        "0x00200000",
+            "path":         "./freertos.bin"
+        }
+    ]
+}
