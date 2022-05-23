@@ -19,6 +19,7 @@
 
 extern int32_t sys_device_do_config_level(int32_t level);
 extern int main(void);
+extern void verification_main(void);
 
 const char build_message[] =
     "Build Time: " __DATE__ " " __TIME__ " " BUILD_TYPE;

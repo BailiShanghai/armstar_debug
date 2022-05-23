@@ -370,7 +370,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\RTE\Device\STAR_SE\STAR_ac6.sct</ScatterFile>
+            <ScatterFile>.\RTE\Device\STAR_SE\ns_soc_bk7236.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
