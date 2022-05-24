@@ -788,6 +788,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\secure.c</FilePath>
             </File>
+            <File>
+              <FileName>sig_hash256.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\sig_hash256.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

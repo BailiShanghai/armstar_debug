@@ -33,7 +33,8 @@
 #define CONFIG_ENABLE_VERIFICATION_ACA_SRAM       0
 #define CONFIG_ENABLE_VERIFY_TE200_RAM            0
 #define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        0
-#define CONFIG_ENABLE_VERIFY_SECURE_FIELD         1
+#define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0
+#define CONFIG_ENABLE_VERIFY_SIG_HASH256          1
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
@@ -57,6 +58,10 @@
 
 #if CONFIG_ENABLE_VERIFY_SECURE_FIELD
 #include "secure.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFY_SIG_HASH256
+#include "sig_hash256.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -107,6 +112,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_SECURE_FIELD
 	secure_field_verification();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_SIG_HASH256
+	hash256_verificaton_main();
 	#endif
 }
 
