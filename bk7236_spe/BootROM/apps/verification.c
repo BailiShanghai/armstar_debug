@@ -27,6 +27,13 @@
 #define DBG_PRE_PROMPT "APP"
 #include "dbg.h"
 
+#define CONFIG_ENABLE_VERIFICAION    1
+#define CONFIG_ENABLE_TT_IDAU        1
+
+#if CONFIG_ENABLE_TT_IDAU
+#include "tt_idau.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -51,8 +58,19 @@ void boot_non_secure( uint32_t ulNonSecureStartAddress )
 	pxNonSecureResetHandler();
 }
 
+void verification_secure(void)
+{
+	#if CONFIG_ENABLE_TT_IDAU
+	tt_verificaton_main();
+	#endif
+}
+
 void verification_main(void)
 {
+	#if CONFIG_ENABLE_VERIFICAION
+	verification_secure();
+	#endif
+	
 	/* Boot the non-secure code. */
 	boot_non_secure( NON_SECURE_START_ADDRESS );
 
