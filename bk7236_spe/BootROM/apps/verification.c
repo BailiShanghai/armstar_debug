@@ -28,10 +28,20 @@
 #include "dbg.h"
 
 #define CONFIG_ENABLE_VERIFICAION    1
-#define CONFIG_ENABLE_TT_IDAU        1
+#define CONFIG_ENABLE_TT_IDAU        0
+#define CONFIG_ENABLE_VERIFICATION_HASH256        0
+#define CONFIG_ENABLE_VERIFICATION_ACA_SRAM       1
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFICATION_HASH256
+#include "hash256.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFICATION_ACA_SRAM
+#include "aca_sram.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -62,6 +72,14 @@ void verification_secure(void)
 {
 	#if CONFIG_ENABLE_TT_IDAU
 	tt_verificaton_main();
+	#endif
+	
+	#if CONFIG_ENABLE_VERIFICATION_HASH256
+	hash256_verificaton_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFICATION_ACA_SRAM
+	aca_sram_verification_main();
 	#endif
 }
 

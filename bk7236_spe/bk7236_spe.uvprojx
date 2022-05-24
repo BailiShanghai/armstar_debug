@@ -763,6 +763,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\tt_idau.c</FilePath>
             </File>
+            <File>
+              <FileName>aca_sram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\aca_sram.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

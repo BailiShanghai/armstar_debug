@@ -90,9 +90,15 @@ void tt_verificaton_main(void)
 	__set_CONTROL(0x01);
 	
 	/*scan the address space for obtaining the region number*/
-	tt_scan_for_idau_region((void *)ADDR_SPACE_START, (void *)ADDR_SPACE_END);	
+	tt_scan_for_idau_region((void *)ADDR_SPACE_START, (void *)ADDR_SPACE_END);
+	
+	#if CONFIG_ENABLE_GET_SAU_REGION
 	tt_scan_for_sau_region((void *)ADDR_SPACE_START, (void *)ADDR_SPACE_END);	
+	#endif
+
+	#if CONFIG_ENABLE_GET_MPU_REGION
 	tt_scan_for_mpu_region((void *)ADDR_SPACE_START, (void *)ADDR_SPACE_END);
+	#endif
 }
 
 // eof
