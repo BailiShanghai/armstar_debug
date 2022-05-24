@@ -34,7 +34,8 @@
 #define CONFIG_ENABLE_VERIFY_TE200_RAM            0
 #define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        0
 #define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0
-#define CONFIG_ENABLE_VERIFY_SIG_HASH256          1
+#define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
+#define CONFIG_ENABLE_VERIFY_TRNG                 1
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
@@ -62,6 +63,10 @@
 
 #if CONFIG_ENABLE_VERIFY_SIG_HASH256
 #include "sig_hash256.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFY_TRNG
+#include "trng.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -116,6 +121,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_SIG_HASH256
 	hash256_verificaton_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_TRNG
+	trng_verification_main();
 	#endif
 }
 
