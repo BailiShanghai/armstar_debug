@@ -23,6 +23,8 @@ extern int main(void);
 const char build_message[] =
     "Build Time: " __DATE__ " " __TIME__ " " BUILD_TYPE;
 
+void proof_main(void);
+
 void bs_main(void)
 {
     int32_t ret = 0;
@@ -63,7 +65,7 @@ extern int32_t mem_leak_check_init(void);
 
     apps_init();
 
-    main();
+    proof_main();
 finish:
     /* should not be here */
     while (1)

@@ -778,6 +778,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\te_ram.c</FilePath>
             </File>
+            <File>
+              <FileName>sharedm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\sharedm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
