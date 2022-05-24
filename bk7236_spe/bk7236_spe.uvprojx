@@ -708,6 +708,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\device\device.c</FilePath>
             </File>
+            <File>
+              <FileName>hash_example.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\utils\ce_lite\examples\hash_example.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -767,6 +772,11 @@
               <FileName>aca_sram.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\aca_sram.c</FilePath>
+            </File>
+            <File>
+              <FileName>te_ram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\te_ram.c</FilePath>
             </File>
           </Files>
         </Group>

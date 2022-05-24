@@ -104,7 +104,7 @@ end:
     return ret;
 }
 
-static int32_t sha256_verify(const uint8_t *message,
+int32_t sha256_verify(const uint8_t *message,
                              size_t message_size,
                              const uint8_t *ref_hash,
                              uint8_t is_224)

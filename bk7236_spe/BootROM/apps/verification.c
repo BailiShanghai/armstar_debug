@@ -30,7 +30,8 @@
 #define CONFIG_ENABLE_VERIFICAION    1
 #define CONFIG_ENABLE_TT_IDAU        0
 #define CONFIG_ENABLE_VERIFICATION_HASH256        0
-#define CONFIG_ENABLE_VERIFICATION_ACA_SRAM       1
+#define CONFIG_ENABLE_VERIFICATION_ACA_SRAM       0
+#define CONFIG_ENABLE_VERIFY_TE200_RAM            1
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
@@ -42,6 +43,10 @@
 
 #if CONFIG_ENABLE_VERIFICATION_ACA_SRAM
 #include "aca_sram.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFY_TE200_RAM
+#include "te_ram.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -80,6 +85,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFICATION_ACA_SRAM
 	aca_sram_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_TE200_RAM
+	te200_access_ram_verification_main();
 	#endif
 }
 

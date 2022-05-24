@@ -221,23 +221,8 @@ static void sram_write_word(uint32_t sram_addr, uint32_t data)
     IO_WRITE32(ACA_SRAM_WDATA, data);
 }
 
-#if 0
-/**
- * read one word
- */
-static void sram_read_word(uint32_t sram_addr, uint32_t *data)
-{
-    /* When read/write sram, make sure clock is enabled */
-    PAL_ASSERT(IO_READ32(TOP_CTL_CLOCK_CTL) & (1 << 2));
-
-    /* write sram_raddr with word offset */
-    IO_WRITE32(ACA_SRAM_RADDR, sram_addr >> 2);
-    *data = IO_READ32(ACA_SRAM_RDATA);
-}
-#endif
-
 /* allocate a sram address */
-static uint32_t sram_alloc_one(uint32_t blk_num)
+uint32_t sram_alloc_one(uint32_t blk_num)
 {
     uint32_t addr = g_sram_allocated_addr;
     g_sram_allocated_addr += ACA_BLOCK_NUM_TO_BYTES(blk_num);
@@ -247,7 +232,7 @@ static uint32_t sram_alloc_one(uint32_t blk_num)
 }
 
 /* free one address */
-static void sram_free_one(uint32_t blk_num)
+void sram_free_one(uint32_t blk_num)
 {
     PAL_ASSERT(g_sram_allocated_addr >=
                 ACA_SRAM_BASE + ACA_BLOCK_NUM_TO_BYTES(blk_num));
