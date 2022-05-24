@@ -763,6 +763,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\apps\verify.c</FilePath>
             </File>
+            <File>
+              <FileName>non_secure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\non_secure.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

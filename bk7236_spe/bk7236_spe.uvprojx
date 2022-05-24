@@ -783,6 +783,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\sharedm.c</FilePath>
             </File>
+            <File>
+              <FileName>secure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\secure.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
