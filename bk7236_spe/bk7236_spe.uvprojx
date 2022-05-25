@@ -713,6 +713,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\utils\ce_lite\examples\hash_example.c</FilePath>
             </File>
+            <File>
+              <FileName>aes_example.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\utils\ce_lite\examples\aes_example.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -797,6 +802,11 @@
               <FileName>trng.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\trng.c</FilePath>
+            </File>
+            <File>
+              <FileName>alg_aes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\alg_aes.c</FilePath>
             </File>
           </Files>
         </Group>

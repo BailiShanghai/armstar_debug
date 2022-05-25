@@ -189,7 +189,7 @@
 
 #if defined(CE_LITE_CIPHER_MODE_ECB)
 
-static int mbedtls_cipher_ecb_enc(void)
+int mbedtls_cipher_ecb_enc(void)
 {
     int ret = 0;
     mbedtls_aes_context ctx;
@@ -224,7 +224,7 @@ finish:
     return ret;
 }
 
-static int mbedtls_cipher_ecb_dec(void)
+int mbedtls_cipher_ecb_dec(void)
 {
     int ret = 0;
     mbedtls_aes_context ctx;

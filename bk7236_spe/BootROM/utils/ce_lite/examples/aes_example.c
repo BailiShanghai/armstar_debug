@@ -189,7 +189,7 @@
 
 #if defined(CE_LITE_CIPHER_MODE_ECB)
 
-static int mbedtls_cipher_ecb_enc(void)
+int mbedtls_aes_cipher_ecb_enc(void)
 {
     int ret = 0;
     mbedtls_aes_context ctx;
@@ -224,7 +224,7 @@ finish:
     return ret;
 }
 
-static int mbedtls_cipher_ecb_dec(void)
+int mbedtls_aes_cipher_ecb_dec(void)
 {
     int ret = 0;
     mbedtls_aes_context ctx;
@@ -1378,11 +1378,11 @@ int mbedtls_aes_example_entry(void)
 #if defined(CE_LITE_CIPHER_MODE_ECB)
     /* Example 1: cipher mode is ECB. */
     PAL_LOG_INFO(" * Run mbedtls_cipher_ecb example of encryption...");
-    ret = mbedtls_cipher_ecb_enc();
+    ret = mbedtls_aes_cipher_ecb_enc();
     CHECK_RET_RESULT(ret);
 
     PAL_LOG_INFO(" * Run mbedtls_cipher_ecb example of decryption...");
-    ret = mbedtls_cipher_ecb_dec();
+    ret = mbedtls_aes_cipher_ecb_dec();
     CHECK_RET_RESULT(ret);
 
 #if defined(CE_LITE_OTP) &&  \

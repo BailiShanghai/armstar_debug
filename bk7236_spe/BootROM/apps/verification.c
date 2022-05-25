@@ -35,7 +35,8 @@
 #define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        0
 #define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0
 #define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
-#define CONFIG_ENABLE_VERIFY_TRNG                 1
+#define CONFIG_ENABLE_VERIFY_TRNG                 0
+#define CONFIG_ENABLE_VERIFY_ALG_AES              1
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
@@ -67,6 +68,10 @@
 
 #if CONFIG_ENABLE_VERIFY_TRNG
 #include "trng.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFY_ALG_AES
+#include "alg_aes.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -125,6 +130,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_TRNG
 	trng_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_ALG_AES
+	alg_aes_verification_main();
 	#endif
 }
 
