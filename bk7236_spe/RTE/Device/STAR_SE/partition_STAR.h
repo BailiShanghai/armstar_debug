@@ -229,12 +229,12 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START6     0x60000000
+#define SAU_INIT_START6     0x20000000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END6       0x63FFFFFF
+#define SAU_INIT_END6       0x20004000
 
 /*
 //     <o>Region is
@@ -250,17 +250,17 @@
 //   <e>Initialize SAU Region 7
 //   <i> Setup SAU Region 7 memory attributes
 */
-#define SAU_INIT_REGION7    0
+#define SAU_INIT_REGION7    1
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START7     0x00000000
+#define SAU_INIT_START7     0x30004000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END7       0x00000000
+#define SAU_INIT_END7       0x30008000
 
 /*
 //     <o>Region is
