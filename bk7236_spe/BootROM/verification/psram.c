@@ -4,6 +4,7 @@
 #include "bk_common_types.h"
 #include "bk_psram.h"
 #include "psram.h"
+#include "bk_uart.h"
 
 #define BUFFER_SIZE         ((uint32_t) 0x1000)
 #define TEST_VALUE_START    0x41

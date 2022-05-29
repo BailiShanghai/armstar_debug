@@ -54,7 +54,7 @@ typedef volatile struct {
 			uint32_t reserved: 30;
 		};
 		uint32_t v;
-	} itgu_ctrl;
+	} tgu_ctrl;
 	
 	/* REG_0x01 */
 	union {
@@ -66,7 +66,7 @@ typedef volatile struct {
 			uint32_t tgu_present: 1;
 		};
 		uint32_t v;
-	} itgu_ctrl;
+	} tgu_cfg;
 	
 	/* REG_0x01 */
 	uint32_t sec_lookup_tab[TGU_LOOKUP_TABLE_MAX_CNT];

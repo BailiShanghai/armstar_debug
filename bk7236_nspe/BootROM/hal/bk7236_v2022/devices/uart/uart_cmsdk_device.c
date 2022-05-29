@@ -19,7 +19,7 @@
 #define DRV_NAME "uart0"
 
 static const struct uart_device_config uart_cmsdk_apb_dev_cfg_0 = {
-    .base = (uint8_t *)UART0_BASE_NS, .sys_clk_freq = UART_CLOCK,
+    .base = (uint8_t *)UART0_BASE_NS, .sys_clk_freq = 26000000,
 };
 
 static struct uart_cmsdk_apb_dev_data uart_cmsdk_apb_dev_data_0 = {

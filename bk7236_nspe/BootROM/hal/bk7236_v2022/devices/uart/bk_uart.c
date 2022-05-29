@@ -1,6 +1,7 @@
 #include "base.h"
 #include "bk_common_types.h"
 #include "bk_uart.h"
+#include "sys.h"
 
 int uart_print_port = UART1_PORT;
 
@@ -149,7 +150,7 @@ void uart_hw_init(UINT8 uport)
     REG_WRITE(flow_conf_reg_addr, 0);
     REG_WRITE(wake_conf_reg_addr, 0);
 
-    reg = RX_FIFO_NEED_READ_EN | UART_RX_STOP_END_EN;
+    reg = 0;
     REG_WRITE(intr_reg_addr, reg);
 
     return;
@@ -522,6 +523,8 @@ void uart1_isr(void)
 
 void bk_uart1_init(void)
 {
+	uint32_t reg;
+	
 #if UART1_USE_FIFO_REC
     UINT32 ret;
     ret = uart_sw_init(UART1_PORT);
@@ -529,6 +532,12 @@ void bk_uart1_init(void)
 #endif
 
 	//TODO init clk, and open the block gating.
+	reg = REG_READ(REG_SYS_CLK_CTRL);
+	REG_WRITE(REG_SYS_CLK_CTRL, reg & (~((1 << 8) | (1 << 9) | (1 << 10))));
+	
+	reg = REG_READ(REG_SYS_CLK_EN);
+	REG_WRITE(REG_SYS_CLK_EN, reg | (1 << 2));
+	
 	uart_hw_init(UART1_PORT);
 }
 

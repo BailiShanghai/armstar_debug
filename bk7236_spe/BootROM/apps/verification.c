@@ -37,7 +37,7 @@
 #define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
 #define CONFIG_ENABLE_VERIFY_TRNG                 0
 #define CONFIG_ENABLE_VERIFY_ALG_AES              0
-#define CONFIG_ENABLE_VERIFY_PSRAM                1
+#define CONFIG_ENABLE_VERIFY_DTCM                 1
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
@@ -75,8 +75,8 @@
 #include "alg_aes.h"
 #endif
 
-#if CONFIG_ENABLE_VERIFY_PSRAM
-#include "psram.h"
+#if CONFIG_ENABLE_VERIFY_DTCM
+#include "dtcm.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -141,8 +141,8 @@ void verification_secure(void)
 	alg_aes_verification_main();
 	#endif
 
-	#if CONFIG_ENABLE_VERIFY_PSRAM
-	psram_read_write_demo();
+	#if CONFIG_ENABLE_VERIFY_DTCM
+	dtcm_verification_main();
 	#endif
 }
 
