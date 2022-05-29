@@ -37,7 +37,7 @@ typedef volatile struct {
 	uint32_t reg_gap[MPC_REG_GAP_LOCATION_NUM];
 	
 	/* REG_0x10 */
-	uint32_tblk_max;
+	uint32_t blk_max;
 	
 	/* REG_0x14 */
 	uint32_t blk_size;

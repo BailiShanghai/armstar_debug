@@ -3,18 +3,45 @@
 #include "bk_common_types.h"
 #include "platform.h"
 #include "partition_star.h"
+#include "mpc.h"
 #include "bk_psram.h"
 
-void psram_set_secure_sau_mpcwm(void)
+#define TEST_PSRAM_SIZE  (0x100000)
+
+void psram_set_secure_sau_mpc(void)
 {
+	mpc_hw_t *mpc_hw = (mpc_hw_t *)(MPC_PSRAM_BASE_ADDR);
+	UINT32 i, block_size, block_num, lut_int, lut_mod;
+
 	/* set first half of memory as non-secure, second half as secure */
 	SAU->RNR  = (6 & SAU_RNR_REGION_Msk);
 	SAU->RBAR = (SAU_INIT_START6 & SAU_RBAR_BADDR_Msk);
-	SAU->RLAR = (((SAU_INIT_START6 + 0x04FFFFFF) & SAU_RLAR_LADDR_Msk)
+	SAU->RLAR = (((SAU_INIT_START6 + TEST_PSRAM_SIZE - 1) & SAU_RLAR_LADDR_Msk)
 				 | ((0 << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk)
 				 | 1U);
 
-	/*config mpcwm*/
+	/*config mpc, psram test regin to non-secure*/
+	mpc_hw->mpc_ctrl.cfg_sec_rsp = 0;
+	mpc_hw->mpc_ctrl.gating_req = 0;
+	mpc_hw->mpc_ctrl.auto_inc = 1;
+	mpc_hw->mpc_ctrl.sec_lock = 1;
+
+	block_size = (32 << mpc_hw->blk_size);
+	block_num = (TEST_PSRAM_SIZE / block_size);
+	if (block_num > mpc_hw->blk_max) {
+		return;
+	} else {
+		mpc_hw->blk_idx = block_num;
+	}
+
+	lut_int = block_num / 32;
+	lut_mod = block_num % 32;
+	for (i = 0; i < lut_int; i++) {
+		mpc_hw->blk_lut[i] = (UINT32)(~0x0);
+	}
+	for (i = 0; i < lut_mod; i++) {
+		mpc_hw->blk_lut[lut_int] |= (0x1 << i);
+	}
 }
 
 static UINT32 psram_get_version(void)
@@ -237,7 +264,7 @@ UINT32 bk_psram_ctrl(UINT32 cmd, void *param)
 
 void bk_psram_init(void)
 {
-	psram_set_secure_sau_mpcwm();
+	psram_set_secure_sau_mpc();
 }
 
 UINT32 bk_psram_read(char *user_buf, UINT32 count, UINT32 address)

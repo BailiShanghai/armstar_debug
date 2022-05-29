@@ -234,7 +234,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END6       0x67FFFFFF
+#define SAU_INIT_END6       0x63FFFFFF
 
 /*
 //     <o>Region is
