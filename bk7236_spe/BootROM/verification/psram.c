@@ -45,20 +45,20 @@ void psram_read_write_demo(void)
 {
 	fill_buffer(psram_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
 
+	/*set 0x70000000~0x700FFFFF as non-secure*/
+	bk_psram_init(TEST_PSRAM_SIZE_NS, 0, PSRAM_STATE_NON_SECURE);
+
 	/*set 0x60100000~601FFFFF as secure*/
 	bk_psram_init(TEST_PSRAM_SIZE_S, TEST_PSRAM_SIZE_NS, PSRAM_STATE_SECURE);
 
-	/*demo to check psram of s*/
+	/*demo to check psram of secure*/
 	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S);
 	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S);
 	if (compare_buffer(psram_tx_buffer, psram_rx_buffer, BUFFER_SIZE)) {
 		bk_printf("psram read or write s error\r\n");
 	}
 
-	/*set 0x70000000~0x700FFFFF as non-secure*/
-	bk_psram_init(TEST_PSRAM_SIZE_NS, 0, PSRAM_STATE_NON_SECURE);
-
-	/*demo to check psram of ns*/
+	/*demo to check psram of non-secure*/
 	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS);
 	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS);
 	if (compare_buffer(psram_tx_buffer, psram_rx_buffer, BUFFER_SIZE)) {
