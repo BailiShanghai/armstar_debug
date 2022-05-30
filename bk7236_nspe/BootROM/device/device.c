@@ -47,6 +47,8 @@ int32_t sys_device_do_config_level(int32_t level)
 
 	void *__device_init_start = &Load$$DEV_INIT$$Base;
 	void *__device_init_end = &Load$$DEV_INIT$$Limit;
+	
+	bk_printf("__device_init:0x%x:0x%x\r\n", __device_init_start, __device_init_end);
 #endif
 
     for (info = (struct device *)__device_init_start; 

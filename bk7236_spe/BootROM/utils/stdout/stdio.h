@@ -23,7 +23,6 @@ extern "C" {
 int printf(const char * fmt, ...);
 int snprintf(char *s, size_t len, const char *fmt, ...);
 int sprintf(char *s, const char *fmt, ...);
-
 int vprintf(const char * fmt, va_list list);
 int vsnprintf(char *s, size_t len, const char *fmt, va_list list);
 int vsprintf(char *s, const char *fmt, va_list list);

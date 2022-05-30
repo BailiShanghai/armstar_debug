@@ -2,6 +2,7 @@
 #include "tt_idau.h"
 #include "arm_cmse.h"
 #include "cmsis_armclang.h"
+#include "bk_uart.h"
 
 void tt_scan_for_idau_region(void *start, void *end)
 {
