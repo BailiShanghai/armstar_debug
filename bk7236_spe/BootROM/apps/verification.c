@@ -162,6 +162,7 @@ void verification_main(void)
 	#endif
 	
 	/* Boot the non-secure code. */
+	bk_printf("boot_non_secure\r\n");
 	boot_non_secure( NON_SECURE_START_ADDRESS );
 
 	/* Non-secure software does not return, this code is not executed. */

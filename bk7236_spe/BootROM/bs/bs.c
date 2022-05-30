@@ -29,7 +29,7 @@ int main(void)
     int32_t ret = 0;
 
 	uart_init(0);
-	bk_printf("Beken\r\n");
+	bk_printf("welcome to the secure world\r\n");
 	
     ret = hal_platform_early_init();
     CHECK_RET("platform_early_init failed!\n");
@@ -40,28 +40,39 @@ extern int32_t mem_leak_check_init(void);
     CHECK_RET("mem_leak_check_init failed!\n");
 #endif
 
+	bk_printf("DEVICE_LEVEL0\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL0);
     CHECK_RET("device level0 init fail 0x%08x\n", ret);
 
     bk_printf("==================================================================="
            "=======\n");
-    bk_printf("| %-70s |\n", VERSION_STRING);
-    bk_printf("| %-70s |\n", build_message);
+    bk_printf("| %-70s |\n", "version 1.0");
+    bk_printf("| %-70s |\n", __DATE__);
+    bk_printf("| %-70s |\n", __TIME__);
     bk_printf("==================================================================="
            "=======\n");
 
+	bk_printf("hal_platform_init bypass\r\n");
+	#if CONFIG_ENABLE_PLATFORM_INIT
     ret = hal_platform_init();
     CHECK_RET("platform_init failed!\n");
+	#endif
 
+	bk_printf("DEVICE_LEVEL1\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL1);
     CHECK_RET("device level1 init fail 0x%08x\n", ret);
 
+	bk_printf("hal_platform_post_init bypass\r\n");
+	#if CONFIG_ENABLE_PLATFORM_INIT
     ret = hal_platform_post_init();
     CHECK_RET("hal_platform_post_init failed!\n");
+	#endif
 
+	bk_printf("DEVICE_LEVEL2\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL2);
     CHECK_RET("device level2 init fail 0x%08x\n", ret);
 
+	bk_printf("DEVICE_LEVEL3\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL3);
     CHECK_RET("device level2 init fail 0x%08x\n", ret);
 

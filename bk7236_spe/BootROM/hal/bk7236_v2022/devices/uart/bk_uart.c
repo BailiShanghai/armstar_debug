@@ -2,6 +2,7 @@
 #include "bk_common_types.h"
 #include "bk_uart.h"
 #include "sys.h"
+#include "bk_gpio.h"
 
 int uart_print_port = UART1_PORT;
 uint32_t g_uart_init_flag = 0;

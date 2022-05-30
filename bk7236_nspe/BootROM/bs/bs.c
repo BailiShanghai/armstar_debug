@@ -31,7 +31,7 @@ int main(void)
 	
 	uart_init(0);
     ret = hal_platform_early_init();
-    CHECK_RET("platform_early_init failed!\n");
+    bk_printf("welcome to non-secure world\n");
 
 #if CONFIG_MEM_LEAK
 	extern int32_t mem_leak_check_init(void);
@@ -44,13 +44,11 @@ int main(void)
 
     bk_printf("==================================================================="
            "=======\n");
-    bk_printf("| %-70s |\n", VERSION_STRING);
-    bk_printf("| %-70s |\n", build_message);
+    bk_printf("| %-70s |\n", "version 1.0");
+    bk_printf("| %-70s |\n", __DATE__);
+    bk_printf("| %-70s |\n", __TIME__);
     bk_printf("==================================================================="
            "=======\n");
-
-    ret = hal_platform_init();
-    CHECK_RET("platform_init failed!\n");
 
     ret = sys_device_do_config_level(DEVICE_LEVEL1);
     CHECK_RET("device level1 init fail 0x%08x\n", ret);
