@@ -2,6 +2,7 @@
 #include "bk_common_types.h"
 #include "bk_uart.h"
 #include "sys.h"
+#include "bk_gpio.h"
 
 int uart_print_port = UART1_PORT;
 uint32_t g_uart_init_flag = 0;
@@ -540,6 +541,8 @@ void bk_uart1_init(void)
 	
 	reg = REG_READ(REG_SYS_CLK_EN);
 	REG_WRITE(REG_SYS_CLK_EN, reg | (1 << 2));
+
+	gpio_uart1_config();
 
 	reg = REG_READ(REG_UART_CLK_RST_CFG);
 	reg |= (1 << FIELD_SOFT_RESETN_POSI);

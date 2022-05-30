@@ -542,6 +542,8 @@ void bk_uart1_init(void)
 	reg = REG_READ(REG_SYS_CLK_EN);
 	REG_WRITE(REG_SYS_CLK_EN, reg | (1 << 2));
 
+	gpio_uart1_config();
+
 	reg = REG_READ(REG_UART_CLK_RST_CFG);
 	reg |= (1 << FIELD_SOFT_RESETN_POSI);
 	REG_WRITE(REG_UART_CLK_RST_CFG, reg);
