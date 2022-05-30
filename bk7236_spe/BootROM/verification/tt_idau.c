@@ -18,12 +18,12 @@ void tt_scan_for_idau_region(void *start, void *end)
 			if(tt_region != info.flags.idau_region)
 			{
 				tt_region = info.flags.idau_region;
-				printf("[IDAU]addr:%p, region_id:%d\r\n", pos, tt_region);
+				bk_printf("[IDAU]addr:%p, region_id:%d\r\n", pos, tt_region);
 			}
 		}
 		else
 		{
-			printf("[IDAU]addr:%p, region_content_invalid\r\n", pos);
+			bk_printf("[IDAU]addr:%p, region_content_invalid\r\n", pos);
 		}
 		
 		pos += 1;
@@ -45,12 +45,12 @@ void tt_scan_for_sau_region(void *start, void *end)
 			if(tt_region != info.flags.sau_region)
 			{
 				tt_region = info.flags.sau_region;
-				printf("[SAU]addr:%p, region_id:%d\r\n", pos, tt_region);
+				bk_printf("[SAU]addr:%p, region_id:%d\r\n", pos, tt_region);
 			}
 		}
 		else
 		{
-			printf("[SAU]addr:%p, region_content_invalid\r\n", pos);
+			bk_printf("[SAU]addr:%p, region_content_invalid\r\n", pos);
 		}
 		
 		pos += 1;
@@ -72,12 +72,12 @@ void tt_scan_for_mpu_region(void *start, void *end)
 			if(tt_region != info.flags.mpu_region)
 			{
 				tt_region = info.flags.mpu_region;
-				printf("[MPU]addr:%p, region_id:%d\r\n", pos, tt_region);
+				bk_printf("[MPU]addr:%p, region_id:%d\r\n", pos, tt_region);
 			}
 		}
 		else
 		{
-			printf("[MPU]addr: %p, region_content_invalid\r\n", pos);
+			bk_printf("[MPU]addr: %p, region_content_invalid\r\n", pos);
 		}
 		
 		pos += 1;
