@@ -337,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>VERSION_STRING=\"Bootrom_v1.0\" BUILD_TYPE=\"debug\" CONFIG_DEBUG PAL_ASSERT_ENABLE SECURE_BOOT MBEDTLS_WITH_DUBHE ARM_CE_DUBHE ARM_CE_DUBHE_OTP __thumb__</Define>
+              <Define>__EN_ICACHE __EN_DCACHE VERSION_STRING=\"Bootrom_v1.0\" BUILD_TYPE=\"debug\" CONFIG_DEBUG PAL_ASSERT_ENABLE SECURE_BOOT MBEDTLS_WITH_DUBHE ARM_CE_DUBHE ARM_CE_DUBHE_OTP __thumb__</Define>
               <Undefine></Undefine>
               <IncludePath>E:\Keil536\ArmChina\STAR\1.4.0\CMSIS\Core\Include;E:\Keil536\ArmChina\STAR\1.4.0\Device\ArmChina\STAR\Include;.\BootROM\device;.\BootROM\drvs;.\BootROM\drvs\inc;.\BootROM\arch\arm-m;.\BootROM\inc;.\BootROM\inc\hal;.\BootROM\inc\pal;.\BootROM\hal\inc;.\BootROM\hal;.\BootROM\utils;.\BootROM\utils\prng;.\BootROM\utils\stdout;.\BootROM\utils\string;.\BootROM\utils\inc;.\BootROM\utils\mutex;.\BootROM\utils\oal;.\BootROM\apps\inc;.\BootROM\utils\ce_lite\include;.\BootROM\utils\ce_lite\library\ce_lite\inc;.\BootROM\inc\secure_boot;.\BootROM\hal\bk7236_v2022;.\BootROM\board\bk7236_v2022\inc;.\BootROM\board\bk7236_v2022\layout\bootrom;.\BootROM\board\bk7236_v2022\layout;.\BootROM\board\bk7236_v2022;.\BootROM\drvs\flash;.\BootROM\hal\bk7236_v2022\devices\uart;.\BootROM\hal\bk7236_v2022\devices\flash;.\BootROM\hal\bk7236_v2022\devices\common;.\BootROM\verification;C:\Keil_v5\ARM\Pack\ArmChina\STAR\2.0.0\CMSIS\Core\Include;C:\Keil_v5\ARM\Pack\ArmChina\STAR\2.0.0\Device\ArmChina\STAR\Include;.\BootROM\hal\bk7236_v2022\devices\psram;.\BootROM\hal\bk7236_v2022\devices\sys_ctrl</IncludePath>
             </VariousControls>
