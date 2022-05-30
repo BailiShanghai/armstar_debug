@@ -20,7 +20,7 @@
 ;   <o1> RAM Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
  *----------------------------------------------------------------------------*/
-#define __RAM_BASE     0x08000000
+#define __RAM_BASE     0x28000000
 #define __RAM_SIZE     0x00020000
 
 /*--------------------- Stack / Heap Configuration ---------------------------

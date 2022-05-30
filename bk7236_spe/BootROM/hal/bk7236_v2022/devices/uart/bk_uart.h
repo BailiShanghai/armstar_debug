@@ -158,14 +158,7 @@ typedef struct
 #define UART_CLOCK_FREQ_26M          26000000
 #define UART_CLOCK_FREQ_52M          52000000
 #define UART_CLOCK_FREQ_120M         120000000
-
-#if (CFG_RUNNING_PLATFORM == FPGA_PLATFORM)
-#define UART_CLOCK                   UART_CLOCK_FREQ_24M
-#elif CFG_XTAL_FREQUENCE
-#define UART_CLOCK                   CFG_XTAL_FREQUENCE
-#else
 #define UART_CLOCK                   UART_CLOCK_FREQ_26M
-#endif // CFG_RUNNING_PLATFORM == FPGA_PLATFORM
 
 #define TX_FIFO_THRD                (0x40)
 #define RX_FIFO_THRD                (0x10)
