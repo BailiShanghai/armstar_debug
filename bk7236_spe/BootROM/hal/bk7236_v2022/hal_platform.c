@@ -24,6 +24,9 @@
 extern int32_t platform_init(void);
 extern int32_t device_init(void);
 extern void global_heap_init(void);
+////Workaround
+extern int stdout_putchar (int ch) ;
+extern void bk_putchar(char c);
 
 int32_t hal_platform_early_init(void)
 {
@@ -89,26 +92,14 @@ void hal_reset(void)
 
 extern struct device *uart_0_dev;
 
-////Workaround
-extern int stdout_putchar (int ch) ;
-
 void hal_uart_putc(uint8_t c)
 {
-#if 0//TODO fix me, report stdout_putchar not defined for gun arm gcc
-    if ('\n' == c) {
-        stdout_putchar('\r');
-    }
-    stdout_putchar(c);
-#endif
+	bk_putchar(c);
 }
 
 void hal_uart_putc_strict(uint8_t c)
 {
-#if 0	////Pochin TODO fix me
-	stdout_putchar(c);
-#else	
-    return uart_putc(uart_0_dev, c);
-#endif	
+	bk_putchar(c);
 }
 
 size_t hal_uart_puts(const uint8_t *s)

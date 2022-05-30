@@ -4,6 +4,7 @@
 #include "sys.h"
 
 int uart_print_port = UART1_PORT;
+uint32_t g_uart_init_flag = 0;
 
 static struct uart_callback_des uart_receive_callback[2] = {{NULL}, {NULL}};
 static struct uart_callback_des uart_txfifo_needwr_callback[2] = {{NULL}, {NULL}};
@@ -41,6 +42,9 @@ UINT8 uart_is_tx_fifo_full(UINT8 uport)
 
 void bk_send_byte(UINT8 uport, UINT8 data)
 {
+	if(0 == g_uart_init_flag)
+		return;
+	
     if(UART1_PORT == uport)
         while(!UART1_TX_WRITE_READY);
     else
@@ -457,7 +461,6 @@ void uart_fast_init(void)
 /*******************************************************************/
 void uart1_isr(void)
 {
-
     UINT32 status;
     UINT32 intr_en;
     UINT32 intr_status;
@@ -537,8 +540,14 @@ void bk_uart1_init(void)
 	
 	reg = REG_READ(REG_SYS_CLK_EN);
 	REG_WRITE(REG_SYS_CLK_EN, reg | (1 << 2));
+
+	reg = REG_READ(REG_UART_CLK_RST_CFG);
+	reg |= (1 << FIELD_SOFT_RESETN_POSI);
+	REG_WRITE(REG_UART_CLK_RST_CFG, reg);
 	
 	uart_hw_init(UART1_PORT);
+	
+	g_uart_init_flag = 1;		
 }
 
 void uart1_exit(void)
@@ -952,6 +961,9 @@ int uart_read_byte(int uport)
 
 int uart_write_byte(int uport, char c)
 {
+	if(0 == g_uart_init_flag)
+		return 0;
+	
     if (UART1_PORT == uport)
         while(!UART1_TX_WRITE_READY);
     else
