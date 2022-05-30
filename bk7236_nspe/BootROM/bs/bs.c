@@ -18,14 +18,13 @@
 #include "dbg.h"
 
 extern int32_t sys_device_do_config_level(int32_t level);
-extern int main(void);
 
 const char build_message[] =
     "Build Time: " __DATE__ " " __TIME__ " " BUILD_TYPE;
 
 void proof_main(void);
 
-void bs_main(void)
+int main(void)
 {
     int32_t ret = 0;
 
@@ -71,9 +70,5 @@ finish:
     while (1)
         ;
 }
+// eof
 
-__WEAK int main(void)
-{
-    while (1)
-        ;
-}

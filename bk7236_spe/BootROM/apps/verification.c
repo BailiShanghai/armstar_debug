@@ -35,7 +35,7 @@
 #define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        0
 #define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0
 #define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
-#define CONFIG_ENABLE_VERIFY_TRNG                 1
+#define CONFIG_ENABLE_VERIFY_TRNG                 0
 #define CONFIG_ENABLE_VERIFY_ALG_AES              0
 #define CONFIG_ENABLE_VERIFY_DTCM                 0
 
