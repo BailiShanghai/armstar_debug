@@ -78,14 +78,14 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END0       0x0003FFFF      /* end address of SAU region 0 */
+#define SAU_INIT_END0       0x6FFFFFFF      /* end address of SAU region 0 */
 
 /*
 //     <o>Region is
 //         <0=>Non-Secure
 //         <1=>Secure, Non-Secure Callable
 */
-#define SAU_INIT_NSC0       1
+#define SAU_INIT_NSC0       0
 /*
 //   </e>
 */
@@ -94,12 +94,12 @@
 //   <e>Initialize SAU Region 1
 //   <i> Setup SAU Region 1 memory attributes
 */
-#define SAU_INIT_REGION1    1
+#define SAU_INIT_REGION1    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START1     0x00100000
+#define SAU_INIT_START1     0x20000000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
@@ -120,7 +120,7 @@
 //   <e>Initialize SAU Region 2
 //   <i> Setup SAU Region 2 memory attributes
 */
-#define SAU_INIT_REGION2    1
+#define SAU_INIT_REGION2    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
@@ -146,7 +146,7 @@
 //   <e>Initialize SAU Region 3
 //   <i> Setup SAU Region 3 memory attributes
 */
-#define SAU_INIT_REGION3    1
+#define SAU_INIT_REGION3    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
@@ -172,7 +172,7 @@
 //   <e>Initialize SAU Region 4
 //   <i> Setup SAU Region 4 memory attributes
 */
-#define SAU_INIT_REGION4    1
+#define SAU_INIT_REGION4    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
@@ -198,7 +198,7 @@
 //   <e>Initialize SAU Region 5
 //   <i> Setup SAU Region 5 memory attributes
 */
-#define SAU_INIT_REGION5    1
+#define SAU_INIT_REGION5    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
@@ -224,7 +224,7 @@
 //   <e>Initialize SAU Region 6
 //   <i> Setup SAU Region 6 memory attributes
 */
-#define SAU_INIT_REGION6    1
+#define SAU_INIT_REGION6    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
@@ -250,7 +250,7 @@
 //   <e>Initialize SAU Region 7
 //   <i> Setup SAU Region 7 memory attributes
 */
-#define SAU_INIT_REGION7    1
+#define SAU_INIT_REGION7    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
