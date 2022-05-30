@@ -768,6 +768,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\non_secure.c</FilePath>
             </File>
+            <File>
+              <FileName>dtcm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\dtcm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

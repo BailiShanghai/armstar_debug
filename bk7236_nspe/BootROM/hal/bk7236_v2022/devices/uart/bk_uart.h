@@ -128,6 +128,7 @@ typedef struct
 /* uart parameter config----start*/
 #define UART_BAUDRATE_3250000        3250000
 #define UART_BAUDRATE_2000000        2000000
+#define UART_BAUDRATE_1000000        1000000
 #define UART_BAUDRATE_921600         921600
 #define UART_BAUDRATE_460800         460800
 #define UART_BAUDRATE_230400         230400
@@ -135,7 +136,7 @@ typedef struct
 #define UART_BAUDRATE_3000           3250
 #define UART_BAUDRATE_19200          19200
 
-#define UART_BAUD_RATE               UART_BAUDRATE_115200
+#define UART_BAUD_RATE               UART_BAUDRATE_1000000
 #ifndef UART1_BAUD_RATE
 #define UART1_BAUD_RATE              UART_BAUD_RATE
 #endif

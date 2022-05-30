@@ -17,6 +17,7 @@ enum
 };
 
 typedef volatile tgu_hw_t dtgu_hw_t;
+extern uint32_t dtcm_proof_main(void);
 #ifdef __cplusplus
 }
 #endif
