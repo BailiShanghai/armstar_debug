@@ -38,6 +38,7 @@
 #define CONFIG_ENABLE_VERIFY_TRNG                 0
 #define CONFIG_ENABLE_VERIFY_ALG_AES              0
 #define CONFIG_ENABLE_VERIFY_DTCM                 0
+#define CONFIG_ENABLE_VERIFY_PSRAM                0
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
@@ -77,6 +78,10 @@
 
 #if CONFIG_ENABLE_VERIFY_DTCM
 #include "dtcm.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFY_PSRAM
+#include "psram.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -143,6 +148,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_DTCM
 	dtcm_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_PSRAM
+	psram_read_write_demo();
 	#endif
 }
 

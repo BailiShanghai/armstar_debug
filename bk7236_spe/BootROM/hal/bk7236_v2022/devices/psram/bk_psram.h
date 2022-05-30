@@ -19,6 +19,15 @@
 
 #define PSRAM_CMD_MAGIC              (0xa240000)
 
+#define PSRAM_MEM_BASE_S             (0x60000000)
+#define PSRAM_MEM_BASE_NS            (0x70000000)
+
+enum
+{
+	PSRAM_STATE_SECURE = 0,
+	PSRAM_STATE_NON_SECURE
+};
+
 enum {
 	CMD_PSRAM_GET_VERSION = PSRAM_CMD_MAGIC + 1,
 	CMD_PSRAM_SOFT_RESET,
@@ -74,7 +83,7 @@ enum {
 /*******************************************************************************
 * Function Declarations
 *******************************************************************************/
-void bk_psram_init(void);
+void bk_psram_init(UINT32 psram_size, UINT32 psram_offset, UINT32 sec_state);
 UINT32 bk_psram_read(char *user_buf, UINT32 count, UINT32 address);
 UINT32 bk_psram_write(char *user_buf, UINT32 count, UINT32 address);
 UINT32 bk_psram_ctrl(UINT32 cmd, void *param);
