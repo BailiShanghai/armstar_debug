@@ -90,11 +90,12 @@ void hal_reset(void)
     while (1);  // wait for watchdog reset
 }
 
-extern struct device *uart_0_dev;
-
 void hal_uart_putc(uint8_t c)
 {
-	bk_putchar(c);
+    if ('\n' == c) {
+        bk_putchar('\r');
+    }
+    return bk_putchar(c);
 }
 
 void hal_uart_putc_strict(uint8_t c)
@@ -115,7 +116,7 @@ size_t hal_uart_puts(const uint8_t *s)
 
 int32_t hal_uart_getc(uint8_t *c)
 {
-    return uart_getc(uart_0_dev, c);
+    return 0;
 }
 
 /*
@@ -125,7 +126,7 @@ int32_t hal_uart_getc(uint8_t *c)
  */
 int32_t hal_uart_rx_ready()
 {
-    return uart_rx_ready(uart_0_dev);
+    return 0;
 }
 
 

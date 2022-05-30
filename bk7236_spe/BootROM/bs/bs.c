@@ -28,6 +28,7 @@ int main(void)
 {
     int32_t ret = 0;
 
+	uart_init(0);
     ret = hal_platform_early_init();
     CHECK_RET("platform_early_init failed!\n");
 
