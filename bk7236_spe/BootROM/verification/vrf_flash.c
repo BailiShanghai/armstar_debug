@@ -9,8 +9,7 @@ uint32_t vrf_flash_config(void)
 	mpc_flash = (mpc_hw_t *)MPC_FLASH_BASE_ADDR;
 	
 	mpc_config_ctrl(mpc_flash, 0, 0, 0, 0);
-	mpc_set_secure(mpc_flash, FLASH_SECURE_SIZE, 0, MPC_STATE_SECURE);
-	mpc_set_secure(mpc_flash, FLASH_NON_SECURE_SIZE, FLASH_SECURE_SIZE, MPC_STATE_NON_SECURE);
+	mpc_flash->blk_lut[0] = 0x0C;
 	
 	return 0;
 }
