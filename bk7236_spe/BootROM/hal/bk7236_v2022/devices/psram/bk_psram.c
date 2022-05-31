@@ -302,7 +302,7 @@ UINT32 bk_psram_ctrl(UINT32 cmd, void *param)
 
 void bk_psram_init(UINT32 psram_size, UINT32 psram_offset, UINT32 sec_state)
 {
-	psram_config_mpc_ctrl(0, 0, 1, 1);
+	psram_config_mpc_ctrl(0, 0, 1, 0);
 	psram_set_secure_mpc(psram_size, psram_offset, sec_state);
 }
 
