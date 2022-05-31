@@ -35,6 +35,7 @@ static void mpc_config_lut(mpc_hw_t *mpc_ptr, UINT32 blk_num, UINT32 blk_offset,
 			mpc_ptr->blk_lut[i] = (UINT32)(0x0);
 		}
 	}
+	
 	for (i = 0; i < lut_mod; i++) {
 		if (sec_state == MPC_STATE_NON_SECURE) {
 			mpc_ptr->blk_lut[lut_idx] |= (0x1 << i);
@@ -59,8 +60,8 @@ void mpc_set_secure(mpc_hw_t *mpc_ptr, uint32_t total_size, uint32_t offset_size
 	uint32_t blk_num, blk_offset;
 
 	/*get block number & block offset*/
-	blk_size = (32 << mpc_ptr->blk_size); // 64k Bytes
-	blk_num = (total_size / blk_size); //TODO, integer multpules? if total size is 0x20000, blk_num is 2
+	blk_size = (32 << mpc_ptr->blk_size);   // 64k Bytes
+	blk_num = (total_size / blk_size);      //TODO, integer multpules? if total size is 0x20000, blk_num is 2
 	blk_offset = (offset_size / blk_size);  //TODO, integer multpules?
 	blk_idx = blk_offset + blk_num;
 
