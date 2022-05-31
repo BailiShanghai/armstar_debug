@@ -68,6 +68,7 @@ void proof_main(void)
 	/* Non-secure software does not return, this code is not executed. */
 	for( ; ; )
 	{
+		bk_printf("Non-secure idle dead while\r\n");
 		/* Should not reach here. */
 	}
 }

@@ -33,15 +33,6 @@ int main(void)
     ret = hal_platform_early_init();
     bk_printf("welcome to non-secure world\n");
 
-#if CONFIG_MEM_LEAK
-	extern int32_t mem_leak_check_init(void);
-    ret = mem_leak_check_init();
-    CHECK_RET("mem_leak_check_init failed!\n");
-#endif
-
-    ret = sys_device_do_config_level(DEVICE_LEVEL0);
-    CHECK_RET("device level0 init fail 0x%08x\n", ret);
-
     bk_printf("==================================================================="
            "=======\n");
     bk_printf("| %-70s |\n", "version 1.0");
@@ -49,20 +40,6 @@ int main(void)
     bk_printf("| %-70s |\n", __TIME__);
     bk_printf("==================================================================="
            "=======\n");
-
-    ret = sys_device_do_config_level(DEVICE_LEVEL1);
-    CHECK_RET("device level1 init fail 0x%08x\n", ret);
-
-    ret = hal_platform_post_init();
-    CHECK_RET("hal_platform_post_init failed!\n");
-
-    ret = sys_device_do_config_level(DEVICE_LEVEL2);
-    CHECK_RET("device level2 init fail 0x%08x\n", ret);
-
-    ret = sys_device_do_config_level(DEVICE_LEVEL3);
-    CHECK_RET("device level2 init fail 0x%08x\n", ret);
-
-    apps_init();
 
     proof_main();
 finish:
