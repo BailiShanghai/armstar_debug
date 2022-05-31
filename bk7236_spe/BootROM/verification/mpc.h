@@ -4,6 +4,12 @@
 extern "C" {
 #endif
 
+enum
+{
+	MPC_STATE_SECURE = 0,
+	MPC_STATE_NON_SECURE
+};
+
 #define  MPC_PSRAM_BASE_ADDR   	(0x41100000)
 #define  MPC_QSPI0_BASE_ADDR   	(0x41110000)
 #define  MPC_QSPI1_BASE_ADDR   	(0x41120000)
@@ -47,6 +53,9 @@ typedef volatile struct {
 
 	uint32_t blk_lut[MPC_LUT_MAX_NUM];
 } mpc_hw_t;
+
+extern void mpc_config_ctrl(mpc_hw_t *mpc_ptr, uint8_t sec_resp, uint8_t gating_req, uint8_t auto_increase, uint8_t sec_lock);
+extern void mpc_set_secure(mpc_hw_t *mpc_ptr, uint32_t psram_size, uint32_t psram_offset, uint32_t sec_state);
 #ifdef __cplusplus
 }
 #endif

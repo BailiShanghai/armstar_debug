@@ -28,6 +28,7 @@
 #include "dbg.h"
 
 #define CONFIG_ENABLE_VERIFICAION    1
+#define CONFIG_ENABLE_FLASH_MPC      1
 #define CONFIG_ENABLE_TT_IDAU        0
 #define CONFIG_ENABLE_VERIFICATION_HASH256        0
 #define CONFIG_ENABLE_VERIFICATION_ACA_SRAM       0
@@ -84,6 +85,10 @@
 #include "psram.h"
 #endif
 
+#if CONFIG_ENABLE_FLASH_MPC
+#include "vrf_flash.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -110,6 +115,10 @@ void boot_non_secure( uint32_t ulNonSecureStartAddress )
 
 void verification_secure(void)
 {
+	#if CONFIG_ENABLE_FLASH_MPC
+	vrf_flash_config();
+	#endif
+	
 	#if CONFIG_ENABLE_TT_IDAU
 	tt_verificaton_main();
 	#endif
