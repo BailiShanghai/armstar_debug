@@ -17,7 +17,7 @@
  * CE base address
  */
 #ifndef CE_CFG_BASE_ADDR
-#define CE_CFG_BASE_ADDR    0x70000000		/////0x50100000UL
+#define CE_CFG_BASE_ADDR    0x4b000000	
 #endif
 
 /**
