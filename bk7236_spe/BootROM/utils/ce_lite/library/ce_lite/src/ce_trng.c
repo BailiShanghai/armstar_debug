@@ -65,6 +65,7 @@ void trng_engine_exit(void)
 static inline void trng_rnp_fill(void)
 {
     uint32_t val;
+	
     /** wait for rnp idle */
     IO_CHECK32(RNP_STAT_OFS, 0x6U, 0x0U);
     /** trigger to fill rnp */

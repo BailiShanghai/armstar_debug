@@ -24,7 +24,7 @@
  * CE host number
  */
 #ifndef CE_CFG_HOST_ID
-#define CE_CFG_HOST_ID      0
+#define CE_CFG_HOST_ID      1
 #endif
 
 /**
