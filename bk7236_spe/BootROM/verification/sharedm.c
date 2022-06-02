@@ -10,6 +10,8 @@ uint32_t mem_access_test(uint32_t start, uint32_t end)
 	uint8_t *h, *t;
 	uint32_t pos, i = 0;
 
+	bk_printf("mem_access:0x%x:0x%x\r\n", start, end);
+	
 	*head_ptr = 0x5a5a5a5a;
 	if(0x5a5a5a5a != *head_ptr){
 		bk_printf("head_failed:0x5a5a5a5a != 0x%x\r\n", *head_ptr);
@@ -50,7 +52,31 @@ void shared_mem_config_mpc(void)
 	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM0_BASE_ADDR;
 	
 	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
-	shared_mem_mpc->blk_lut[0] = 0x01;
+	shared_mem_mpc->blk_lut[0] = 0x02;
+	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
+	
+	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM1_BASE_ADDR;
+	
+	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	shared_mem_mpc->blk_lut[0] = 0x02;
+	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
+	
+	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM2_BASE_ADDR;
+	
+	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	shared_mem_mpc->blk_lut[0] = 0x02;
+	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
+	
+	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM3_BASE_ADDR;
+	
+	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	shared_mem_mpc->blk_lut[0] = 0x02;
+	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
+	
+	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM4_BASE_ADDR;
+	
+	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	shared_mem_mpc->blk_lut[0] = 0x02;
 	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
 	
 }
