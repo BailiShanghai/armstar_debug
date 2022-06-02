@@ -20,7 +20,7 @@ const static ce_trng_conf_t g_trng_conf = {
         .grp1_en = 1,
         .grp2_en = 1,
         .grp3_en = 1,
-        .src_sel = CE_TRNG_ENTROPY_SRC_INTERNAL,
+        .src_sel = CE_TRNG_ENTROPY_SRC_EXTERNAL, /* original setting: CE_TRNG_ENTROPY_SRC_INTERNAL*/
     },
     .sample = {
         .div = 100,
