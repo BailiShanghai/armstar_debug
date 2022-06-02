@@ -90,6 +90,8 @@ static inline void trng_rnp_read(uint8_t *buf, size_t len)
         /** assert that len shouldn't gt 32 bytes*/
         PAL_ASSERT(i < 8);
         val = IO_READ32(RNP_DAT_WORD0_OFS + (sizeof(val) * i++));
+		bk_printf("trng:0x%x\r\n", val);
+		
         cp_len  = CE_MIN(left_len, sizeof(val));
         pal_memcpy(buf + len - left_len, &val, cp_len);
         left_len -= cp_len;
@@ -169,9 +171,13 @@ int32_t ce_trng_read(uint8_t *buf, size_t len)
 
     while (left_len > 0) {
         /** trigger RNP to fill random number pool */
+		bk_printf(":%d, trng_rnp_fill\r\n", left_len);		
         trng_rnp_fill();
+	
         /** read appropriate size of data */
         read_len = CE_MIN(left_len , RNP_MAX_SIZE);
+		
+		bk_printf("trng_rnp_read\r\n");
         trng_rnp_read(buf + len - left_len, read_len);
         if (0U == CE_CFG_HOST_ID) {
             /** eoi */

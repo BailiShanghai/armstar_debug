@@ -18,7 +18,8 @@ void trng_printf_trn_content(void)
 int32_t trng_verification_main(void)
 {
     int32_t ret = 0;
-
+	
+	bk_printf("trng_verification_main\n");
     ret = ce_trng_read(trn_content, sizeof(trn_content));
     if (ret != 0) {
         bk_printf("ce_trng_read FAILED(%X)\n", ret);
