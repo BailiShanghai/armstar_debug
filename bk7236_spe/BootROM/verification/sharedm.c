@@ -95,11 +95,16 @@ void secure_world_access_ns_shared_memory(void)
 	mem_access_test(NON_SECURE_SHAREDM0_START_ADDR, NON_SECURE_SHAREDM0_START_ADDR + VERIFY_DATA_LEN);
 }
 
+#define CONFIG_ENABLE_VERIFY_SHARED_MEMORY_AT_NS_WORLD   1
+
 void shared_memory_verification_main(void)
 {
 	shared_mem_config_mpc();
+
+	#if (0 == CONFIG_ENABLE_VERIFY_SHARED_MEMORY_AT_NS_WORLD)
 	secure_world_access_s_shared_memory();
 	secure_world_access_ns_shared_memory();
+	#endif
 }
 // eof
 
