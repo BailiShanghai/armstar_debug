@@ -838,6 +838,16 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\vrf_flash.c</FilePath>
             </File>
+            <File>
+              <FileName>boot_wr_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\boot_wr_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>boot_wr_flash_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\boot_wr_flash_test.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
