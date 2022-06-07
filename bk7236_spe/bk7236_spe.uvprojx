@@ -848,6 +848,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\boot_wr_flash_test.c</FilePath>
             </File>
+            <File>
+              <FileName>itcm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\itcm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

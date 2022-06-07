@@ -4,7 +4,7 @@
 #include <math.h>
 
 dtgu_hw_t *dtgu_hw_ptr;
-tcm_hw_t *tcm_hw_ptr;
+tcm_hw_t *tcm_hardware_ptr;
 
 uint32_t dtcm_lut_config(uint32_t total_blk_num, uint32_t previous_blk_num, uint32_t sec_state)
 {
@@ -52,9 +52,9 @@ uint32_t dtcm_config(void)
 
 	dtgu_hw_ptr->tgu_ctrl.data_busfault_en = 1;
 	dtgu_hw_ptr->tgu_ctrl.ahbt_err_resp = 1;	
-	tcm_hw_ptr->dtcm_ctrl.en = 1;
+	tcm_hardware_ptr->dtcm_ctrl.en = 1;
 	
-	tcm_size = tcm_hw_ptr->dtcm_ctrl.size;
+	tcm_size = tcm_hardware_ptr->dtcm_ctrl.size;
 	blk_num = pow(2, dtgu_hw_ptr->tgu_cfg.num_of_blks);
 	blk_size = pow(2, dtgu_hw_ptr->tgu_cfg.blk_size + 5);
 	bk_printf("dtcm total size:0x%x blk_num:0x%x, blk_size:0x%x\r\n", 
@@ -72,7 +72,7 @@ uint32_t dtcm_init(void)
 {
 	uint32_t ret;
 	
-	tcm_hw_ptr = (tcm_hw_t *)TCM_BASE_ADDR;
+	tcm_hardware_ptr = (tcm_hw_t *)TCM_BASE_ADDR;
 	dtgu_hw_ptr = (dtgu_hw_t *)DTGU_BASE_ADDR;
 
 	ret = dtcm_config();
@@ -122,8 +122,8 @@ uint32_t dtcm_data_access(uint32_t start, uint32_t end)
 
 uint32_t dtcm_printf_ro_info(void)
 {
-	bk_printf("dtcm size:0x%x, 32kB: b0110\r\n", tcm_hw_ptr->dtcm_ctrl.size);
-	bk_printf("mem_model feature:0x%x\r\n", tcm_hw_ptr->mem_model);
+	bk_printf("dtcm size:0x%x, 32kB: b0110\r\n", tcm_hardware_ptr->dtcm_ctrl.size);
+	bk_printf("mem_model feature:0x%x\r\n", tcm_hardware_ptr->mem_model);
 	
 	return 0;
 }

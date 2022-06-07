@@ -62,6 +62,16 @@ LR_ROM __RO_BASE   {                       ; load region size_region
 	*(.init_level_*)
   }
 
+  ITCM_H 0 2048
+  {
+	*(ITCM_HEAD*)
+  }
+
+  ITCM_T 0x3800 2048
+  {
+	*(ITCM_TAIL*)
+  }
+  
   RW_RAM __RW_BASE __RW_SIZE  {                     ; RW data
    .ANY (+RW +ZI)
   }

@@ -12,9 +12,9 @@
 
 #include "ce_lite_trng.h"
 #include "ce_trng.h"
+#include "bk_uart.h"
 
 #if defined(CE_LITE_TRNG)
-
 static void trng_setup_config(const ce_trng_conf_t *conf)
 {
     PAL_ASSERT(conf != NULL);

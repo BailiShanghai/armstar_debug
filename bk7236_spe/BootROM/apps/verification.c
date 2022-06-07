@@ -37,9 +37,10 @@
 #define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        0
 #define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0  // ok
 #define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
-#define CONFIG_ENABLE_VERIFY_TRNG                 1  // ok
+#define CONFIG_ENABLE_VERIFY_TRNG                 0  // ok
 #define CONFIG_ENABLE_VERIFY_ALG_AES              0
 #define CONFIG_ENABLE_VERIFY_DTCM                 0
+#define CONFIG_ENABLE_VERIFY_ITCM                 1
 #define CONFIG_ENABLE_VERIFY_PSRAM                0
 
 #if CONFIG_ENABLE_TT_IDAU
@@ -88,6 +89,10 @@
 
 #if CONFIG_ENABLE_FLASH_MPC
 #include "vrf_flash.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFY_ITCM
+#include "itcm.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -162,6 +167,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_PSRAM
 	psram_read_write_demo();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_ITCM
+	itcm_verification_main();
 	#endif
 }
 

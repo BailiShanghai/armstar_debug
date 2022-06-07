@@ -4,6 +4,12 @@
 extern "C" {
 #endif
 
+enum
+{
+	STATE_SECURE = 0,
+	STATE_NON_SECURE
+};
+
 #define REG_GAP_LOCATION_NUM    ((0x50 - 0x14) >> 2)
 
 typedef volatile struct {

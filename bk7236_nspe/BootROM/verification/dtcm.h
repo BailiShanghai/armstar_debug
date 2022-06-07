@@ -10,12 +10,6 @@ extern "C" {
 #define DTCM_S_MEM_BASE_ADDR    (0x20000000)
 #define DTCM_NS_MEM_BASE_ADDR   (0x30000000)
 
-enum
-{
-	STATE_SECURE = 0,
-	STATE_NON_SECURE
-};
-
 typedef volatile tgu_hw_t dtgu_hw_t;
 extern uint32_t dtcm_proof_main(void);
 #ifdef __cplusplus
