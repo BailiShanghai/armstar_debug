@@ -42,6 +42,7 @@
 #define CONFIG_ENABLE_VERIFY_DTCM                 0
 #define CONFIG_ENABLE_VERIFY_ITCM                 1
 #define CONFIG_ENABLE_VERIFY_PSRAM                0
+#define CONFIG_ENABLE_VERIFY_QSPI                 0
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"
@@ -93,6 +94,10 @@
 
 #if CONFIG_ENABLE_VERIFY_ITCM
 #include "itcm.h"
+#endif
+
+#if CONFIG_ENABLE_VERIFY_QSPI
+#include "qspi.h"
 #endif
 
 /* typedef for non-secure Reset Handler. */
@@ -171,6 +176,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_ITCM
 	itcm_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_QSPI
+	qspi_read_write_demo();
 	#endif
 }
 
