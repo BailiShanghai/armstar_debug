@@ -778,6 +778,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\dtcm.c</FilePath>
             </File>
+            <File>
+              <FileName>itcm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\itcm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
