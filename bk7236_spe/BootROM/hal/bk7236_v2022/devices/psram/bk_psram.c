@@ -9,79 +9,6 @@
 
 mpc_hw_t *g_psram_mpc_ptr = (mpc_hw_t *)(MPC_PSRAM_BASE_ADDR);
 
-static void psram_config_mpc_lut(UINT32 blk_num, UINT32 blk_offset, UINT32 sec_state)
-{
-	UINT32 i;
-	UINT32 lut_idx_offset, lut_mod_offset;
-	UINT32 lut_tail_len;
-	UINT32 lut_idx, lut_mod;
-
-	/*get offset idx and mod*/
-	lut_idx_offset = (blk_offset / 32);
-	lut_mod_offset = (blk_offset % 32);
-
-	/*set lut offset tail*/
-	lut_tail_len = (blk_num > (32 - lut_mod_offset)) ? (32 - lut_mod_offset) : blk_num;
-	lut_mod = lut_mod_offset + lut_tail_len;
-	for (i = lut_mod_offset; i < lut_mod; i++) {
-		if (sec_state == PSRAM_STATE_NON_SECURE) {
-			g_psram_mpc_ptr->blk_lut[lut_idx_offset] |= (0x1 << i);
-		} else {
-			g_psram_mpc_ptr->blk_lut[lut_idx_offset] &= ~(0x1 << i);
-		}
-	}
-
-	/*set left block num of lut*/
-	lut_idx_offset++;
-	lut_idx = ((blk_num - lut_tail_len) / 32) + lut_idx_offset;
-	lut_mod = ((blk_num - lut_tail_len) % 32);
-	for (i = lut_idx_offset; i < lut_idx; i++) {
-		if (sec_state == PSRAM_STATE_NON_SECURE) {
-			g_psram_mpc_ptr->blk_lut[i] = (UINT32)(~0x0);
-		} else {
-			g_psram_mpc_ptr->blk_lut[i] = (UINT32)(0x0);
-		}
-	}
-	for (i = 0; i < lut_mod; i++) {
-		if (sec_state == PSRAM_STATE_NON_SECURE) {
-			g_psram_mpc_ptr->blk_lut[lut_idx] |= (0x1 << i);
-		} else {
-			g_psram_mpc_ptr->blk_lut[lut_idx] &= ~(0x1 << i);
-		}
-	}
-}
-
-static void psram_config_mpc_ctrl(UINT8 sec_resp, UINT8 gating_req, UINT8 auto_increase, UINT8 sec_lock)
-{
-	/*config mpc to auto increase*/
-	g_psram_mpc_ptr->mpc_ctrl.cfg_sec_rsp = sec_resp;
-	g_psram_mpc_ptr->mpc_ctrl.gating_req = gating_req;
-	g_psram_mpc_ptr->mpc_ctrl.auto_inc = auto_increase;
-	g_psram_mpc_ptr->mpc_ctrl.sec_lock = sec_lock;
-}
-
-static void psram_set_secure_mpc(UINT32 psram_size, UINT32 psram_offset, UINT32 sec_state)
-{
-	UINT32 blk_size, blk_idx, blk_num, blk_offset;
-
-	/*get block number & block offset*/
-	blk_size = (32 << g_psram_mpc_ptr->blk_size);
-	blk_num = (psram_size / blk_size);
-	blk_offset = (psram_offset / blk_size);
-	blk_idx = blk_offset + blk_num;
-
-	/*check block idx*/
-	if (blk_idx > g_psram_mpc_ptr->blk_max) {
-		bk_printf("idx error, idx:%d, max:%d\r\n", blk_idx, g_psram_mpc_ptr->blk_max);
-		return;
-	} else {
-		g_psram_mpc_ptr->blk_idx = blk_idx;
-	}
-
-	/*config mpc lut*/
-	psram_config_mpc_lut(blk_num, blk_offset, sec_state);
-}
-
 static UINT32 psram_get_version(void)
 {
 	UINT32 version;
@@ -300,10 +227,30 @@ UINT32 bk_psram_ctrl(UINT32 cmd, void *param)
 	return 0;
 }
 
-void bk_psram_init(UINT32 psram_size, UINT32 psram_offset, UINT32 sec_state)
+void bk_psram_mpc_config(UINT32 psram_size, UINT32 psram_offset, UINT32 sec_state)
 {
-	psram_config_mpc_ctrl(0, 0, 0, 0);
-	psram_set_secure_mpc(psram_size, psram_offset, sec_state);
+	mpc_config_ctrl(g_psram_mpc_ptr, 0, 0, 0, 0);
+	mpc_set_secure(g_psram_mpc_ptr, psram_size, psram_offset, sec_state);
+}
+
+void bk_psram_mpc_cofig_II(void)
+{
+	int i;
+	mpc_config_ctrl(g_psram_mpc_ptr, 0, 0, 0, 0);
+
+	for (i = 0; i < 8; i++) {
+		g_psram_mpc_ptr->blk_lut[i] = 0xFFFFFFFF;
+	}
+	for (i = 8; i <16; i++) {
+		g_psram_mpc_ptr->blk_lut[i] = 0x0;
+	}
+}
+
+void bk_psram_init(void)
+{
+	UINT32 param = 1;
+
+	REG_WRITE(REG_PSRAM_SOFT_RESET, param);
 }
 
 UINT32 bk_psram_read(char *user_buf, UINT32 count, UINT32 address)

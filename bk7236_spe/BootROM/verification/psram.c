@@ -46,10 +46,14 @@ void psram_read_write_demo(void)
 	fill_buffer(psram_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
 
 	/*set 0x70000000~0x700FFFFF as non-secure*/
-	bk_psram_init(TEST_PSRAM_SIZE_NS, 0, PSRAM_STATE_NON_SECURE);
+	//bk_psram_mpc_config(TEST_PSRAM_SIZE_NS, 0, PSRAM_STATE_NON_SECURE);
 
 	/*set 0x60100000~601FFFFF as secure*/
-	bk_psram_init(TEST_PSRAM_SIZE_S, TEST_PSRAM_SIZE_NS, PSRAM_STATE_SECURE);
+	//bk_psram_mpc_config(TEST_PSRAM_SIZE_S, TEST_PSRAM_SIZE_NS, PSRAM_STATE_SECURE);
+
+	bk_psram_mpc_cofig_II();
+
+	bk_psram_init();
 
 	/*demo to check psram of secure*/
 	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S);
