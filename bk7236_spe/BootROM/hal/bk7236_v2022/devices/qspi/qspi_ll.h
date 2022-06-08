@@ -843,6 +843,21 @@ static inline uint8_t qspi_get_D_line(qspi_hw_t *hw, uint8_t cmd_idx)
 	return cmd_line;
 }
 
+static inline void qspi_cmd_D_start(qspi_hw_t *hw)
+{
+	hw->CMD_D_CFG2.CMD_START = 1;
+}
+
+static inline void qspi_set_D_data_len(qspi_hw_t *hw, uint8_t data_len)
+{
+	hw->CMD_D_CFG2.DATA_LEN = data_len;
+}
+
+static inline uint8_t qspi_get_D_data_len(qspi_hw_t *hw)
+{
+	return (hw->CMD_D_CFG2.DATA_LEN);
+}
+
 static inline void qspi_set_D_data_line(qspi_hw_t *hw, uint8_t data_line)
 {
 	hw->CMD_D_CFG2.DATA_LINE = data_line;
@@ -871,16 +886,6 @@ static inline void qspi_set_D_dummy_mode(qspi_hw_t *hw, uint8_t dummy_mode)
 static inline uint8_t qspi_get_D_dummy_mode(qspi_hw_t *hw)
 {
 	return (hw->CMD_D_CFG2.DUMMY_MODE);
-}
-
-static inline void qspi_set_D_cmd_mode(qspi_hw_t *hw, uint8_t cmd_mode)
-{
-	hw->CMD_D_CFG2.CMD_MODE = cmd_mode;
-}
-
-static inline uint8_t qspi_get_D_cmd_mode(qspi_hw_t *hw)
-{
-	return (hw->CMD_D_CFG2.CMD_MODE);
 }
 
 static inline void qspi_enable(qspi_hw_t *hw, bool enable)

@@ -229,13 +229,15 @@ typedef volatile struct {
 	/* REG_0x17 */
 	union {
 		struct {
-			uint32_t rsv0: 14;
+			uint32_t CMD_START: 1;
+			uint32_t rsv0: 1;
+			uint32_t DATA_LEN: 10;
+			uint32_t rsv1: 2;
 			uint32_t DATA_LINE: 2;
 			uint32_t DUMMY_CLK: 7;
-			uint32_t rsv1: 1;
+			uint32_t rsv2: 1;
 			uint32_t DUMMY_MODE: 3;
-			uint32_t rsv2: 3;
-			uint32_t CMD_MODE: 2;
+			uint32_t rsv3: 5;
 		};
 		uint32_t v;
 	} CMD_D_CFG2;

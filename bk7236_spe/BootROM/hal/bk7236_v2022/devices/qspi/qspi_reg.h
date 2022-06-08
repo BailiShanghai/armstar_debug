@@ -47,6 +47,14 @@ extern "C" {
 #define QSPI_0_BASE      (0x46040000)
 #define QSPI_1_BASE      (0x46060000)
 
+#define QSPI_CMD_READ             (0x03)
+#define QSPI_CMD_FAST_READ        (0x0B)
+#define QSPI_CMD_FAST_READ_QUAD   (0xEB)
+#define QSPI_CMD_WRITE            (0x02)
+#define QSPI_CMD_QUAD_WRITE       (0x38)
+#define QSPI_CMD_ENTER_QUAD_MODE  (0x35)
+#define QSPI_CMD_EXIT_QUAD_MODE   (0xF5)
+
 #ifdef __cplusplus
 }
 #endif
