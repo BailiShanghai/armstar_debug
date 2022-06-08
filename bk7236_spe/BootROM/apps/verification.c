@@ -23,26 +23,10 @@
 
 #include "base.h"
 #include "cmsis_armclang.h"
+#include "verification_config.h"
 
 #define DBG_PRE_PROMPT "APP"
 #include "dbg.h"
-
-#define CONFIG_ENABLE_VERIFICAION    1
-#define CONFIG_ENABLE_FLASH_MPC      1
-
-#define CONFIG_ENABLE_TT_IDAU        0
-#define CONFIG_ENABLE_VERIFICATION_HASH256        0
-#define CONFIG_ENABLE_VERIFICATION_ACA_SRAM       0
-#define CONFIG_ENABLE_VERIFY_TE200_RAM            0
-#define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        0
-#define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0  // ok
-#define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
-#define CONFIG_ENABLE_VERIFY_TRNG                 0  // ok
-#define CONFIG_ENABLE_VERIFY_ALG_AES              0
-#define CONFIG_ENABLE_VERIFY_DTCM                 0
-#define CONFIG_ENABLE_VERIFY_ITCM                 1
-#define CONFIG_ENABLE_VERIFY_PSRAM                0
-#define CONFIG_ENABLE_VERIFY_QSPI                 0
 
 #if CONFIG_ENABLE_TT_IDAU
 #include "tt_idau.h"

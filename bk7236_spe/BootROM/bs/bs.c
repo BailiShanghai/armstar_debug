@@ -14,6 +14,7 @@
 #include "hal_platform.h"
 #include "app.h"
 #include "bk_uart.h"
+#include "verification_config.h"
 
 #define DBG_PRE_PROMPT "BS"
 #include "dbg.h"
