@@ -84,6 +84,10 @@
 #include "qspi.h"
 #endif
 
+#if CONFIG_ENABLE_VERIFY_FLASH
+#include "vrf_flash.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -164,6 +168,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_QSPI
 	qspi_read_write_demo();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_FLASH
+	flash_data_access_verification_main();
 	#endif
 }
 

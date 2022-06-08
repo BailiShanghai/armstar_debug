@@ -63,6 +63,34 @@ typedef enum
     FLASH_XTX_16M_SR_WRITE_ENABLE
 } XTX_FLASH_MODE;
 
+enum{
+	SEC_REG_ID0 = 0,
+	SEC_REG_ID1,
+	SEC_REG_ID2,
+	SEC_REG_ID4,
+	SEC_REG_MAX
+};
+
+enum {
+	SEC_REG_DISABLE = 0,
+	SEC_REG_ENABLE
+};
+
+enum {
+	STA_SEC = 0,
+	STA_NON_SEC,
+};
+	
+typedef struct _sec_region_
+{
+    uint16_t id;
+	uint8_t non_sec_flag;
+	uint8_t reg_en;
+	
+	uint32_t start_addr;
+	uint32_t end_addr;
+} SEC_REG_SETTING_T;
+
 typedef struct
 {
     UINT8 byte;
@@ -180,7 +208,7 @@ typedef struct
 #define FIELD_SEC_ADDR_POSI                    (0)
 #define FIELD_SEC_ADDR_MASK                    (0xFFFFFF)
 #define FIELD_SEC_ADDR_EN                      (0x01UL << 24)
-
+#define FIELD_NON_SEC_SET                      (0x01UL << 25)
 
 #define CPU_DATA_WR_POSI                     (9)
 #define CPU_DATA_WR_MASK                     (0x01)
@@ -242,6 +270,7 @@ UINT32 bk_flash_read(char *user_buf, UINT32 count, UINT32 address);
 UINT32 bk_flash_write(char *user_buf, UINT32 count, UINT32 address);
 void bk_flash_erase_sector(UINT32 address);
 void bk_flash_set_protect(PROTECT_TYPE type);
+uint32_t flash_config_reg(SEC_REG_SETTING_T *reg_ptr);
 void bk_flash_disable_cpu_data_wr(void);
 UINT32 bk_flash_ctrl(UINT32 cmd, void *parm);
 #endif //_FLASH_H_

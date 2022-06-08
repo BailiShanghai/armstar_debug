@@ -26,6 +26,34 @@ static const flash_config_t *flash_current_config = NULL;
 static FUNC_2PARAM_CB flash_wr_sr_bypass_method_cd = NULL;
 static UINT32 flash_id;
 
+uint32_t flash_config_reg(SEC_REG_SETTING_T *reg_ptr)
+{
+	uint32_t reg_id, val;
+	uint32_t start_reg, end_reg;
+	
+	if(0 == reg_ptr)
+		return -1;
+
+	reg_id = (uint32_t)reg_ptr->id;
+	if(reg_id >= SEC_REG_MAX)
+		return -1;
+
+	start_reg = REG_FLASH_SEC_START_ADDR0 + reg_id * 4;
+	end_reg = REG_FLASH_SEC_END_ADDR0 + reg_id * 4;
+
+	val = (reg_ptr->start_addr & FIELD_SEC_ADDR_MASK) | 
+			((reg_ptr->non_sec_flag & 0x01) << 25) |
+			((reg_ptr->reg_en & 0x01) << 24);
+	REG_WRITE(start_reg, val);
+
+	val = (reg_ptr->end_addr & FIELD_SEC_ADDR_MASK);
+	REG_WRITE(end_reg, val);
+
+	bk_printf("reg[0x%x]:0x%x, reg[0x%x]:0x%x\r\n", (start_reg), REG_READ(start_reg), (end_reg), REG_READ(end_reg));
+	
+	return 0;
+}
+
 static void flash_get_current_flash_config(void)
 {
     int i;
