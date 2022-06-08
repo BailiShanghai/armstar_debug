@@ -17,6 +17,7 @@
 #include "ce_trng.h"
 #include "ce_cipher.h"
 #include "ce_otp.h"
+#include "bk_uart.h"
 
 ce_hw_cfg_t ce_hw_cfg = {0};
 
@@ -31,11 +32,12 @@ int32_t ce_drv_init(void)
     /* init CE config structure for merak_lite */
     pal_memset(&ce_hw_cfg, 0, sizeof(ce_hw_cfg));
     ce_hw_cfg.value = IO_READ32(TOP_STAT_CFG1);
-PAL_LOG_DEBUG("%s (HostID: %d) - ce_hw_cfg.value = 0x%X\r\n", __FUNCTION__, CE_CFG_HOST_ID, ce_hw_cfg.value);
-PAL_LOG_DEBUG("  rn_pool_host_num = 0x%X\r\n", ce_hw_cfg.cfg.rn_pool_host_num);
-PAL_LOG_DEBUG("  aca_host_num = 0x%X\r\n", ce_hw_cfg.cfg.aca_host_num);
-PAL_LOG_DEBUG("  sca_host_num = 0x%X\r\n", ce_hw_cfg.cfg.sca_host_num);
-PAL_LOG_DEBUG("  hash_host_num = 0x%X\r\n", ce_hw_cfg.cfg.hash_host_num);	
+	
+	bk_printf("%s (HostID: %d) - ce_hw_cfg.value = 0x%X\r\n", __FUNCTION__, CE_CFG_HOST_ID, ce_hw_cfg.value);
+	bk_printf("  rn_pool_host_num = 0x%X\r\n", ce_hw_cfg.cfg.rn_pool_host_num);
+	bk_printf("  aca_host_num = 0x%X\r\n", ce_hw_cfg.cfg.aca_host_num);
+	bk_printf("  sca_host_num = 0x%X\r\n", ce_hw_cfg.cfg.sca_host_num);
+	bk_printf("  hash_host_num = 0x%X\r\n", ce_hw_cfg.cfg.hash_host_num);	
 
     /* Check configured HOST ID */
     if (CE_CFG_HOST_ID + 1 > ce_hw_cfg.cfg.rn_pool_host_num) {

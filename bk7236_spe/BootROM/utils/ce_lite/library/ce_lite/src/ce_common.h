@@ -20,11 +20,11 @@
 /*
  * Top memory map
  */
-#define TOP_CTL_OFS (0x0000U)
-#define TOP_STAT_OFS (0x0100U)
-#define TRNG_CTL_OFS (0x0200U)
-#define DBG_CTL_OFS (0x0300U)
-#define OTP_CTL_OFS (0x0400U)
+#define TOP_CTL_OFS   (0x0000U)
+#define TOP_STAT_OFS  (0x0100U)
+#define TRNG_CTL_OFS  (0x0200U)
+#define DBG_CTL_OFS   (0x0300U)
+#define OTP_CTL_OFS   (0x0400U)
 #define OTP_SPACE_OFS (0x1000U)
 
 #define HOST_IO_SIZE (0x400U)
@@ -33,9 +33,9 @@
 #define HASH_OFS (0x3280U + HOST_IO_SIZE * CE_CFG_HOST_ID)
 
 #if CE_CFG_HOST_ID == 0
-#define RNP_OFS (0x0280U)
+#define RNP_OFS          (0x0280U)
 #elif CE_CFG_HOST_ID == 1
-#define RNP_OFS (0x3800U)
+#define RNP_OFS          (0x3800U)
 #else
 #error "SHANHAI Dubhe only support host 0 and host 1"
 #endif
