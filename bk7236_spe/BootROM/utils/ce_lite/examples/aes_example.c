@@ -189,6 +189,17 @@
 
 #if defined(CE_LITE_CIPHER_MODE_ECB)
 
+void dump_array_u8(uint8_t *ptr, uint32_t len)
+{
+	int i;
+
+	for(i = 0; i < len; i ++){
+		bk_printf(" 0x%02x ", ptr[i]);
+	}
+	
+	bk_printf("\r\n");
+}
+
 int mbedtls_aes_cipher_ecb_enc(void)
 {
     int ret = 0;
@@ -201,7 +212,7 @@ int mbedtls_aes_cipher_ecb_enc(void)
     ret = mbedtls_aes_setkey_enc(&ctx, aes_test_ecb_key,
                                  sizeof(aes_test_ecb_key) << 3);
     if (ret != 0) {
-        PAL_LOG_ERR("[error -0x%x]: set user key failed.\n", ret);
+        bk_printf("[error -0x%x]: set user key failed.\n", ret);
         goto finish;
     }
 
@@ -210,13 +221,17 @@ int mbedtls_aes_cipher_ecb_enc(void)
                                 aes_test_ecb_enc,
                                 result_buf);
     if (ret != 0) {
-        PAL_LOG_ERR("[error -0x%x]: aes encrypt ecb failed.\n", ret);
+        bk_printf("[error -0x%x]: aes encrypt ecb failed.\n", ret);
         goto finish;
     }
 
     ret = pal_memcmp(result_buf, aes_test_ecb_dec, sizeof(result_buf));
     if (ret != 0) {
-        PAL_LOG_ERR("[selftest failed] on ecb enc\n");
+        bk_printf("[selftest failed] result_buf != aes_test_ecb_dec\n");
+        bk_printf("result_buf:\n");
+		dump_array_u8((uint8_t *)result_buf, sizeof(result_buf));
+        bk_printf("aes_test_ecb_dec:\n");
+		dump_array_u8((uint8_t *)aes_test_ecb_dec, sizeof(aes_test_ecb_dec));
     }
 
 finish:

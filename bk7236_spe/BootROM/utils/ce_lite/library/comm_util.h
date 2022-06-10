@@ -14,10 +14,8 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "utils.h"
 
-/* round "x" up/down to next multiple of "align" (which must be a power of 2) */
-#define ROUND_UP(x, a) (((x) + ((a)-1)) & ~((a)-1))
-#define ROUND_DOWN(x, a) ((x) & ~((a)-1))
 
 /**
  *  BS_XOR - Apply XOR operation on two byte streams and save the result
@@ -37,8 +35,6 @@
             *ptr_r++ = (*ptr_a++) ^ (*ptr_b++);     \
         }                                           \
     } while(0)
-
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 /**
  *  COUNTER_INCREASE - Update IV value scroll up.

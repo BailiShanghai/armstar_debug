@@ -53,20 +53,22 @@ extern int32_t mem_leak_check_init(void);
     bk_printf("==================================================================="
            "=======\n");
 
-	bk_printf("hal_platform_init bypass\r\n");
 	#if CONFIG_ENABLE_PLATFORM_INIT
     ret = hal_platform_init();
     CHECK_RET("platform_init failed!\n");
+	#else
+	bk_printf("hal_platform_init bypass\r\n");
 	#endif
 
 	bk_printf("DEVICE_LEVEL1\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL1);
     CHECK_RET("device level1 init fail 0x%08x\n", ret);
 
-	bk_printf("hal_platform_post_init bypass\r\n");
 	#if CONFIG_ENABLE_PLATFORM_INIT
     ret = hal_platform_post_init();
     CHECK_RET("hal_platform_post_init failed!\n");
+	#else
+	bk_printf("hal_platform_post_init bypass\r\n");
 	#endif
 
 	bk_printf("DEVICE_LEVEL2\r\n");

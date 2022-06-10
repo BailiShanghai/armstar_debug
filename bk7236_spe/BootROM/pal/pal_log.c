@@ -14,7 +14,8 @@
 #include <stdarg.h>
 #include "pal_common.h"
 #include "pal_log.h"
-static int32_t _g_pal_log_level = PAL_LOG_LEVEL_ERR;
+
+static int32_t _g_pal_log_level = PAL_LOG_LEVEL_DATA;
 
 void pal_log_set_level(int32_t level)
 {

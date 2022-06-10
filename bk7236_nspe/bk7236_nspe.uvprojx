@@ -783,6 +783,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\itcm.c</FilePath>
             </File>
+            <File>
+              <FileName>v_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\v_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

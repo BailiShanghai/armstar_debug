@@ -16,9 +16,10 @@ extern "C" {
 #endif
 
 #define PAL_LOG_PREFIX_NAME "[IPSS-M]"
-#define PAL_MAX_LOG_LEVEL 3
+#define PAL_MAX_LOG_LEVEL    0
 
 #include "pal_common.h"
+#include "bk_uart.h"
 
 /*!
    @file
@@ -32,7 +33,8 @@ PAL_API int32_t pal_platform_printf(const char *__fmt__, ...);
 PAL_API int _pal_platform_printf(const char *__fmt__, ...);
 
 #define __PAL_LOG_PLAT(__fmt__, ...)                                           \
-    pal_platform_printf(__fmt__, ##__VA_ARGS__);
+    bk_printf(__fmt__, ##__VA_ARGS__);
+
 /* PAL log levels */
 #define PAL_LOG_LEVEL_NULL (-1)
 #define PAL_LOG_LEVEL_ERR (0)
@@ -59,7 +61,7 @@ PAL_API int _pal_platform_printf(const char *__fmt__, ...);
  * mechanism */
 #define __PAL_LOG(level, __fmt__, ...)                                         \
     do {                                                                       \
-        if (pal_log_get_level() >= (PAL_LOG_LEVEL_##level)) {                  \
+        if (1) {                  \
             __PAL_LOG_PLAT(PAL_LOG_PREFIX_NAME __fmt__, ##__VA_ARGS__);        \
         }                                                                      \
     } while (0)
@@ -71,11 +73,7 @@ PAL_API int _pal_platform_printf(const char *__fmt__, ...);
         }                                                                      \
     } while (0)
 
-#if (_PAL_MAX_LOG_LEVEL >= PAL_LOG_LEVEL_ERR)
 #define PAL_LOG_ERR(__fmt__, ...) __PAL_LOG(ERR, __fmt__, ##__VA_ARGS__)
-#else
-#define PAL_LOG_ERR(__fmt__, ...)
-#endif
 
 #if (_PAL_MAX_LOG_LEVEL >= PAL_LOG_LEVEL_WARN)
 #define PAL_LOG_WARN(__fmt__, ...) __PAL_LOG(WARN, __fmt__, ##__VA_ARGS__)
@@ -83,11 +81,7 @@ PAL_API int _pal_platform_printf(const char *__fmt__, ...);
 #define PAL_LOG_WARN(__fmt__, ...)
 #endif
 
-#if (_PAL_MAX_LOG_LEVEL >= PAL_LOG_LEVEL_INFO)
 #define PAL_LOG_INFO(__fmt__, ...) __PAL_LOG(INFO, __fmt__, ##__VA_ARGS__)
-#else
-#define PAL_LOG_INFO(__fmt__, ...)
-#endif
 
 #if (_PAL_MAX_LOG_LEVEL >= PAL_LOG_LEVEL_DEBUG)
 #define PAL_LOG_DEBUG(__fmt__, ...) __PAL_LOG(DEBUG, __fmt__, ##__VA_ARGS__)

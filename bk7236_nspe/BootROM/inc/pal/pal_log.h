@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 #define PAL_LOG_PREFIX_NAME "[IPSS-M]"
-#define PAL_MAX_LOG_LEVEL 3
+#define PAL_MAX_LOG_LEVEL    0
 
 #include "pal_common.h"
 
@@ -59,14 +59,14 @@ PAL_API int _pal_platform_printf(const char *__fmt__, ...);
  * mechanism */
 #define __PAL_LOG(level, __fmt__, ...)                                         \
     do {                                                                       \
-        if (pal_log_get_level() >= (PAL_LOG_LEVEL_##level)) {                  \
+        if (1) {                  \
             __PAL_LOG_PLAT(PAL_LOG_PREFIX_NAME __fmt__, ##__VA_ARGS__);        \
         }                                                                      \
     } while (0)
 
 #define __PAL_LOG_RAW(level, __fmt__, ...)                                     \
     do {                                                                       \
-        if (pal_log_get_level() >= (PAL_LOG_LEVEL_##level)) {                  \
+        if (1) {                  \
             __PAL_LOG_PLAT(__fmt__, ##__VA_ARGS__);                            \
         }                                                                      \
     } while (0)

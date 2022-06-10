@@ -99,8 +99,8 @@ uint32_t flash_data_access_verification_main(void)
 {
 	spe_config_sec_reg();
 	
-	spe_access_sec_reg();
-	spe_access_non_sec_reg();
+	//spe_access_sec_reg();
+	//spe_access_non_sec_reg();
 	
 	return 0;
 }
