@@ -200,7 +200,7 @@ void dump_array_u8(uint8_t *ptr, uint32_t len)
 	bk_printf("\r\n");
 }
 
-uint8_t aes_result_buf[16] = {0};
+__attribute__((section("aes_sec"))) uint8_t aes_result_buf[16] = {0};
 
 int mbedtls_aes_cipher_ecb_enc(void)
 {

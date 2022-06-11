@@ -62,14 +62,19 @@ LR_ROM __RO_BASE   {                       ; load region size_region
 	*(.init_level_*)
   }
 
-  ITCM_H 0 2048
+  AES_SEC_TEST 0x28046000 2048
   {
-	*(ITCM_HEAD*)
+	*(aes_sec*)
   }
 
-  ITCM_T 0x3800 2048
+  NON_CACHE_TEST 0x28040000 0x6000
   {
-	*(ITCM_TAIL*)
+	*(non_cache_wzl)
+  }
+
+  CACHE_TEST 0x28060000 0x6000
+  {
+	*(cache_wzl)
   }
   
   RW_RAM __RW_BASE __RW_SIZE  {                     ; RW data

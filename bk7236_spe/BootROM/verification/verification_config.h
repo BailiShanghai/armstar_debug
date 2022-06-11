@@ -13,7 +13,7 @@
 #define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0  // ok
 #define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
 #define CONFIG_ENABLE_VERIFY_TRNG                 0  // ok, internal/external entropy pool verification is ok
-#define CONFIG_ENABLE_VERIFY_ALG_AES              0
+#define CONFIG_ENABLE_VERIFY_ALG_AES              1
 #define CONFIG_ENABLE_VERIFY_DTCM                 0
 #define CONFIG_ENABLE_VERIFY_ITCM                 0
 #define CONFIG_ENABLE_VERIFY_PSRAM                0
