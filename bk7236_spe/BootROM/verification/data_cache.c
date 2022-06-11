@@ -1,8 +1,10 @@
 #include "base.h"
 #include "data_cache.h"
 #include "bk_uart.h"
+#include "mpu_armstar_m33.h"
+#include "verification_config.h"
 
-
+#if CONFIG_ENABLE_VERIFY_DCACHE
 __attribute__((section(".ARM.__AT_0x28040000")))  const unsigned char _non_dcache_test_data[16368UL + 1] = {
   0x00, 0xFA, 0x03, 0xF1, 0x05, 0x98, 0x9A, 0x40, 0x10, 0x40, 0x88, 0x42, 0x10, 0xD1, 0xFF, 0xE7, 0x04, 0x98, 0x49, 0xF2, 0x60, 0x01, 0xC2, 0xF6, 0x01, 0x01, 0x09, 0x68, 0x4B, 0x7B, 0x00, 0xFA, 0x03, 0xF1, 0x05, 0x98, 0x01, 0x22, 0x9A, 0x40,
   0x10, 0x40, 0x88, 0x42, 0x32, 0xD0, 0xFF, 0xE7, 0x05, 0x99, 0x49, 0xF2, 0x60, 0x00, 0xC2, 0xF6, 0x01, 0x00, 0x01, 0x90, 0x02, 0x68, 0x93, 0x7B, 0xD2, 0x7B, 0x9A, 0x40, 0x91, 0x43, 0x06, 0x9A, 0x9A, 0x40, 0x11, 0x43, 0x05, 0x91, 0x01, 0x68,
@@ -858,11 +860,51 @@ uint32_t sum_non_dcache_array(void)
 }
 
 
+const ARM_MPU_Region_t mpu_table[1][5] = {
+  {
+    //                     BASE          SH              RO   NP   XN                         LIMIT         ATTR 
+    { .RBAR = ARM_MPU_RBAR(0x00000000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2803FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x28040000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2805FFFFUL, 1UL) },
+    { .RBAR = ARM_MPU_RBAR(0x28060000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2807FFFFUL, 2UL) }, /* sram 4*/
+    { .RBAR = ARM_MPU_RBAR(0x28080000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x6bFFFFFFUL, 3UL) },
+    { .RBAR = ARM_MPU_RBAR(0x70000000UL, ARM_MPU_SH_NON, 0UL, 1UL, 1UL), .RLAR = ARM_MPU_RLAR(0x80000000UL, 4UL) },
+  }
+};
+
+uint32_t dc_mpu_config(void)
+{
+	ARM_MPU_SetMemAttr(0UL, ARM_MPU_ATTR(       /* Normal memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr(1UL, ARM_MPU_ATTR(       /* Normal memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr(2UL, ARM_MPU_ATTR(       /* Normal memory */
+		ARM_MPU_ATTR_MEMORY_(1UL, 1UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(1UL, 1UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr(3UL, ARM_MPU_ATTR(       /* Device memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr(4UL, ARM_MPU_ATTR(       /* Device memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	
+	ARM_MPU_Load(0, mpu_table[0], 5);
+	
+	return 0;
+}
+
 uint32_t data_cache_verification_main(void)
 {
 	uint32_t reg;
 	
 	/* config dcache via mpu*/
+	dc_mpu_config();
 
 	/* read data, and sum these data*/
 	bk_printf("non_cache_sum_value:0x%x\r\n", sum_non_dcache_array());
@@ -887,4 +929,5 @@ uint32_t data_cache_verification_main(void)
 	
 	return 0;
 }
+#endif
 // eof

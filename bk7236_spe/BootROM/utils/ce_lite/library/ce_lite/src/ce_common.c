@@ -82,6 +82,7 @@ int32_t ce_drv_init(void)
 #endif
 
 #if defined(CE_LITE_CIPHER)
+	bk_printf("sca_engine_init\r\n");
     ret = sca_engine_init();
     PAL_ASSERT(CE_SUCCESS == ret);
 #endif

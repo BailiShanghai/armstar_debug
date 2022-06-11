@@ -21,7 +21,7 @@
 ; </h>
  *----------------------------------------------------------------------------*/
 #define __RAM_BASE     0x28000000
-#define __RAM_SIZE     0x00020000
+#define __RAM_SIZE     0x00080000
 
 /*--------------------- Stack / Heap Configuration ---------------------------
 ; <h> Stack / Heap Configuration

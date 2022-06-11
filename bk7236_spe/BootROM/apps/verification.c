@@ -88,6 +88,10 @@
 #include "vrf_flash.h"
 #endif
 
+#if CONFIG_ENABLE_VERIFY_DCACHE
+#include "data_cache.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -172,6 +176,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_FLASH
 	flash_data_access_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_DCACHE
+	data_cache_verification_main();
 	#endif
 }
 

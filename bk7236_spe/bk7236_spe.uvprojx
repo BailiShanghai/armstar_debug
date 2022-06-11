@@ -863,6 +863,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\qspi.c</FilePath>
             </File>
+            <File>
+              <FileName>data_cache.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\data_cache.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

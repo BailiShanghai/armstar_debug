@@ -65,11 +65,13 @@ static void sca_engine_reset(void)
 static int32_t sca_wait_done(void)
 {
     int32_t ret = CE_SUCCESS;
-    int32_t stat = 0;
+    int32_t stat = 0, reg;
 
     while (1) {
         /* check intr stat */
-        stat = (IO_READ32(SCA_INTR_STAT_REG_OFS)) & (~0x11);
+		reg = IO_READ32(SCA_INTR_STAT_REG_OFS);
+		bk_printf("0stat:0x%x\r\n", reg);
+        stat = reg & (~0x11);
         if (stat) {
             PAL_LOG_ERR("sca INIR STATE returns failure INTR status: 0x%x\n", stat);
             IO_WRITE32(SCA_INTR_STAT_REG_OFS, stat);
@@ -78,6 +80,7 @@ static int32_t sca_wait_done(void)
         }
         /* check engine stat */
         stat = IO_READ32(SCA_STAT_REG_OFS);
+		bk_printf("1stat:0x%x\r\n", stat);
         if (((stat & SCA_ENG_STATE) <= SCA_ENG_WAIT_COMM) &&
             ((stat >> SCA_QUE_AVAIL_SLOTS_OFS) == SCA_QUEUE_DEPTH)) {
             ret = CE_SUCCESS;
@@ -163,18 +166,25 @@ static int32_t sca_cmd_exec_init(ce_sca_crypt_t *sctx)
 
     if (CIPHER_KEY_TYPE_USER == sctx->key.type) {
         t = (uint32_t)((uintptr_t)sctx->key.user.key);
+		bk_printf("[00 sca_init]t:0x%x\r\n", t);
         IO_WRITE32(SCA_QUE_REG_OFS, t);
     } else {
         t = (uint32_t)((uintptr_t)sctx->key.sec.ek3);
+		bk_printf("[0 sca_init]t:0x%x\r\n", t);
         IO_WRITE32(SCA_QUE_REG_OFS, t);
+		
         t = (uint32_t)((uintptr_t)sctx->key.sec.ek2);
+		bk_printf("[1 sca_init]t:0x%x\r\n", t);
         IO_WRITE32(SCA_QUE_REG_OFS, t);
+		
         t = (uint32_t)((uintptr_t)sctx->key.sec.ek1);
+		bk_printf("[2 sca_init]t:0x%x\r\n", t);
         IO_WRITE32(SCA_QUE_REG_OFS, t);
     }
 
     if (load_iv) {
         t = (uint32_t)((uintptr_t)sctx->iv);
+		bk_printf("[iv sca_init]t:0x%x\r\n", t);
         IO_WRITE32(SCA_QUE_REG_OFS, t);
     }
 
@@ -189,15 +199,20 @@ static int32_t sca_cmd_exec_proc(ce_sca_crypt_t *sctx, size_t len,
     uint32_t t = 0;
 
     t = (SCA_PROC | (CE_ENCRYPT == sctx->op ? SCA_ENCRYTION : SCA_DECRYTION));
+	bk_printf("[0 sca_proc]t:0x%x\r\n", t);
     IO_WRITE32(SCA_QUE_REG_OFS, t);
 
     t = (uint32_t)((uintptr_t)in);
+	dump_array_u8(in, len);
+	bk_printf("[1 sca_proc]t:0x%x\r\n", t);
     IO_WRITE32(SCA_QUE_REG_OFS, t);
 
     t = (uint32_t)(len);
+	bk_printf("[2 sca_proc]t:0x%x\r\n", t);
     IO_WRITE32(SCA_QUE_REG_OFS, t);
 
     t = (uint32_t)((uintptr_t)out);
+	bk_printf("[3 sca_proc]t:0x%x\r\n", t);
     IO_WRITE32(SCA_QUE_REG_OFS, t);
 
     ret = sca_wait_done();
@@ -678,6 +693,7 @@ int32_t ce_cipher_crypt(ce_cipher_ctx_t *ctx, bool is_last, size_t ilen,
 
 #if defined(CE_LITE_CIPHER_MODE_CTR)
     if (ctr) {
+		bk_printf("proc_stream\r\n");
         ret = proc_stream(sctx, ilen, in, out);
         if (CE_SUCCESS == ret && olen) {
             *olen = ilen;
@@ -687,11 +703,13 @@ int32_t ce_cipher_crypt(ce_cipher_ctx_t *ctx, bool is_last, size_t ilen,
 
 #if defined(CE_LITE_CIPHER_PADDING_PKCS7)
     if (padding) {
+		bk_printf("proc_pkcs7\r\n");
         ret = proc_pkcs7(sctx, is_last, ilen, in, olen, out);
     }
 #endif
 
     if (!ctr && !padding) {
+		bk_printf("proc_nopad\r\n");
         ret = proc_nopad(sctx, ilen, in, out);
         if (CE_SUCCESS == ret && olen) {
             *olen = ilen;
@@ -710,11 +728,13 @@ int32_t sca_engine_init(void)
     ctl = IO_READ32(TOP_CTL_CLOCK_CTL);
     ctl |= SCA_CLK_EN;
     IO_WRITE32(TOP_CTL_CLOCK_CTL, ctl);
+	bk_printf("sca_TOP_CTL_CLOCK_CTL:0x%x\r\n", IO_READ32(TOP_CTL_CLOCK_CTL));
 
     /* sca run */
     ctl = IO_READ32(SCA_CTL_REG_OFS);
     ctl |= SCA_CTL_RUN;
     IO_WRITE32(SCA_CTL_REG_OFS, ctl);
+	bk_printf("SCA_CTL_REG_OFS:0x%x\r\n", IO_READ32(SCA_CTL_REG_OFS));
 
     return CE_SUCCESS;
 }

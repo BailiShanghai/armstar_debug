@@ -6,7 +6,6 @@
 #include "utils.h"
 #include "string.h"
 #include "bk_common_types.h"
-#include "comm_util.h"
 
 #define __FIFO_INLINE  static __inline
 

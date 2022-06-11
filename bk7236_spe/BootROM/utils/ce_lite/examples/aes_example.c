@@ -200,15 +200,18 @@ void dump_array_u8(uint8_t *ptr, uint32_t len)
 	bk_printf("\r\n");
 }
 
+uint8_t aes_result_buf[16] = {0};
+
 int mbedtls_aes_cipher_ecb_enc(void)
 {
     int ret = 0;
     mbedtls_aes_context ctx;
-    uint8_t result_buf[16] = {0};
 
     pal_memset(&ctx, 0, sizeof(mbedtls_aes_context));
+	bk_printf("mbedtls_aes_init\n");
     mbedtls_aes_init(&ctx);
 
+	bk_printf("mbedtls_aes_setkey_enc\n");
     ret = mbedtls_aes_setkey_enc(&ctx, aes_test_ecb_key,
                                  sizeof(aes_test_ecb_key) << 3);
     if (ret != 0) {
@@ -216,20 +219,21 @@ int mbedtls_aes_cipher_ecb_enc(void)
         goto finish;
     }
 
+	bk_printf("mbedtls_aes_crypt_ecb\n");
     ret = mbedtls_aes_crypt_ecb(&ctx,
                                 MBEDTLS_AES_ENCRYPT,
                                 aes_test_ecb_enc,
-                                result_buf);
+                                aes_result_buf);
     if (ret != 0) {
         bk_printf("[error -0x%x]: aes encrypt ecb failed.\n", ret);
         goto finish;
     }
 
-    ret = pal_memcmp(result_buf, aes_test_ecb_dec, sizeof(result_buf));
+    ret = pal_memcmp(aes_result_buf, aes_test_ecb_dec, sizeof(aes_result_buf));
     if (ret != 0) {
         bk_printf("[selftest failed] result_buf != aes_test_ecb_dec\n");
         bk_printf("result_buf:\n");
-		dump_array_u8((uint8_t *)result_buf, sizeof(result_buf));
+		dump_array_u8((uint8_t *)aes_result_buf, sizeof(aes_result_buf));
         bk_printf("aes_test_ecb_dec:\n");
 		dump_array_u8((uint8_t *)aes_test_ecb_dec, sizeof(aes_test_ecb_dec));
     }
