@@ -33,6 +33,7 @@
 #else
   #error device not specified!
 #endif
+#include "bk_uart.h"
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler Function Prototype
@@ -57,17 +58,17 @@ void __NO_RETURN Reset_Handler  (void);
   Exception / Interrupt Handler
  *----------------------------------------------------------------------------*/
 /* Exceptions */
-void NMI_Handler            (void) __attribute__ ((weak, alias("Default_Handler_0")));
-void HardFault_Handler      (void) __attribute__ ((weak, alias("Default_Handler_1")));
-void MemManage_Handler      (void) __attribute__ ((weak, alias("Default_Handler_2")));
-void BusFault_Handler       (void) __attribute__ ((weak, alias("Default_Handler_3")));
-void UsageFault_Handler     (void) __attribute__ ((weak, alias("Default_Handler_4")));
-void SecureFault_Handler    (void) __attribute__ ((weak, alias("Default_Handler_5")));
+extern void NMI_Handler            (void);
+extern void HardFault_Handler      (void);
+extern void MemManage_Handler      (void);
+extern void BusFault_Handler       (void);
+extern void UsageFault_Handler     (void);
+extern void SecureFault_Handler    (void);
+
 void SVC_Handler            (void) __attribute__ ((weak, alias("Default_Handler_6")));
 void DebugMon_Handler       (void) __attribute__ ((weak, alias("Default_Handler_7")));
 void PendSV_Handler         (void) __attribute__ ((weak, alias("Default_Handler_8")));
 void SysTick_Handler        (void) __attribute__ ((weak, alias("Default_Handler_9")));
-
 void Interrupt0_Handler     (void) __attribute__ ((weak, alias("Default_Handler_10")));
 void Interrupt1_Handler     (void) __attribute__ ((weak, alias("Default_Handler_11")));
 void Interrupt2_Handler     (void) __attribute__ ((weak, alias("Default_Handler_12")));
@@ -136,6 +137,41 @@ void Reset_Handler(void)
   __PROGRAM_START();                        /* Enter PreMain (C library entry point) */
 }
 
+void NMI_Handler(void)
+{
+	bk_printf(
+"NMI_Handler\r\n");
+}
+
+void HardFault_Handler(void)
+{
+	bk_printf(
+"HardFault_Handler\r\n");
+}
+
+void UsageFault_Handler(void)
+{
+	bk_printf(
+"UsageFault_Handler\r\n");
+}
+
+void BusFault_Handler(void)
+{
+	bk_printf(
+"BusFault_Handler\r\n");
+}
+
+void SecureFault_Handler(void)
+{
+	bk_printf(
+"SecureFault_Handler\r\n");
+}
+
+void MemManage_Handler(void)
+{
+	bk_printf(
+"MemManage_Handler\r\n");
+}
 
 /*----------------------------------------------------------------------------
   Default Handler for Exceptions / Interrupts

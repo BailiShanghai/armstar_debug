@@ -102,7 +102,10 @@ void shared_memory_verification_main(void)
 	shared_mem_config_mpc();
 
 	#if (0 == CONFIG_ENABLE_VERIFY_SHARED_MEMORY_AT_NS_WORLD)
+	bk_printf("secure_world_access_s_shared_memory\r\n");
 	secure_world_access_s_shared_memory();
+	
+	bk_printf("secure_world_access_ns_shared_memory\r\n");
 	secure_world_access_ns_shared_memory();
 	#endif
 }

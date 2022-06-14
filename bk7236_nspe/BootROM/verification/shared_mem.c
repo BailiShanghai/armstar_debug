@@ -47,12 +47,12 @@ uint32_t mem_access_test(uint32_t start, uint32_t end)
 	return 0;
 }
 
-void secure_world_access_s_shared_memory(void)
+void nsecure_world_access_s_shared_memory(void)
 {
 	mem_access_test(SECURE_SHAREDM0_START_ADDR, SECURE_SHAREDM0_START_ADDR + VERIFY_DATA_LEN);
 }
 
-void secure_world_access_ns_shared_memory(void)
+void nsecure_world_access_ns_shared_memory(void)
 {
 	mem_access_test(NON_SECURE_SHAREDM0_START_ADDR, NON_SECURE_SHAREDM0_START_ADDR + VERIFY_DATA_LEN);
 	mem_access_test(NON_SECURE_SHAREDM1_START_ADDR, NON_SECURE_SHAREDM1_START_ADDR + VERIFY_DATA_LEN);
@@ -63,7 +63,11 @@ void secure_world_access_ns_shared_memory(void)
 
 void shared_memory_proof_main(void)
 {
-	secure_world_access_ns_shared_memory();
-	secure_world_access_s_shared_memory();
+	bk_printf("ns_world_access_ns_shared_memory\r\n");
+	nsecure_world_access_ns_shared_memory();
+	
+	bk_printf("ns_world_access_s_shared_memory\r\n");
+	nsecure_world_access_s_shared_memory();
 }
 // eof
+
