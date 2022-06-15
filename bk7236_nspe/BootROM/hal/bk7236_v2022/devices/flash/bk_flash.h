@@ -73,7 +73,7 @@ typedef struct
 #define MODE_DUAL             1
 #define MODE_QUAD             2
 
-#define FLASH_BASE                           (0x44030000)
+#define FLASH_BASE                           (0x54030000)
 
 #define REG_FLASH_DEVICE_ID                  (FLASH_BASE + 0 * 4)
 #define REG_FLASH_VERSION_ID                 (FLASH_BASE + 1 * 4)
