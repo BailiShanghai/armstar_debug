@@ -189,7 +189,10 @@ void verification_main(void)
 	verification_secure();
 	#endif
 	
-	/* Boot the non-secure code. */
+	/* reg0x06 bit2=1*/
+	*((volatile uint32_t *)(0x41040000 + 8 * 4)) = ((*((volatile uint32_t *)(0x41040000 + 8 * 4))) | 0x04);
+	
+	/* Boot the non-secure code. */	
 	bk_printf("boot_non_secure\r\n");
 	boot_non_secure( NON_SECURE_START_ADDRESS );
 
