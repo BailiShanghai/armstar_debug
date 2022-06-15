@@ -80,6 +80,7 @@ void proof_non_secure(void)
 void proof_main(void)
 {
 	#if CONFIG_ENABLE_PROOF
+	bk_printf("proof_non_secure\r\n");
 	proof_non_secure();
 	#endif
 
