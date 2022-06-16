@@ -8,7 +8,7 @@
 uint32_t mem_access_test(uint32_t start, uint32_t end)
 {
 	uint32_t *head_ptr = (uint32_t *)start;
-	uint32_t *tail_ptr = (uint32_t *)(end - 32);
+	uint32_t *tail_ptr = (uint32_t *)(end - 8);
 	uint8_t *h, *t;
 	uint32_t pos, i = 0;
 
@@ -17,10 +17,12 @@ uint32_t mem_access_test(uint32_t start, uint32_t end)
 	*head_ptr = 0x5a5a5a5a;
 	if(0x5a5a5a5a != *head_ptr){
 		bk_printf("head_failed:0x5a5a5a5a != 0x%x\r\n", *head_ptr);
+		return -1;
 	}
 	*tail_ptr = 0x5a5a5a5a;
 	if(0x5a5a5a5a != *tail_ptr){
 		bk_printf("tail_failed:0x5a5a5a5a != 0x%x\r\n", *tail_ptr);
+		return -1;
 	}
 	
 	h = (uint8_t *)start;

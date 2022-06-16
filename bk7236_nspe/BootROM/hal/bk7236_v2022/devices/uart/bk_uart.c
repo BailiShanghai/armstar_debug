@@ -5,7 +5,6 @@
 #include "bk_gpio.h"
 
 int uart_print_port = UART1_PORT;
-uint32_t g_uart_init_flag = 0;
 
 static struct uart_callback_des uart_receive_callback[2] = {{NULL}, {NULL}};
 static struct uart_callback_des uart_txfifo_needwr_callback[2] = {{NULL}, {NULL}};
@@ -42,14 +41,8 @@ UINT8 uart_is_tx_fifo_full(UINT8 uport)
 }
 
 void bk_send_byte(UINT8 uport, UINT8 data)
-{
-	if(0 == g_uart_init_flag)
-		return;
-	
-    if(UART1_PORT == uport)
-        while(!UART1_TX_WRITE_READY);
-    else
-        while(!UART2_TX_WRITE_READY);
+{	
+    while(!UART1_TX_WRITE_READY);
 
     UART_WRITE_BYTE(uport, data);
 }
@@ -548,9 +541,7 @@ void bk_uart1_init(void)
 	reg |= (1 << FIELD_SOFT_RESETN_POSI);
 	REG_WRITE(REG_UART_CLK_RST_CFG, reg);
 	
-	uart_hw_init(UART1_PORT);
-	
-	g_uart_init_flag = 1;		
+	uart_hw_init(UART1_PORT);	
 }
 
 void uart1_exit(void)
@@ -963,10 +954,7 @@ int uart_read_byte(int uport)
 }
 
 int uart_write_byte(int uport, char c)
-{
-	if(0 == g_uart_init_flag)
-		return 0;
-	
+{	
     if (UART1_PORT == uport)
         while(!UART1_TX_WRITE_READY);
     else

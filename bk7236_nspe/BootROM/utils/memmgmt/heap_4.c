@@ -70,13 +70,9 @@ task.h is included from an application file. */
 #define heapBITS_PER_BYTE		( ( size_t ) 8 )
 
 /* Allocate the memory for the heap. */
-#if( configAPPLICATION_ALLOCATED_HEAP == 1 )
-	/* The application writer has already defined the array used for the RTOS
-	heap - probably so it can be placed in a special segment or address. */
-	extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
-#else
-	static uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
-#endif /* configAPPLICATION_ALLOCATED_HEAP */
+/* The application writer has already defined the array used for the RTOS
+heap - probably so it can be placed in a special segment or address. */
+extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
 
 /* Define the linked list structure.  This is used to link free blocks in order
 of their memory address. */
