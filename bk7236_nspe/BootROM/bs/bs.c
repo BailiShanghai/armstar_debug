@@ -28,7 +28,8 @@ void proof_main(void);
 int main(void)
 {
     int32_t ret = 0;
-	
+
+	#if CONFIG_ENABLE_NSPE_PLATFORM_INIT
 	uart_init(0);
     ret = hal_platform_early_init();
     bk_printf("welcome to non-secure world\n");
@@ -40,6 +41,7 @@ int main(void)
     bk_printf("| %-70s |\n", __TIME__);
     bk_printf("==================================================================="
            "=======\n");
+	#endif
 
     proof_main();
 finish:
