@@ -194,6 +194,8 @@ void verification_main(void)
 	
 	/* reg0x06 bit2=1*/
 	*((volatile uint32_t *)(0x41040000 + 8 * 4)) = ((*((volatile uint32_t *)(0x41040000 + 8 * 4))) | 0x04);
+	*((volatile uint32_t *)(0x41040000 + 5 * 4)) = ((*((volatile uint32_t *)(0x41040000 + 5 * 4))) | 0x06);
+	
 	boot_non_secure( NON_SECURE_START_ADDRESS );
 
 	/* Non-secure software does not return, this code is not executed. */
