@@ -1,6 +1,8 @@
 #ifndef _BK_PSRAM_H_
 #define _BK_PSRAM_H_
 
+#include "reg_base.h"
+
 #define PSRAM_DEBUG
 #ifdef PSRAM_DEBUG
 #define PSRAM_PRT      os_null_printf
@@ -45,7 +47,7 @@ enum {
 	CMD_PSRAM_SET_SELECT_ADDR
 };
 
-#define PSRAM_BASE                           (0x44840040)
+#define PSRAM_BASE                           (SOC_PSRAM_REG_BASE)
 
 #define REG_PSRAM_DEVICE_ID                  (PSRAM_BASE + 0x0 * 4)
 

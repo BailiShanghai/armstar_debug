@@ -1,22 +1,21 @@
 #include "base.h"
 #include "platform.h"
-#include "partition_star.h"
 #include "bk_common_types.h"
 #include "bk_psram.h"
 #include "psram.h"
 #include "bk_uart.h"
 
 #define BUFFER_SIZE         (32)
-#define TEST_VALUE_START    0x41
+#define TEST_VALUE_START    0x71
 
 #define PSRAM_MPC_BLOCK_SIZE     (256*1024)
-#define PSRAM_START_ADDRESS_NS   (PSRAM_MEM_BASE_S)
+#define PSRAM_START_ADDRESS_NS   (PSRAM_MEM_BASE_NS)
 #define TEST_PSRAM_SIZE_NS       (PSRAM_MPC_BLOCK_SIZE)
-#define PSRAM_START_ADDRESS_S    (PSRAM_MEM_BASE_S + TEST_PSRAM_SIZE_NS)
+#define PSRAM_START_ADDRESS_S    (PSRAM_MEM_BASE_NS + TEST_PSRAM_SIZE_NS)
 #define TEST_PSRAM_SIZE_S        (PSRAM_MPC_BLOCK_SIZE)
 
-#define PSRAM_START_ADDRESS_NS_7 (PSRAM_MEM_BASE_NS)
-#define PSRAM_START_ADDRESS_S_7  (PSRAM_MEM_BASE_NS + TEST_PSRAM_SIZE_NS)
+#define PSRAM_START_ADDRESS_NS_6 (PSRAM_MEM_BASE_S)
+#define PSRAM_START_ADDRESS_S_6  (PSRAM_MEM_BASE_S + TEST_PSRAM_SIZE_NS)
 
 uint8_t psram_tx_buffer[BUFFER_SIZE] = {0};
 uint8_t psram_rx_buffer[BUFFER_SIZE] = {0};
@@ -50,19 +49,18 @@ void psram_read_write_demo(void)
 	fill_buffer(psram_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
 	memset(psram_rx_buffer, 0, BUFFER_SIZE);
 
-	bk_printf("psram s world\r\n");
-
-	bk_psram_mpc_cofig_II();
-
-	bk_psram_init();
+	//bk_printf("John# ns world\r\n");
+	*((volatile UINT32 *)(0x54010014)) = (0x11110100); 
 
 	/*demo to check psram of secure*/
 	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S);
 	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S);
 	if (compare_buffer(psram_tx_buffer, psram_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("6 psram read or write s error\r\n");
+		//bk_printf("77 psram read or write s error\r\n");
+		*((volatile UINT32 *)(0x54010014)) = (0x11110200); 
 	} else {
-		bk_printf("6 psram read or write s success\r\n");
+		//bk_printf("77 psram read or write s success\r\n");
+		*((volatile UINT32 *)(0x54010014)) = (0x11110300); 
 	}
 
 	memset(psram_rx_buffer, 0, BUFFER_SIZE);
@@ -71,29 +69,36 @@ void psram_read_write_demo(void)
 	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS);
 	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS);
 	if (compare_buffer(psram_tx_buffer, psram_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("6 psram read or write ns error\r\n");
+		//bk_printf("77 psram read or write ns error\r\n");
+		*((volatile UINT32 *)(0x54010014)) = (0x11110400); 
 	} else {
-		bk_printf("6 psram read or write ns success\r\n");
+		//bk_printf("77 psram read or write ns success\r\n");
+		*((volatile UINT32 *)(0x54010014)) = (0x11110500); 
 	}
 
 	memset(psram_rx_buffer, 0, BUFFER_SIZE);
 
-	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S_7);
-	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S_7);
+	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S_6);
+	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_S_6);
 	if (compare_buffer(psram_tx_buffer, psram_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("7 psram read or write s error\r\n");
+		//bk_printf("66 psram read or write s error\r\n");
+		*((volatile UINT32 *)(0x54010014)) = (0x11110600); 
 	} else {
-		bk_printf("7 psram read or write s success\r\n");
+		//bk_printf("66 psram read or write s success\r\n");
+		*((volatile UINT32 *)(0x54010014)) = (0x11110700); 
 	}
 	
 	memset(psram_rx_buffer, 0, BUFFER_SIZE);
 
-	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS_7);
-	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS_7);
+	bk_psram_write((char *)psram_tx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS_6);
+	bk_psram_read((char *)psram_rx_buffer, BUFFER_SIZE, PSRAM_START_ADDRESS_NS_6);
 	if (compare_buffer(psram_tx_buffer, psram_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("7 psram read or write ns error\r\n");
+		//bk_printf("66 psram read or write ns error\r\n");\
+		*((volatile UINT32 *)(0x54010014)) = (0x11110800); 
 	} else {
-		bk_printf("7 psram read or write ns success\r\n");
+		//bk_printf("66 psram read or write ns success\r\n");
+		*((volatile UINT32 *)(0x54010014)) = (0x11110900); 
 	}
 }
+
 

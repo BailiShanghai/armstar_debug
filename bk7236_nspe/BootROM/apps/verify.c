@@ -33,6 +33,7 @@
 #define CONFIG_ENABLE_PROOF_DTCM                 0
 #define CONFIG_ENABLE_PROOF_ITCM                 0
 #define CONFIG_ENABLE_PROOF_FLASH                0
+#define CONFIG_ENABLE_PROOF_PSRAM                0
 
 #if CONFIG_ENABLE_PROOF_SHARED_MEMORY
 #include "shared_mem.h"
@@ -52,6 +53,10 @@
 
 #if CONFIG_ENABLE_PROOF_FLASH
 #include "v_flash.h"
+#endif
+
+#if CONFIG_ENABLE_PROOF_PSRAM
+#include "psram.h"
 #endif
 
 void proof_non_secure(void)
@@ -74,6 +79,10 @@ void proof_non_secure(void)
 
 	#if CONFIG_ENABLE_PROOF_FLASH
 	flash_data_access_proof_main();
+	#endif
+
+	#if CONFIG_ENABLE_PROOF_PSRAM
+	psram_read_write_demo();
 	#endif
 }
 
