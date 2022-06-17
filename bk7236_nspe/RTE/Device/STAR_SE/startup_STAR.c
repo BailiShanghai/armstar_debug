@@ -261,10 +261,11 @@ void Default_Handler_17(void)
 }
 void Default_Handler_18(void)
 {
-  while(1);
+	while(1);
 }
 void Default_Handler_19(void)
 {
-  while(1);
+	while(1);
 }
 // eof
+

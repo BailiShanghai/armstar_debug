@@ -82,10 +82,13 @@ void shared_mem_config_mpc(void)
 
 void secure_world_access_s_shared_memory(void)
 {
+	#if CONFIG_ENABLE_SHARED_MEM_MORE
 	mem_access_test(SECURE_SHAREDM0_START_ADDR, SECURE_SHAREDM0_START_ADDR + VERIFY_DATA_LEN);
 	mem_access_test(SECURE_SHAREDM1_START_ADDR, SECURE_SHAREDM1_START_ADDR + VERIFY_DATA_LEN);
 	mem_access_test(SECURE_SHAREDM2_START_ADDR, SECURE_SHAREDM2_START_ADDR + VERIFY_DATA_LEN);
 	mem_access_test(SECURE_SHAREDM3_START_ADDR, SECURE_SHAREDM3_START_ADDR + VERIFY_DATA_LEN);
+	#endif
+	
 	mem_access_test(SECURE_SHAREDM4_START_ADDR, SECURE_SHAREDM4_START_ADDR + VERIFY_DATA_LEN);
 }
 
@@ -94,7 +97,7 @@ void secure_world_access_ns_shared_memory(void)
 	mem_access_test(NON_SECURE_SHAREDM0_START_ADDR, NON_SECURE_SHAREDM0_START_ADDR + VERIFY_DATA_LEN);
 }
 
-#define CONFIG_ENABLE_VERIFY_SHARED_MEMORY_AT_NS_WORLD   1
+#define CONFIG_ENABLE_VERIFY_SHARED_MEMORY_AT_NS_WORLD   0
 
 void shared_memory_verification_main(void)
 {
@@ -106,6 +109,8 @@ void shared_memory_verification_main(void)
 	
 	bk_printf("secure_world_access_ns_shared_memory\r\n");
 	secure_world_access_ns_shared_memory();
+
+	while(110);
 	#endif
 }
 // eof

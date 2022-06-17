@@ -1,7 +1,7 @@
 #pragma once
 
 #define SECURE_SHAREDM0_START_ADDR         (0x08000000 + 0x20000000)
-#define NON_SECURE_SHAREDM0_START_ADDR     (0x18000000 + 4096 + 0x30000000)
+#define NON_SECURE_SHAREDM0_START_ADDR     (0x08000000 + 4096 + 0x30000000)
 
 #define SECURE_SHAREDM1_START_ADDR         (0x08010000 + 0x20000000)
 #define NON_SECURE_SHAREDM1_START_ADDR     (0x08010000 + 4096 + 0x30000000)
@@ -15,7 +15,7 @@
 #define SECURE_SHAREDM4_START_ADDR         (0x08070000 + 0x20000000)
 #define NON_SECURE_SHAREDM4_START_ADDR     (0x08070000 + 4096 + 0x30000000)
 
-#define VERIFY_DATA_LEN                   (128)
+#define VERIFY_DATA_LEN                   (32)
 
 extern void shared_memory_verification_main(void);
 // eof
