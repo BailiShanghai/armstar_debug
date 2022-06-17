@@ -930,4 +930,163 @@ uint32_t data_cache_verification_main(void)
 	return 0;
 }
 #endif
+
+#if CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE
+uint32_t mem_range_access(uint32_t start, uint32_t end)
+{
+	uint32_t *head_ptr = (uint32_t *)start;
+	uint32_t *tail_ptr = (uint32_t *)(end - 32);
+	uint8_t *h, *t;
+	uint32_t pos, i = 0;
+
+	bk_printf("mem_access:0x%x:0x%x\r\n", start, end);
+	
+	*head_ptr = 0x5a5a5a5a;
+	if(0x5a5a5a5a != *head_ptr){
+		bk_printf("head_failed:0x5a5a5a5a != 0x%x\r\n", *head_ptr);
+	}
+	*tail_ptr = 0x5a5a5a5a;
+	if(0x5a5a5a5a != *tail_ptr){
+		bk_printf("tail_failed:0x5a5a5a5a != 0x%x\r\n", *tail_ptr);
+	}
+	
+	h = (uint8_t *)start;
+	pos = start;
+	while(pos < end)
+	{
+		h[i] = i & 0xFF;
+		i ++;
+		
+		pos += 1;
+	}
+
+	i = 0;
+	pos = start;
+	while(pos < end)
+	{
+		if(h[i] != (i & 0xFF))
+			bk_printf("h[i]:0x%02x, (i & 0xFF)::0x%02x\r\n", h[i], i & 0xFF);
+		i ++;
+		
+		pos += 1;
+	}
+	
+	return 0;
+}
+
+
+#define SHARED_MEM4_TEST_START_ADDR               (0x28060000)
+#define SHARED_MEM4_TEST_END_ADDR                 (0x28060100)
+
+uint32_t data_access_interact_with_cpu1(void)
+{
+		uint32_t val;
+		uint32_t i = 0;
+		
+		while(1){
+			REG_WRITE(0x28060000, i);
+			bk_printf("[CPU0]wr addr:0x%x, val:0x%x\r\n", 0x28060000, i);
+			i ++;
+			
+			__SEV();
+			bk_printf("[CPU0]rd addr:0x%x, val:0x%x\r\n", 0x28060004, REG_READ(0x28060004));
+			__WFE();
+		}
+		
+		return 0;
+}
+
+uint32_t data_cache_multi_core0_verification_main(void)
+{
+	/* config dcache via mpu*/
+	//dc_mpu_config();
+	data_access_interact_with_cpu1();
+	
+	mem_range_access(SHARED_MEM4_TEST_START_ADDR, SHARED_MEM4_TEST_END_ADDR);
+	
+	return 0;
+}
+#endif
+
+#if CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE
+uint32_t mem_range_access(uint32_t start, uint32_t end)
+{
+	uint32_t *head_ptr = (uint32_t *)start;
+	uint32_t *tail_ptr = (uint32_t *)(end - 32);
+	uint8_t *h, *t;
+	uint32_t pos, i = 0;
+
+	bk_printf("mem_access:0x%x:0x%x\r\n", start, end);
+	
+	*head_ptr = 0x5a5a5a5a;
+	if(0x5a5a5a5a != *head_ptr){
+		bk_printf("head_failed:0x5a5a5a5a != 0x%x\r\n", *head_ptr);
+	}
+	*tail_ptr = 0x5a5a5a5a;
+	if(0x5a5a5a5a != *tail_ptr){
+		bk_printf("tail_failed:0x5a5a5a5a != 0x%x\r\n", *tail_ptr);
+	}
+	
+	h = (uint8_t *)start;
+	pos = start;
+	while(pos < end)
+	{
+		h[i] = i & 0xFF;
+		i ++;
+		
+		pos += 1;
+	}
+
+	i = 0;
+	pos = start;
+	while(pos < end)
+	{
+		if(h[i] != (i & 0xFF))
+			bk_printf("h[i]:0x%02x, (i & 0xFF)::0x%02x\r\n", h[i], i & 0xFF);
+		i ++;
+		
+		pos += 1;
+	}
+	
+	return 0;
+}
+
+
+#define SHARED_MEM4_TEST_START_ADDR               (0x28060000)
+#define SHARED_MEM4_TEST_END_ADDR                 (0x28060100)
+
+uint32_t data_access_interact_with_cpu0(void)
+{
+		uint32_t val, i = 0;
+	
+		//__SEV();
+		//__WFE(); clear all event
+	
+		while(110){
+			__WFE();         /* waiting for event*/
+			val = REG_READ(0x28060000);
+			bk_printf("rd addr:0x%x val:\r\n", 0x28060000, val);
+			
+			i += 2;
+			val = i;
+			REG_WRITE(0x28060004, val);
+			bk_printf("wr addr:0x%x val:\r\n", 0x28060004, REG_READ(0x28060004));
+			
+			__SEV();
+		}
+		
+		return 0;
+}
+
+uint32_t data_cache_multi_core1_verification_main(void)
+{
+	data_access_interact_with_cpu0();
+	
+	mem_range_access(SHARED_MEM4_TEST_START_ADDR, SHARED_MEM4_TEST_END_ADDR);
+	
+	return 0;
+}
+#endif
+
+
 // eof

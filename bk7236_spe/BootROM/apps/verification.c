@@ -88,7 +88,7 @@
 #include "vrf_flash.h"
 #endif
 
-#if CONFIG_ENABLE_VERIFY_DCACHE
+#if (CONFIG_ENABLE_VERIFY_DCACHE || CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE || CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE)
 #include "data_cache.h"
 #endif
 
@@ -181,8 +181,16 @@ void verification_secure(void)
 	#if CONFIG_ENABLE_VERIFY_DCACHE
 	data_cache_verification_main();
 	#endif
+
+	#if CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE
+	data_cache_multi_core0_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE
+	data_cache_multi_core1_verification_main();
+	#endif
 	
-	*((volatile UINT32 *)(0x44010014)) = (0xaaaaaa00);
+	*((volatile uint32_t *)(0x44010014)) = (0xaaaaaa00);
 	bk_printf("test end at the secure world\r\n");
 }
 
