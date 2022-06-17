@@ -93,6 +93,9 @@ void proof_main(void)
 	proof_non_secure();
 	#endif
 
+	*((volatile UINT32 *)(0x54010014)) = (0xbbbbbb00);
+	bk_printf("test end at the non-secure world\r\n");
+
 	/* Non-secure software does not return, this code is not executed. */
 	for( ; ; )
 	{
