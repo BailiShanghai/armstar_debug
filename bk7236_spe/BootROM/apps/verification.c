@@ -181,6 +181,9 @@ void verification_secure(void)
 	#if CONFIG_ENABLE_VERIFY_DCACHE
 	data_cache_verification_main();
 	#endif
+	
+	*((volatile UINT32 *)(0x44010014)) = (0xaaaaaa00);
+	bk_printf("test end at the secure world\r\n");
 }
 
 void verification_main(void)

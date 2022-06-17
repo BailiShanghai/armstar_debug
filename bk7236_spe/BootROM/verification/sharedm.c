@@ -109,8 +109,22 @@ void shared_memory_verification_main(void)
 	
 	bk_printf("secure_world_access_ns_shared_memory\r\n");
 	secure_world_access_ns_shared_memory();
+	
+	bk_printf("secure_world_access_success\r\n");
 
-	while(110);
+	#if CONFIG_ENABLE_SWITCH_UART_SECURE_STATE
+	bk_printf("uart switch to ns feature\r\n");
+	*((volatile uint32_t *)(0x41040000 + 8 * 4)) = ((*((volatile uint32_t *)(0x41040000 + 8 * 4))) | 0x04);
+	
+	{
+		int i;
+		for(i = 0; i < 3; i ++){
+			*((volatile uint32_t *)(((0x54820000 + 4 * 4) + 4 * 3) + 8 * 4)) = 0x70;
+		}
+	}
+	#endif
+
+	bk_printf("over\r\n");
 	#endif
 }
 // eof
