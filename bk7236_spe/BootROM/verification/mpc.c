@@ -48,7 +48,7 @@ static void mpc_config_lut(mpc_hw_t *mpc_ptr, UINT32 blk_num, UINT32 blk_offset,
 void mpc_config_ctrl(mpc_hw_t *mpc_ptr, uint8_t sec_resp, uint8_t gating_req, uint8_t auto_increase, uint8_t sec_lock)
 {
 	/*config mpc to auto increase*/
-	mpc_ptr->mpc_ctrl.cfg_sec_rsp = sec_resp;
+	mpc_ptr->mpc_ctrl.cfg_sec_rsp = 1; /* error debug*/
 	mpc_ptr->mpc_ctrl.gating_req = gating_req;
 	mpc_ptr->mpc_ctrl.auto_inc = auto_increase;
 	mpc_ptr->mpc_ctrl.sec_lock = sec_lock;
