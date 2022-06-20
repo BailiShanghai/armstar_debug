@@ -257,7 +257,8 @@ typedef volatile struct {
 			uint32_t dis_cmd_sck: 1;
 			uint32_t rsv0: 1;
 			uint32_t first_bit_mode: 1;
-			uint32_t rsv1: 3;
+			uint32_t seq_wr_len_sel: 2;
+			uint32_t mem_wait_start_sel: 1;
 			uint32_t io_cpu_mem_sel: 1;
 			uint32_t rsv2: 1;
 			uint32_t spi_cs_h_wait: 8;
