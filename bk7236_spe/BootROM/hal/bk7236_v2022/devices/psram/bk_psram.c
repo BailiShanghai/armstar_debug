@@ -229,17 +229,10 @@ UINT32 bk_psram_ctrl(UINT32 cmd, void *param)
 	return 0;
 }
 
-void bk_psram_mpc_config(UINT32 psram_size, UINT32 psram_offset, UINT32 sec_state)
-{
-	mpc_config_ctrl(g_psram_mpc_ptr, 0, 0, 0, 0);
-	mpc_set_secure(g_psram_mpc_ptr, psram_size, psram_offset, sec_state);
-}
-
-void bk_psram_mpc_cofig_II(void)
+void bk_psram_mpc_cofig(void)
 {
 	mpc_config_ctrl(g_psram_mpc_ptr, 0, 0, 0, 0);
 
-	g_psram_mpc_ptr->blk_idx = 0;
 	g_psram_mpc_ptr->blk_lut[0] = 0x1;
 }
 
