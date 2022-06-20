@@ -53,6 +53,17 @@ enum {
 	CMD7_DUMMY_CMD8
 };
 
+typedef struct {
+	uint32_t addr;
+	uint8_t cmd;
+	uint8_t cmd_line;
+	uint8_t addr_line;
+	uint8_t data_line;
+	uint8_t line_num;
+	uint8_t dummy_clk;
+	uint8_t dummy_mode;
+} qspi_config_t;
+
 #ifdef __cplusplus
 extern "C" }
 #endif

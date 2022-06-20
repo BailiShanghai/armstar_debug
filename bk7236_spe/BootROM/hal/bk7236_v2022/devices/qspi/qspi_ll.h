@@ -948,6 +948,16 @@ static inline void qspi_set_first_bit_mode(qspi_hw_t *hw, bool mode)
 	hw->spi_config.first_bit_mode = mode;
 }
 
+static inline void qspi_seq_wr_len_sel(qspi_hw_t *hw, uint8_t value)
+{
+	hw->spi_config.seq_wr_len_sel = value;
+}
+
+static inline void qspi_mem_wait_start_sel(qspi_hw_t *hw, bool value)
+{
+	hw->spi_config.mem_wait_start_sel = value;
+}
+
 static inline void qspi_io_cpu_mem_sel(qspi_hw_t *hw, bool value)
 {
 	hw->spi_config.io_cpu_mem_sel = value;
@@ -1003,9 +1013,9 @@ static inline void qspi_clear_tx_done_intr(qspi_hw_t *hw)
 	hw->spi_status_clr.clr_spi_tx_done = 1;
 }
 
-static inline void qspi_clear_cmd_start_done_intr(qspi_hw_t *hw)
+static inline void qspi_clear_cmd_start_done_intr(qspi_hw_t *hw, bool cmd)
 {
-	hw->spi_status_clr.clr_cmd_start_done = 1;
+	hw->spi_status_clr.clr_cmd_start_done = cmd;
 }
 
 static inline void qspi_clear_spi_done_intr(qspi_hw_t *hw)
@@ -1018,9 +1028,9 @@ static inline void qspi_clear_cmd_start_fail_intr(qspi_hw_t *hw)
 	hw->spi_status_clr.clr_cmd_start_fail = 1;
 }
 
-static inline void qspi_clear_addr_cnt_intr(qspi_hw_t *hw)
+static inline void qspi_clear_addr_cnt_intr(qspi_hw_t *hw, bool value)
 {
-	hw->spi_status_clr.int_addr_cnt = 1;
+	hw->spi_status_clr.int_addr_cnt = value;
 }
 
 static inline bool qspi_is_rx_done(qspi_hw_t *hw)

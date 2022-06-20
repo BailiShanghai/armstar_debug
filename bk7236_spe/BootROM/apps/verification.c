@@ -171,7 +171,7 @@ void verification_secure(void)
 	#endif
 
 	#if CONFIG_ENABLE_VERIFY_QSPI
-	qspi_read_write_demo();
+	qspi_read_write_aps6404();
 	#endif
 
 	#if CONFIG_ENABLE_VERIFY_FLASH
