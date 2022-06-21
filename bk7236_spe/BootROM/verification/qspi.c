@@ -22,14 +22,13 @@
 
 #define BUFFER_SIZE         (32)
 #define TEST_VALUE_START    0x71
+#define TEST_VALUE_START_IO  0x41
 
 #define QSPI_BLOCK_SIZE         (256 * 1024)
 #define QSPI_START_ADDRESS_NS   (QSPI_0_MEM_BASE_S)
 #define TEST_QSPI_SIZE_NS       (QSPI_BLOCK_SIZE)
 #define QSPI_START_ADDRESS_S    (QSPI_START_ADDRESS_NS + TEST_QSPI_SIZE_NS)
 #define TEST_QSPI_SIZE_S        (QSPI_BLOCK_SIZE)
-
-#define QSPI_IO_ADDRESS         (0x112238)
 
 uint8_t qspi_tx_buffer[BUFFER_SIZE];
 uint8_t qspi_rx_buffer[BUFFER_SIZE];
@@ -75,6 +74,7 @@ void qspi_read_write_aps6404(void)
 	/*enter quad mode*/
 	bk_qspi_enter_quad_mode(APS6404_CMD_ENTER_QUAD_MODE);
 
+	bk_printf("cpu quad\r\n");
 	/*write data to secure address with cpu mode*/
 	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = APS6404_CMD_QUAD_WRITE;
@@ -99,13 +99,15 @@ void qspi_read_write_aps6404(void)
 
 	/*compare data*/
 	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("cpu quad qspi read or write s error\r\n");
+		bk_printf("cpu quad s error\r\n");
 	} else {
-		bk_printf("cpu quad qspi read or write s success\r\n");
+		bk_printf("cpu quad s success\r\n");
 	}
 
+	bk_printf("io quad\r\n");
+	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START_IO);
 	/*write data to secure address with io mode*/
-	qspi_config.addr = QSPI_IO_ADDRESS;
+	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = APS6404_CMD_QUAD_WRITE;
 	qspi_config.cmd_line = QSPI_4_LINE;
 	qspi_config.addr_line = QSPI_4_LINE;
@@ -116,7 +118,7 @@ void qspi_read_write_aps6404(void)
 	bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
 	/*read data from secure address with io mode*/
-	qspi_config.addr = QSPI_IO_ADDRESS;
+	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
 	qspi_config.cmd_line = QSPI_4_LINE;
 	qspi_config.addr_line = QSPI_4_LINE;
@@ -128,14 +130,16 @@ void qspi_read_write_aps6404(void)
 
 	/*compare data*/
 	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("io quad qspi read or write s error\r\n");
+		bk_printf("io quad s error\r\n");
 	} else {
-		bk_printf("io quad qspi read or write s success\r\n");
+		bk_printf("io quad s success\r\n");
 	}
 
 	/*exit quad mode*/
 	bk_qspi_exit_quad_mode(APS6404_CMD_EXIT_QUAD_MODE);
 
+	bk_printf("cpu single");
+	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
 	/*write data to secure address with cpu mode*/
 	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = APS6404_CMD_WRITE;
@@ -151,8 +155,8 @@ void qspi_read_write_aps6404(void)
 	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
 	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_1_LINE;
-	qspi_config.data_line = QSPI_1_LINE;
+	qspi_config.addr_line = QSPI_4_LINE;
+	qspi_config.data_line = QSPI_4_LINE;
 	qspi_config.line_num = QSPI_CMD_5_LINE;
 	qspi_config.dummy_clk = 6;
 	qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
@@ -160,13 +164,15 @@ void qspi_read_write_aps6404(void)
 
 	/*compare data*/
 	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("cpu single qspi read or write s error\r\n");
+		bk_printf("cpu single s error\r\n");
 	} else {
-		bk_printf("cpu single qspi read or write s success\r\n");
+		bk_printf("cpu single s success\r\n");
 	}
 
+	bk_printf("io single");
+	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START_IO);
 	/*write data to secure address with io mode*/
-	qspi_config.addr = QSPI_IO_ADDRESS;
+	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = APS6404_CMD_WRITE;
 	qspi_config.cmd_line = QSPI_1_LINE;
 	qspi_config.addr_line = QSPI_1_LINE;
@@ -177,7 +183,7 @@ void qspi_read_write_aps6404(void)
 	bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
 	/*read data from secure address with io mode*/
-	qspi_config.addr = QSPI_IO_ADDRESS;
+	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = APS6404_CMD_FAST_READ;
 	qspi_config.cmd_line = QSPI_1_LINE;
 	qspi_config.addr_line = QSPI_1_LINE;
@@ -189,9 +195,9 @@ void qspi_read_write_aps6404(void)
 
 	/*compare data*/
 	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("io single qspi read or write s error\r\n");
+		bk_printf("io single s error\r\n");
 	} else {
-		bk_printf("io single qspi read or write s success\r\n");
+		bk_printf("io single s success\r\n");
 	}
 }
 
@@ -237,7 +243,7 @@ void qspi_read_write_gd25q32b(void)
 	}
 
 	/*write data to secure address with io mode*/
-	qspi_config.addr = QSPI_IO_ADDRESS;
+	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = GD25Q32B_CMD_WRITE;
 	qspi_config.cmd_line = QSPI_1_LINE;
 	qspi_config.addr_line = QSPI_1_LINE;
@@ -248,7 +254,7 @@ void qspi_read_write_gd25q32b(void)
 	bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
 	/*read data from secure address with io mode*/
-	qspi_config.addr = QSPI_IO_ADDRESS;
+	qspi_config.addr = QSPI_START_ADDRESS_S;
 	qspi_config.cmd = GD25Q32B_CMD_READ;
 	qspi_config.cmd_line = QSPI_1_LINE;
 	qspi_config.addr_line = QSPI_4_LINE;

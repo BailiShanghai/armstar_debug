@@ -635,7 +635,7 @@ static inline void qspi_cmd_C_start(qspi_hw_t *hw)
 	hw->CMD_C_CFG2.CMD_START = 1;
 }
 
-static inline void qspi_set_C_data_len(qspi_hw_t *hw, uint8_t data_len)
+static inline void qspi_set_C_data_len(qspi_hw_t *hw, uint16_t data_len)
 {
 	hw->CMD_C_CFG2.DATA_LEN = data_len;
 }
@@ -848,7 +848,7 @@ static inline void qspi_cmd_D_start(qspi_hw_t *hw)
 	hw->CMD_D_CFG2.CMD_START = 1;
 }
 
-static inline void qspi_set_D_data_len(qspi_hw_t *hw, uint8_t data_len)
+static inline void qspi_set_D_data_len(qspi_hw_t *hw, uint16_t data_len)
 {
 	hw->CMD_D_CFG2.DATA_LEN = data_len;
 }
@@ -1096,6 +1096,16 @@ static inline void qspi_write_data_to_fifo(qspi_hw_t *hw, uint8_t *buf, uint32_t
 static inline void qspi_read_data_from_fifo(qspi_hw_t *hw, uint8_t *buf, uint32_t buf_len)
 {
 	memcpy(buf, (uint8_t *)hw->fifo, buf_len);
+}
+
+static inline void qspi_write_data_to_fifo_II(qspi_hw_t *hw, uint32_t data, uint8_t index)
+{
+	hw->fifo[index] = data;
+}
+
+static inline uint32_t qspi_read_data_from_fifo_II(qspi_hw_t *hw, uint8_t index)
+{
+	return (hw->fifo[index]);
 }
 
 #ifdef __cplusplus

@@ -125,7 +125,7 @@ static void bk_qspi_direct_read(qspi_config_t *qspi_config)
 	qspi_set_B_cmd_mode(g_qspi_hw_cfg, 0);
 }
 
-static void bk_qspi_indirect_write(qspi_config_t *qspi_config)
+static void bk_qspi_indirect_write(qspi_config_t *qspi_config, uint16_t len)
 {
 	int i;
 	uint8_t cmd_value;
@@ -155,9 +155,14 @@ static void bk_qspi_indirect_write(qspi_config_t *qspi_config)
 	qspi_set_C_data_line(g_qspi_hw_cfg, qspi_config->data_line);
 	qspi_set_C_dummy_clk(g_qspi_hw_cfg, qspi_config->dummy_clk);
 	qspi_set_C_dummy_mode(g_qspi_hw_cfg, qspi_config->dummy_mode);
+
+	/*write fifo to address*/
+	qspi_set_C_data_len(g_qspi_hw_cfg, len);
+	qspi_cmd_C_start(g_qspi_hw_cfg);
+	bk_qspi_wait_cmd_done();
 }
 
-static void bk_qspi_indirect_read(qspi_config_t *qspi_config)
+static void bk_qspi_indirect_read(qspi_config_t *qspi_config, uint16_t len)
 {
 	int i;
 	uint8_t cmd_value;
@@ -186,6 +191,11 @@ static void bk_qspi_indirect_read(qspi_config_t *qspi_config)
 	qspi_set_D_data_line(g_qspi_hw_cfg, qspi_config->data_line);
 	qspi_set_D_dummy_clk(g_qspi_hw_cfg, qspi_config->dummy_clk);
 	qspi_set_D_dummy_mode(g_qspi_hw_cfg, qspi_config->dummy_mode);
+
+	/*read data from fifo*/
+	qspi_set_D_data_len(g_qspi_hw_cfg, len);
+	qspi_cmd_D_start(g_qspi_hw_cfg);
+	bk_qspi_wait_cmd_done();
 }
 
 int bk_qspi_enter_quad_mode(uint8_t cmd)
@@ -254,7 +264,7 @@ int bk_qspi_cpu_write(qspi_config_t *qspi_config, uint8_t *buf, uint32_t buf_len
 			pb[i] = *buf++;
 		}
 
-		bk_printf("qspi write: %x:%x\r\n", qspi_config->addr, value);
+		bk_printf("cpu write: %x:%x\r\n", qspi_config->addr, value);
 		REG_WRITE(qspi_config->addr, value);
 		buf_len -= write_cnt;
 		qspi_config->addr += write_cnt;
@@ -283,7 +293,7 @@ int bk_qspi_cpu_read(qspi_config_t *qspi_config, uint8_t *buf, uint32_t buf_len)
 
 	while (buf_len) {
 		value = REG_READ(qspi_config->addr);
-		bk_printf("qspi read: %x:%x\r\n", qspi_config->addr, value);
+		bk_printf("cpu read: %x:%x\r\n", qspi_config->addr, value);
 		read_cnt = buf_len < 4 ? buf_len : 4;
 
 		for (i = 0; i < read_cnt; i++) {
@@ -301,23 +311,33 @@ int bk_qspi_cpu_read(qspi_config_t *qspi_config, uint8_t *buf, uint32_t buf_len)
 
 int bk_qspi_io_write(qspi_config_t *qspi_config, uint8_t *buf, uint32_t buf_len)
 {
-	uint32_t write_cnt;
+	uint32_t value = 0;
+	uint32_t index = 0;
 
 	if (buf == NULL || buf_len == 0) {
 		return 0;
 	}
 
 	while (buf_len) {
-		write_cnt = buf_len > 256 ? 256 : buf_len;
-		qspi_write_data_to_fifo(g_qspi_hw_cfg, buf, write_cnt);
-		bk_qspi_indirect_write(qspi_config);
-		qspi_set_C_data_len(g_qspi_hw_cfg, write_cnt);
-		qspi_cmd_C_start(g_qspi_hw_cfg);
-		bk_qspi_wait_cmd_done();
+		value = REG_RD32(buf, 0);
+		bk_printf("io write %d:%x\r\n", index, value);
+		qspi_write_data_to_fifo_II(g_qspi_hw_cfg, value, index);
+		buf += 4;
+		buf_len -= 4;
+		index++;
 
-		buf += write_cnt;
-		buf_len -= write_cnt;
-		qspi_config->addr += write_cnt;
+		if (index == 64) {
+			bk_qspi_indirect_write(qspi_config, 256);
+			qspi_config->addr += 256;
+			index = 0;
+		}
+	}
+
+	if (index) {
+		bk_printf("io wr addr %x:%d\r\n", qspi_config->addr, index);
+		bk_qspi_indirect_write(qspi_config, index*4);
+		qspi_config->addr += index*4;
+		index = 0;
 	}
 
 	return 0;
@@ -325,7 +345,10 @@ int bk_qspi_io_write(qspi_config_t *qspi_config, uint8_t *buf, uint32_t buf_len)
 
 int bk_qspi_io_read(qspi_config_t *qspi_config, uint8_t *buf, uint32_t buf_len)
 {
-	uint32_t read_cnt;
+	int i, j;
+	uint16_t read_cnt;
+	uint32_t value;
+	uint8_t *pb = (uint8_t *)&value;
 
 	if (buf == NULL || buf_len == 0) {
 		return 0;
@@ -333,13 +356,16 @@ int bk_qspi_io_read(qspi_config_t *qspi_config, uint8_t *buf, uint32_t buf_len)
 
 	while (buf_len) {
 		read_cnt = buf_len > 256 ? 256 : buf_len;
-		bk_qspi_indirect_read(qspi_config);
-		qspi_set_D_data_len(g_qspi_hw_cfg, read_cnt);
-		qspi_cmd_D_start(g_qspi_hw_cfg);
-		bk_qspi_wait_cmd_done();
-		qspi_read_data_from_fifo(g_qspi_hw_cfg, buf, read_cnt);
+		bk_printf("rd addr %x:%d\r\n", qspi_config->addr, read_cnt);
+		bk_qspi_indirect_read(qspi_config, read_cnt);
+		for (i = 0; i < read_cnt/4; i++) {
+			value = qspi_read_data_from_fifo_II(g_qspi_hw_cfg, i);
+			bk_printf("io read %d:%x\r\n", i, value);
+			for (j = 0; j < 4; j++) {
+				*buf++ = pb[j];
+			}
+		}
 
-		buf += read_cnt;
 		buf_len -= read_cnt;
 		qspi_config->addr += read_cnt;
 	}

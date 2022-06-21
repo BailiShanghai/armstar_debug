@@ -27,7 +27,7 @@ typedef volatile struct {
 	/* REG_0x03 */
 	uint32_t core_status;
 
-	uint32_t reg_gap_0[5];
+	uint32_t reg_gap_0[4];
 	
 	/* REG_0x08 */
 	union {
@@ -326,6 +326,9 @@ typedef volatile struct {
 	/* REG_0x1D */
 	uint32_t led_wr_cont_cmd;
 
+	uint32_t reg_gap_1[34];
+
+	/* REG_0x40 */
 	uint32_t fifo[64];
 } qspi_hw_t;
 
