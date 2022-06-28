@@ -1157,7 +1157,8 @@ uint32_t data_access_interact_with_cpu1(void)
 		bk_printf("[CPU0]write:0x%x, val:0x%x\r\n", 0x28040000, i);
 		i ++;
 		
-		__SEV();		
+		__SEV();
+		__WFE();
 		__WFE();
 		SCB_InvalidateDCache_by_Addr((void *)0x28040040, 16);
 		bk_printf("[CPU0]read:0x%x, val:0x%x\r\n", 0x28040040, REG_READ(0x28040040));
@@ -1167,6 +1168,7 @@ uint32_t data_access_interact_with_cpu1(void)
 		i ++;
 		
 		__SEV();
+		__WFE();
 		__WFE();
 		SCB_InvalidateDCache_by_Addr((void *)0x28060040, 16);
 		bk_printf("[CPU0]read:0x%x, val:0x%x\r\n", 0x28060040, REG_READ(0x28060040));
@@ -1274,6 +1276,7 @@ uint32_t data_access_interact_with_cpu0(void)
 		REG_WRITE(0x28040040, val);
 		bk_printf("[cpu1]wr_addr:0x%x val:0x%x\r\n", 0x28040040, REG_READ(0x28040040));
 		__SEV();
+		__WFE();
 
 		__WFE();         /* waiting for event*/
 		val = REG_READ(0x28060000);
@@ -1285,6 +1288,7 @@ uint32_t data_access_interact_with_cpu0(void)
 		bk_printf("[cpu1]wr_addr:0x%x val:0x%x\r\n", 0x28060040, REG_READ(0x28060040));
 		
 		__SEV();
+		__WFE();
 	}
 	
 	return 0;
