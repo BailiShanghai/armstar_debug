@@ -9,7 +9,7 @@
 #define CONFIG_ENABLE_VERIFICATION_HASH256        0
 #define CONFIG_ENABLE_VERIFICATION_ACA_SRAM       0
 #define CONFIG_ENABLE_VERIFY_TE200_RAM            0
-#define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        1
+#define CONFIG_ENABLE_VERIFY_SHARED_MEMORY        0
 #define CONFIG_ENABLE_VERIFY_SECURE_FIELD         0  // ok
 #define CONFIG_ENABLE_VERIFY_SIG_HASH256          0
 #define CONFIG_ENABLE_VERIFY_TRNG                 0  // ok, internal/external entropy pool verification is ok
@@ -22,7 +22,7 @@
 #define CONFIG_ENABLE_VERIFY_DCACHE               0
 
 #define CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE               0
-#define CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE               0
+#define CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE               1
 
 // eof
 

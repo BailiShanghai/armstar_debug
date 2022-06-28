@@ -1,8 +1,210 @@
 #include "base.h"
 #include "data_cache.h"
 #include "bk_uart.h"
-#include "mpu_armstar_m33.h"
 #include "verification_config.h"
+#include "STAR_SE.h"
+#include "mpu_armstar_m33.h"
+
+
+#define CONFIG_ENABLE_MIN_REGIONS    1
+
+#if CONFIG_ENABLE_MIN_REGIONS
+const ARM_MPU_Region_t mpu_table[1][16] = {
+  {
+    /*                     BASE          SH              RO   NP   XN                         LIMIT         ATTR */
+    /* text:flash bootrom space*/
+    { .RBAR = ARM_MPU_RBAR(0x02000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x06000000UL, 0UL) }, 
+
+	/* data: shared memory, */
+    { .RBAR = ARM_MPU_RBAR(0x28000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2807FFFFUL, 0UL) },
+
+	/* peripheral: flash uart sys_control*/
+    { .RBAR = ARM_MPU_RBAR(0x44000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x4FFFFFFFUL, 2UL) }, 
+
+	/* ppb, scb, and so on*/
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+  }
+};
+const ARM_MPU_Region_t mpu_table_ns[1][16] = {
+  {
+    /*                     BASE          SH              RO   NP   XN                         LIMIT         ATTR */
+    /* text:flash bootrom space*/
+    { .RBAR = ARM_MPU_RBAR(0x12000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x16000000UL, 0UL) }, 
+
+	/* data: shared memory, */
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+  }
+};
+
+#else
+const ARM_MPU_Region_t mpu_table[1][7] = {
+  {
+    //                     BASE          SH              RO   NP   XN                         LIMIT         ATTR 
+    { .RBAR = ARM_MPU_RBAR(0x00000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x1FFFFFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x20000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2803FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x28040000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2805FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x28060000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2807FFFFUL, 1UL) }, /* sram 4*/
+    { .RBAR = ARM_MPU_RBAR(0x28080000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3FFFFFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x40000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x6bFFFFFFUL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x70000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xEFFFFFFFUL, 2UL) },
+  }
+};
+#endif
+
+uint32_t dc_mpu_config_ns(void)
+{
+	bk_printf("dc_mpu_config_ns 20220625 0924\r\n");
+
+	__DMB();
+	ARM_MPU_Disable_NS();
+	do{
+		MPU_NS->CTRL = 0;
+		MPU_NS->RNR = 0;
+		MPU_NS->RBAR = 0;
+		MPU_NS->RLAR = 0;
+		MPU_NS->RBAR_A1 = 0;
+		MPU_NS->RLAR_A1 = 0;
+		MPU_NS->RBAR_A2 = 0;
+		MPU_NS->RLAR_A2 = 0;
+		MPU_NS->RBAR_A3 = 0;
+		MPU_NS->RLAR_A3 = 0;
+		MPU_NS->RESERVED0[0] = 0;
+		MPU_NS->MAIR0 = 0;
+		MPU_NS->MAIR1 = 0;
+	}while(0);
+	
+	ARM_MPU_SetMemAttr_NS(0UL, ARM_MPU_ATTR(       /* Normal memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr_NS(1UL, ARM_MPU_ATTR(       /* Normal memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 0UL, 0UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 0UL, 0UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr_NS(2UL, ARM_MPU_ATTR(       /* Device memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 0UL, 0UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 0UL, 0UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+
+	ARM_MPU_Load(0, mpu_table_ns[0], 16); /* just code, and data*/
+	
+	bk_printf("MPU->TYPE:0x%x\r\n", MPU_NS->TYPE);
+	bk_printf("MPU->CTRL:0x%x\r\n", MPU_NS->CTRL);
+	bk_printf("MPU->MAIR0:0x%x\r\n", MPU_NS->MAIR0);
+	bk_printf("MPU->MAIR1:0x%x\r\n", MPU_NS->MAIR1);
+	bk_printf("MPU->RBAR:0x%x\r\n", MPU_NS->RBAR);
+	bk_printf("MPU->RLAR:0x%x\r\n", MPU_NS->RLAR);
+	bk_printf("MPU->RBAR1:0x%x\r\n", MPU_NS->RBAR_A1);
+	bk_printf("MPU->RLAR1:0x%x\r\n", MPU_NS->RLAR_A1);
+	bk_printf("MPU->RBAR2:0x%x\r\n", MPU_NS->RBAR_A2);
+	bk_printf("MPU->RLAR2:0x%x\r\n", MPU_NS->RLAR_A2);
+	bk_printf("MPU->RBAR3:0x%x\r\n", MPU_NS->RBAR_A3);
+	bk_printf("MPU->RLAR3:0x%x\r\n", MPU_NS->RLAR_A3);
+	
+	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
+	ARM_MPU_Enable_NS(0);
+	bk_printf("MPU->CTRL:0x%x\r\n", MPU_NS->CTRL);
+	
+	__DSB();
+	__ISB();
+	
+	
+	return 0;
+}
+
+uint32_t dc_mpu_config(void)
+{
+	bk_printf("dc_mpu_config 20220625 0924\r\n");;
+	bk_printf("address 0x28040000 wt cache policy\r\n");
+	bk_printf("address 0x28060000 normal memory without cacheable\r\n");
+
+	__DMB();
+	ARM_MPU_Disable();
+	do{
+		MPU->CTRL = 0;
+		MPU->RNR = 0;
+		MPU->RBAR = 0;
+		MPU->RLAR = 0;
+		MPU->RBAR_A1 = 0;
+		MPU->RLAR_A1 = 0;
+		MPU->RBAR_A2 = 0;
+		MPU->RLAR_A2 = 0;
+		MPU->RBAR_A3 = 0;
+		MPU->RLAR_A3 = 0;
+		MPU->RESERVED0[0] = 0;
+		MPU->MAIR0 = 0;
+		MPU->MAIR1 = 0;
+	}while(0);
+	
+	ARM_MPU_SetMemAttr(0UL, ARM_MPU_ATTR(       /* Normal memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr(1UL, ARM_MPU_ATTR(       /* Normal memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 0UL, 0UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 0UL, 0UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+	ARM_MPU_SetMemAttr(2UL, ARM_MPU_ATTR(       /* Device memory */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 0UL, 0UL), /* Outer Write-Back transient with read and write allocate */
+		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 0UL, 0UL)  /* Inner Write-Through transient with read and write allocate */
+	));
+
+	#if CONFIG_ENABLE_MIN_REGIONS
+	ARM_MPU_Load(0, mpu_table[0], 16); /* just code, and data*/
+	#else
+	ARM_MPU_Load(0, mpu_table[0], 7);
+	#endif
+	
+	bk_printf("MPU->TYPE:0x%x\r\n", MPU->TYPE);
+	bk_printf("MPU->CTRL:0x%x\r\n", MPU->CTRL);
+	bk_printf("MPU->MAIR0:0x%x\r\n", MPU->MAIR0);
+	bk_printf("MPU->MAIR1:0x%x\r\n", MPU->MAIR1);
+	bk_printf("MPU->RBAR:0x%x\r\n", MPU->RBAR);
+	bk_printf("MPU->RLAR:0x%x\r\n", MPU->RLAR);
+	bk_printf("MPU->RBAR1:0x%x\r\n", MPU->RBAR_A1);
+	bk_printf("MPU->RLAR1:0x%x\r\n", MPU->RLAR_A1);
+	bk_printf("MPU->RBAR2:0x%x\r\n", MPU->RBAR_A2);
+	bk_printf("MPU->RLAR2:0x%x\r\n", MPU->RLAR_A2);
+	bk_printf("MPU->RBAR3:0x%x\r\n", MPU->RBAR_A3);
+	bk_printf("MPU->RLAR3:0x%x\r\n", MPU->RLAR_A3);
+	
+	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
+	ARM_MPU_Enable(0);
+	bk_printf("MPU->CTRL:0x%x\r\n", MPU->CTRL);
+	
+	__DSB();
+	__ISB();
+	
+	
+	return 0;
+}
+
 
 #if CONFIG_ENABLE_VERIFY_DCACHE
  __attribute__((section("non_cache_wzl")))  const unsigned char _non_dcache_test_data[16368UL + 1] = {
@@ -859,52 +1061,18 @@ uint32_t sum_non_dcache_array(void)
 	return sum_value;
 }
 
-
-const ARM_MPU_Region_t mpu_table[1][5] = {
-  {
-    //                     BASE          SH              RO   NP   XN                         LIMIT         ATTR 
-    { .RBAR = ARM_MPU_RBAR(0x00000000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2803FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x28040000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2805FFFFUL, 1UL) },
-    { .RBAR = ARM_MPU_RBAR(0x28060000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2807FFFFUL, 2UL) }, /* sram 4*/
-    { .RBAR = ARM_MPU_RBAR(0x28080000UL, ARM_MPU_SH_NON, 0UL, 1UL, 0UL), .RLAR = ARM_MPU_RLAR(0x6bFFFFFFUL, 3UL) },
-    { .RBAR = ARM_MPU_RBAR(0x70000000UL, ARM_MPU_SH_NON, 0UL, 1UL, 1UL), .RLAR = ARM_MPU_RLAR(0x80000000UL, 4UL) },
-  }
-};
-
-uint32_t dc_mpu_config(void)
-{
-	ARM_MPU_SetMemAttr(0UL, ARM_MPU_ATTR(       /* Normal memory */
-		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
-		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
-	));
-	ARM_MPU_SetMemAttr(1UL, ARM_MPU_ATTR(       /* Normal memory */
-		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
-		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
-	));
-	ARM_MPU_SetMemAttr(2UL, ARM_MPU_ATTR(       /* Normal memory */
-		ARM_MPU_ATTR_MEMORY_(1UL, 1UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
-		ARM_MPU_ATTR_MEMORY_(1UL, 1UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
-	));
-	ARM_MPU_SetMemAttr(3UL, ARM_MPU_ATTR(       /* Device memory */
-		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
-		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
-	));
-	ARM_MPU_SetMemAttr(4UL, ARM_MPU_ATTR(       /* Device memory */
-		ARM_MPU_ATTR_MEMORY_(0UL, 1UL, 1UL, 1UL), /* Outer Write-Back transient with read and write allocate */
-		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 1UL, 1UL)  /* Inner Write-Through transient with read and write allocate */
-	));
-	
-	ARM_MPU_Load(0, mpu_table[0], 5);
-	
-	return 0;
-}
-
 uint32_t data_cache_verification_main(void)
 {
 	uint32_t reg;
+
+	SCB_DisableICache();
+	SCB_DisableDCache();
 	
 	/* config dcache via mpu*/
 	dc_mpu_config();
+
+	SCB_EnableDCache();
+	SCB_EnableICache();
 
 	/* read data, and sum these data*/
 	bk_printf("non_cache_sum_value:0x%x\r\n", sum_non_dcache_array());
@@ -980,26 +1148,62 @@ uint32_t mem_range_access(uint32_t start, uint32_t end)
 
 uint32_t data_access_interact_with_cpu1(void)
 {
-		uint32_t val;
-		uint32_t i = 0;
+	uint32_t val;
+	uint32_t i = 0;
+	uint32_t count = 5;
+	
+	while(0 != (count --)){
+		REG_WRITE(0x28040000, i);
+		bk_printf("[CPU0]write:0x%x, val:0x%x\r\n", 0x28040000, i);
+		i ++;
 		
-		while(1){
-			REG_WRITE(0x28060000, i);
-			bk_printf("[CPU0]wr addr:0x%x, val:0x%x\r\n", 0x28060000, i);
-			i ++;
-			
-			__SEV();
-			bk_printf("[CPU0]rd addr:0x%x, val:0x%x\r\n", 0x28060004, REG_READ(0x28060004));
-			__WFE();
-		}
+		__SEV();		
+		__WFE();
+		SCB_InvalidateDCache_by_Addr((void *)0x28040040, 16);
+		bk_printf("[CPU0]read:0x%x, val:0x%x\r\n", 0x28040040, REG_READ(0x28040040));
 		
-		return 0;
+		REG_WRITE(0x28060000, i);
+		bk_printf("[CPU0]write:0x%x, val:0x%x\r\n", 0x28060000, i);
+		i ++;
+		
+		__SEV();
+		__WFE();
+		SCB_InvalidateDCache_by_Addr((void *)0x28060040, 16);
+		bk_printf("[CPU0]read:0x%x, val:0x%x\r\n", 0x28060040, REG_READ(0x28060040));
+	}
+	
+	return 0;
+}
+
+uint32_t config_cpu1(void)
+{
+	/* 1, configure the interrupt vector*/
+	/* 2, reset cpu1*/
+	*((volatile UINT32 *)(0x44010014)) = (0x02020000);
+	bk_printf("[CPU0]config cpu1 reg_addr:0x%x, val:0x%x\r\n", 0x44010014, *((volatile UINT32 *)(0x44010014)));
+
+	*((volatile UINT32 *)(0x44010014)) = (*((volatile UINT32 *)(0x44010014))) | 0x01;
+	bk_printf("[CPU0]config cpu1 reg_addr:0x%x, val:0x%x\r\n", 0x44010014, *((volatile UINT32 *)(0x44010014)));
+
+	return 0;
 }
 
 uint32_t data_cache_multi_core0_verification_main(void)
-{
+{	config_cpu1();
+	
 	/* config dcache via mpu*/
-	//dc_mpu_config();
+	SCB_InvalidateICache();
+	SCB_InvalidateDCache();
+	
+	SCB_DisableICache();
+	SCB_DisableDCache();
+	
+	dc_mpu_config_ns();
+	dc_mpu_config();
+
+	SCB_EnableDCache();
+	SCB_EnableICache();
+	
 	data_access_interact_with_cpu1();
 	
 	mem_range_access(SHARED_MEM4_TEST_START_ADDR, SHARED_MEM4_TEST_END_ADDR);
@@ -1057,25 +1261,33 @@ uint32_t mem_range_access(uint32_t start, uint32_t end)
 
 uint32_t data_access_interact_with_cpu0(void)
 {
-		uint32_t val, i = 0;
-	
-		//__SEV();
-		//__WFE(); clear all event
-	
-		while(110){
-			__WFE();         /* waiting for event*/
-			val = REG_READ(0x28060000);
-			bk_printf("rd addr:0x%x val:\r\n", 0x28060000, val);
-			
-			i += 2;
-			val = i;
-			REG_WRITE(0x28060004, val);
-			bk_printf("wr addr:0x%x val:\r\n", 0x28060004, REG_READ(0x28060004));
-			
-			__SEV();
-		}
+	uint32_t val, i = 0, j = 0;
+	uint32_t count = 5;
+
+	while(0 != (count --)){
+		__WFE();         /* waiting for event*/
+		val = REG_READ(0x28040000);
+		bk_printf("[cpu1]rd_addr:0x%x val:0x%x\r\n", 0x28040000, val);
 		
-		return 0;
+		i += 2;
+		val = i;
+		REG_WRITE(0x28040040, val);
+		bk_printf("[cpu1]wr_addr:0x%x val:0x%x\r\n", 0x28040040, REG_READ(0x28040040));
+		__SEV();
+
+		__WFE();         /* waiting for event*/
+		val = REG_READ(0x28060000);
+		bk_printf("[cpu1]rd_addr:0x%x val:0x%x\r\n", 0x28060000, val);
+		
+		j += 2;
+		val = j;
+		REG_WRITE(0x28060040, val);
+		bk_printf("[cpu1]wr_addr:0x%x val:0x%x\r\n", 0x28060040, REG_READ(0x28060040));
+		
+		__SEV();
+	}
+	
+	return 0;
 }
 
 uint32_t data_cache_multi_core1_verification_main(void)

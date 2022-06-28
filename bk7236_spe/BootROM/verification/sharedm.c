@@ -50,31 +50,31 @@ mpc_hw_t *shared_mem_mpc = 0;
 void shared_mem_config_mpc(void)
 {
 	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM0_BASE_ADDR;	
-	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	mpc_config_ctrl(shared_mem_mpc, 1, 0, 0, 0);
 	shared_mem_mpc->blk_lut[0] = 0x02;
 	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
 	bk_printf("blk_lut addr:0x%x addr:0x%x\r\n", &(shared_mem_mpc->blk_lut[0]), shared_mem_mpc->blk_lut[0]);
 	
 	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM1_BASE_ADDR;	
-	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	mpc_config_ctrl(shared_mem_mpc, 1, 0, 0, 0);
 	shared_mem_mpc->blk_lut[0] = 0x02;
 	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
 	bk_printf("blk_lut addr:0x%x addr:0x%x\r\n", &(shared_mem_mpc->blk_lut[0]), shared_mem_mpc->blk_lut[0]);
 	
 	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM2_BASE_ADDR;	
-	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	mpc_config_ctrl(shared_mem_mpc, 1, 0, 0, 0);
 	shared_mem_mpc->blk_lut[0] = 0x02;
 	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
 	bk_printf("blk_lut addr:0x%x addr:0x%x\r\n", &(shared_mem_mpc->blk_lut[0]), shared_mem_mpc->blk_lut[0]);
 	
 	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM3_BASE_ADDR;	
-	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	mpc_config_ctrl(shared_mem_mpc, 1, 0, 0, 0);
 	shared_mem_mpc->blk_lut[0] = 0x02;
 	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
 	bk_printf("blk_lut addr:0x%x addr:0x%x\r\n", &(shared_mem_mpc->blk_lut[0]), shared_mem_mpc->blk_lut[0]);
 	
 	shared_mem_mpc = (mpc_hw_t *)MPC_SMEM4_BASE_ADDR;	
-	mpc_config_ctrl(shared_mem_mpc, 0, 0, 0, 0);
+	mpc_config_ctrl(shared_mem_mpc, 1, 0, 0, 0);
 	shared_mem_mpc->blk_lut[0] = 0x02;
 	bk_printf("4k--7 shared_mem_mpc->blk_size:0x%x\r\n", shared_mem_mpc->blk_size);
 	bk_printf("blk_lut addr:0x%x addr:0x%x\r\n", &(shared_mem_mpc->blk_lut[0]), shared_mem_mpc->blk_lut[0]);	

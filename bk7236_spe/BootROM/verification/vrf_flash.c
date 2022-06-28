@@ -3,14 +3,20 @@
 #include "vrf_flash.h"
 #include "mpc.h"
 #include "bk_flash.h"
+#include "verification_config.h"
 
 mpc_hw_t *mpc_flash;
 uint32_t vrf_flash_config(void)
 {
 	mpc_flash = (mpc_hw_t *)MPC_FLASH_BASE_ADDR;
 	
-	mpc_config_ctrl(mpc_flash, 0, 0, 0, 0);
-	mpc_flash->blk_lut[0] = 0x0C;
+	mpc_config_ctrl(mpc_flash, 1, 0, 0, 0);
+
+	#if (CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE || CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE)
+	mpc_flash->blk_lut[0] = 0x0;
+	#else
+	mpc_flash->blk_lut[0] = 0x0C; 00
+	#endif
 	
 	return 0;
 }
