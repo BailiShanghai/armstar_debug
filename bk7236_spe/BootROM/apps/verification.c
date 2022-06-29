@@ -68,7 +68,7 @@
 #include "dtcm.h"
 #endif
 
-#if CONFIG_ENABLE_VERIFY_PSRAM
+#if (CONFIG_ENABLE_VERIFY_PSRAM || CONFIG_ENABLE_VERIFY_PSRAM_CODE)
 #include "psram.h"
 #endif
 
@@ -188,6 +188,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE
 	data_cache_multi_core1_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_VERIFY_PSRAM_CODE
+	psram_code_test();
 	#endif
 	
 	*((volatile uint32_t *)(0x44010014)) = (0xaaaaaa00);

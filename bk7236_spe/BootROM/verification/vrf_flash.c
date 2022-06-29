@@ -15,7 +15,7 @@ uint32_t vrf_flash_config(void)
 	#if (CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE || CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE)
 	mpc_flash->blk_lut[0] = 0x0;
 	#else
-	mpc_flash->blk_lut[0] = 0x0C; 00
+	mpc_flash->blk_lut[0] = 0x0C; 
 	#endif
 	
 	return 0;

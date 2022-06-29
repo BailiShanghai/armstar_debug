@@ -20,6 +20,7 @@
 #define CONFIG_ENABLE_VERIFY_QSPI                 0
 #define CONFIG_ENABLE_VERIFY_FLASH                0
 #define CONFIG_ENABLE_VERIFY_DCACHE               0
+#define CONFIG_ENABLE_VERIFY_PSRAM_CODE           0
 
 #define CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE               0
 #define CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE               1

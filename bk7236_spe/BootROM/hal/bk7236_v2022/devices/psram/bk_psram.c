@@ -322,6 +322,11 @@ void bk_psram_init(void)
 	value = REG_READ(REG_SYS_CK_CTRL);
 	value &= ~(REG_SYS_CKDIV_PSRAM);
 	REG_WRITE(REG_SYS_CK_CTRL, value);
+
+	/*set psram bypass*/
+	value = REG_READ(REG_PSRAM_SOFT_RESET);
+	value |= PSRAM_CKG_BYPASS;
+	REG_WRITE(REG_PSRAM_SOFT_RESET, value);
 }
 
 UINT32 bk_psram_read(char *user_buf, UINT32 count, UINT32 address)

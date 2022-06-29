@@ -56,7 +56,11 @@ LR_ROM __RO_BASE   {                       ; load region size_region
    .ANY (+RO)
    .ANY (+XO)
   }
-  
+
+  PS_RAM 0x60000000  0x20000  {
+     *.o(psramcode)
+  }
+
   DEV_INIT +0
   {
 	*(.init_level_*)

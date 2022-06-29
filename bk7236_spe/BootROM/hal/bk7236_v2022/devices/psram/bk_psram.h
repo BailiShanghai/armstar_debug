@@ -56,6 +56,7 @@ enum {
 #define REG_PSRAM_SOFT_RESET                 (PSRAM_BASE + 0x2 * 4)
 #define PSRAM_SOFT_RESET_POSI                (0)
 #define PSRAM_SOFT_RESET_MASK                (0x1)
+#define PSRAM_CKG_BYPASS                     (0x1 << 1)
 
 #define REG_PSRAM_CONFIG                     (PSRAM_BASE + 0x4 * 4)
 #define PSRAM_TYPE_POSI                      (0)

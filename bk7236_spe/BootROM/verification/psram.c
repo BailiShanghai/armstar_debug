@@ -6,6 +6,10 @@
 #include "psram.h"
 #include "bk_uart.h"
 
+#define _PSRAM              __attribute__ ((section("psramcode")))
+
+extern int  Image$$ER_ROM$$RO$$Limit;
+
 #define BUFFER_SIZE         (32)
 #define TEST_VALUE_START    0x41
 
@@ -71,6 +75,47 @@ void psram_read_write_demo(void)
 		bk_printf("6 psram read or write ns error\r\n");
 	} else {
 		bk_printf("6 psram read or write ns success\r\n");
+	}
+}
+
+_PSRAM uint32_t psram_code_func(void)
+{
+	uint32_t i = 1000,val;
+	(*((volatile unsigned long *)(0x44000400+(15*0x4))))=0x008;//initial 15
+	(*((volatile unsigned long *)(0x44000400+(15*0x4))));
+	(*((volatile unsigned long *)(0x44000400+(15*0x4))))|= 0x008;
+	(*((volatile unsigned long *)(0x44000400+(15*0x4)))) &= ~(0x008);
+	(*((volatile unsigned long *)(0x44000400+(15*0x4))));
+	(*((volatile unsigned long *)(0x44000400+(15*0x4)))) = ((*((volatile unsigned long *)(0x44000400+(15*0x4)))) & ~0x002)|(0x0<<1);
+	while(i--);
+	(*((volatile unsigned long *)(0x44000400+(15*0x4))));
+	(*((volatile unsigned long *)(0x44000400+(15*0x4)))) = ((*((volatile unsigned long *)(0x44000400+(15*0x4)))) & ~0x002)|(0x1<<1);
+	i=1000;
+	while(i--);
+	(*((volatile unsigned long *)(0x44000400+(15*0x4))));
+	(*((volatile unsigned long *)(0x44000400+(15*0x4)))) = ((*((volatile unsigned long *)(0x44000400+(15*0x4)))) & ~0x002)|(0x0<<1);
+	i=1000;
+	while(i--);
+	(*((volatile unsigned long *)(0x44000400+(15*0x4))));
+	(*((volatile unsigned long *)(0x44000400+(15*0x4)))) = ((*((volatile unsigned long *)(0x44000400+(15*0x4)))) & ~0x002)|(0x1<<1);
+	val = 1000;
+	val = val*4/8 + val*3 + 1000;//4500
+	return (val);
+}
+
+void psram_code_test(void)
+{
+	uint32_t val;
+
+	bk_psram_init();
+
+	memcpy((void *)(0x60000000), (void *)(&Image$$ER_ROM$$RO$$Limit), 188*sizeof(uint8_t));
+
+	val = psram_code_func();
+	if(val == 4500) {
+		bk_printf("psram code test right.\r\n");
+	} else {
+		bk_printf("psram code test fail.\r\n");
 	}
 }
 
