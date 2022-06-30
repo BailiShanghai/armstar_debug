@@ -13,28 +13,29 @@ const ARM_MPU_Region_t mpu_table[1][16] = {
   {
     /*                     BASE          SH              RO   NP   XN                         LIMIT         ATTR */
     /* text:flash bootrom space*/
-    { .RBAR = ARM_MPU_RBAR(0x02000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x06000000UL, 0UL) }, 
+    { .RBAR = ARM_MPU_RBAR(0x02000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x27FFFFFFUL, 0UL) }, 
 
 	/* data: shared memory, */
-    { .RBAR = ARM_MPU_RBAR(0x28000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x28000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2805FFFFUL, 1UL) },
+    
+    { .RBAR = ARM_MPU_RBAR(0x28060000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x2807FFFFUL, 0UL) },
 
-	/* peripheral: flash uart sys_control*/
-    { .RBAR = ARM_MPU_RBAR(0x44000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x4FFFFFFFUL, 2UL) }, 
+	/* peripheral: mpc / flash / uart / sys_control*/
+    { .RBAR = ARM_MPU_RBAR(0x40000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x4FFFFFFFUL, 2UL) }, 
 
 	/* ppb, scb, and so on*/
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
-    { .RBAR = ARM_MPU_RBAR(0xE0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xE1000000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90010000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90020000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0x90030000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90040000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90050000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90060000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90070000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90080000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90090000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x900a0000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x900b0000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x900c0000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x900d0000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x900e0000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90110000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90120000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90130000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90140000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90150000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90160000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90170000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90180000UL, 2UL) },
+    { .RBAR = ARM_MPU_RBAR(0x90190000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x901a0000UL, 2UL) },
   }
 };
 const ARM_MPU_Region_t mpu_table_ns[1][16] = {
@@ -45,20 +46,21 @@ const ARM_MPU_Region_t mpu_table_ns[1][16] = {
 
 	/* data: shared memory, */
     { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
-    { .RBAR = ARM_MPU_RBAR(0x38000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x3807FFFFUL, 0UL) },
+    { .RBAR = ARM_MPU_RBAR(0x50000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x5FFFFFFFUL, 2UL) },
+    
+	{ .RBAR = ARM_MPU_RBAR(0xa0000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0008000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0010000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0020000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0030000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0040000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0050000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0060000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0070000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0080000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0090000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa00a0000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa00b0000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa00c0000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa00d0000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa00e0000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0110000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0120000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0130000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0140000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0150000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0160000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0170000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa0180000UL, 2UL) },
+	{ .RBAR = ARM_MPU_RBAR(0xa0190000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0xa01a0000UL, 2UL) },
   }
 };
 
@@ -84,7 +86,7 @@ uint32_t dc_mpu_config_ns(void)
 	__DMB();
 	ARM_MPU_Disable_NS();
 	do{
-		MPU_NS->CTRL = 0;
+		//MPU_NS->CTRL = 0;
 		MPU_NS->RNR = 0;
 		MPU_NS->RBAR = 0;
 		MPU_NS->RLAR = 0;
@@ -94,9 +96,9 @@ uint32_t dc_mpu_config_ns(void)
 		MPU_NS->RLAR_A2 = 0;
 		MPU_NS->RBAR_A3 = 0;
 		MPU_NS->RLAR_A3 = 0;
-		MPU_NS->RESERVED0[0] = 0;
-		MPU_NS->MAIR0 = 0;
-		MPU_NS->MAIR1 = 0;
+		//MPU_NS->RESERVED0[0] = 0;
+		MPU_NS->MAIR0 = 0x44444444;
+		MPU_NS->MAIR1 = 0x44444444;
 	}while(0);
 	
 	ARM_MPU_SetMemAttr_NS(0UL, ARM_MPU_ATTR(       /* Normal memory */
@@ -112,23 +114,22 @@ uint32_t dc_mpu_config_ns(void)
 		ARM_MPU_ATTR_MEMORY_(0UL, 0UL, 0UL, 0UL)  /* Inner Write-Through transient with read and write allocate */
 	));
 
-	ARM_MPU_Load(0, mpu_table_ns[0], 16); /* just code, and data*/
+	ARM_MPU_Load_NS(0, mpu_table_ns[0], 16); /* just code, and data*/
 	
-	bk_printf("MPU->TYPE:0x%x\r\n", MPU_NS->TYPE);
-	bk_printf("MPU->CTRL:0x%x\r\n", MPU_NS->CTRL);
-	bk_printf("MPU->MAIR0:0x%x\r\n", MPU_NS->MAIR0);
-	bk_printf("MPU->MAIR1:0x%x\r\n", MPU_NS->MAIR1);
-	bk_printf("MPU->RBAR:0x%x\r\n", MPU_NS->RBAR);
-	bk_printf("MPU->RLAR:0x%x\r\n", MPU_NS->RLAR);
-	bk_printf("MPU->RBAR1:0x%x\r\n", MPU_NS->RBAR_A1);
-	bk_printf("MPU->RLAR1:0x%x\r\n", MPU_NS->RLAR_A1);
-	bk_printf("MPU->RBAR2:0x%x\r\n", MPU_NS->RBAR_A2);
-	bk_printf("MPU->RLAR2:0x%x\r\n", MPU_NS->RLAR_A2);
-	bk_printf("MPU->RBAR3:0x%x\r\n", MPU_NS->RBAR_A3);
-	bk_printf("MPU->RLAR3:0x%x\r\n", MPU_NS->RLAR_A3);
+	MPU_NS->RNR = 0;
+	bk_printf("MPU_NS->TYPE:0x%x\r\n", MPU_NS->TYPE);
+	bk_printf("MPU_NS->CTRL:0x%x\r\n", MPU_NS->CTRL);
+	bk_printf("MPU_NS->MAIR0:0x%x\r\n", MPU_NS->MAIR0);
+	bk_printf("MPU_NS->MAIR1:0x%x\r\n", MPU_NS->MAIR1);
+	bk_printf("MPU_NS->RBAR:0x%x\r\n", MPU_NS->RBAR);
+	bk_printf("MPU_NS->RLAR:0x%x\r\n", MPU_NS->RLAR);
+	bk_printf("MPU_NS->RBAR1:0x%x\r\n", MPU_NS->RBAR_A1);
+	bk_printf("MPU_NS->RLAR1:0x%x\r\n", MPU_NS->RLAR_A1);
+	bk_printf("MPU_NS->RBAR2:0x%x\r\n", MPU_NS->RBAR_A2);
+	bk_printf("MPU_NS->RLAR2:0x%x\r\n", MPU_NS->RLAR_A2);
+	bk_printf("MPU_NS->RBAR3:0x%x\r\n", MPU_NS->RBAR_A3);
+	bk_printf("MPU_NS->RLAR3:0x%x\r\n", MPU_NS->RLAR_A3);
 	
-	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
-	ARM_MPU_Enable_NS(0);
 	bk_printf("MPU->CTRL:0x%x\r\n", MPU_NS->CTRL);
 	
 	__DSB();
@@ -147,7 +148,7 @@ uint32_t dc_mpu_config(void)
 	__DMB();
 	ARM_MPU_Disable();
 	do{
-		MPU->CTRL = 0;
+		//MPU->CTRL = 0;
 		MPU->RNR = 0;
 		MPU->RBAR = 0;
 		MPU->RLAR = 0;
@@ -157,9 +158,9 @@ uint32_t dc_mpu_config(void)
 		MPU->RLAR_A2 = 0;
 		MPU->RBAR_A3 = 0;
 		MPU->RLAR_A3 = 0;
-		MPU->RESERVED0[0] = 0;
-		MPU->MAIR0 = 0;
-		MPU->MAIR1 = 0;
+		//MPU->RESERVED0[0] = 0;
+		MPU->MAIR0 = 0x44444444;
+		MPU->MAIR1 = 0x44444444;
 	}while(0);
 	
 	ARM_MPU_SetMemAttr(0UL, ARM_MPU_ATTR(       /* Normal memory */
@@ -181,6 +182,13 @@ uint32_t dc_mpu_config(void)
 	ARM_MPU_Load(0, mpu_table[0], 7);
 	#endif
 	
+	bk_printf("revoke the function-ARM_MPU_NS_Enable\r\n");
+	ARM_MPU_Enable_NS(0);
+	
+	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
+	ARM_MPU_Enable(0);
+	
+	MPU->RNR = 0;
 	bk_printf("MPU->TYPE:0x%x\r\n", MPU->TYPE);
 	bk_printf("MPU->CTRL:0x%x\r\n", MPU->CTRL);
 	bk_printf("MPU->MAIR0:0x%x\r\n", MPU->MAIR0);
@@ -194,8 +202,6 @@ uint32_t dc_mpu_config(void)
 	bk_printf("MPU->RBAR3:0x%x\r\n", MPU->RBAR_A3);
 	bk_printf("MPU->RLAR3:0x%x\r\n", MPU->RLAR_A3);
 	
-	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
-	ARM_MPU_Enable(0);
 	bk_printf("MPU->CTRL:0x%x\r\n", MPU->CTRL);
 	
 	__DSB();
@@ -1065,18 +1071,50 @@ uint32_t data_cache_verification_main(void)
 {
 	uint32_t reg;
 
-	SCB_DisableICache();
-	SCB_DisableDCache();
+	bk_printf("SCB_InvalidateICache\r\n");
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00400);
+	SCB_InvalidateICache();
 	
+	bk_printf("SCB_InvalidateDCache\r\n");
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00500);
+	SCB_InvalidateDCache();
+
+#define CONFIG_DISABLE_CACHE 0
+#if CONFIG_DISABLE_CACHE
+	bk_printf("SCB_DisableICache\r\n");
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00600);
+	SCB_DisableICache();
+	bk_printf("SCB_DisableDCache\r\n");
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00700);
+	SCB_DisableDCache();
+#endif	
 	/* config dcache via mpu*/
+	bk_printf("dc_mpu_config_ns\r\n");
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00800);
+	dc_mpu_config_ns();
+	
+	bk_printf("dc_mpu_config\r\n");
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00900);
 	dc_mpu_config();
 
+	bk_printf("SCB_EnableI-D-Cache\r\n");
+#define CONFIG_TOGGLE_CACHE_SWITCH 1	
+#if CONFIG_TOGGLE_CACHE_SWITCH
+	*((volatile UINT32 *)(0x44010014)) = (0xcac01600);
+	SCB_DisableICache();
+	*((volatile UINT32 *)(0x44010014)) = (0xcac01700);
+	SCB_DisableDCache();
+#endif
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00a00);
 	SCB_EnableDCache();
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00b00);
 	SCB_EnableICache();
 
 	/* read data, and sum these data*/
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00c00);
 	bk_printf("non_cache_sum_value:0x%x\r\n", sum_non_dcache_array());
 	
+	*((volatile UINT32 *)(0x44010014)) = (0xcac00d00);
 	bk_printf("cache_sum0_value:0x%x\r\n", sum_dcache_array());
 	bk_printf("cache_sum1_value:0x%x\r\n", sum_dcache_array());
 	bk_printf("cache_sum2_value:0x%x\r\n", sum_dcache_array());
@@ -1191,7 +1229,8 @@ uint32_t config_cpu1(void)
 }
 
 uint32_t data_cache_multi_core0_verification_main(void)
-{	config_cpu1();
+{	
+	config_cpu1();
 	
 	/* config dcache via mpu*/
 	SCB_InvalidateICache();

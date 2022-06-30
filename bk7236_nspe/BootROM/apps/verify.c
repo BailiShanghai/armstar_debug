@@ -28,9 +28,9 @@
 #include "dbg.h"
 
 #define CONFIG_ENABLE_PROOF    1
-#define CONFIG_ENABLE_PROOF_SHARED_MEMORY        1
+#define CONFIG_ENABLE_PROOF_SHARED_MEMORY        0
 #define CONFIG_ENABLE_VERIFY_NON_SECURE_FIELD    0
-#define CONFIG_ENABLE_PROOF_DTCM                 0
+#define CONFIG_ENABLE_PROOF_DTCM                 1
 #define CONFIG_ENABLE_PROOF_ITCM                 0
 #define CONFIG_ENABLE_PROOF_FLASH                0
 #define CONFIG_ENABLE_PROOF_PSRAM                0

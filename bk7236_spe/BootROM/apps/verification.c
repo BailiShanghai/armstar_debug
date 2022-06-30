@@ -179,6 +179,7 @@ void verification_secure(void)
 	#endif
 
 	#if CONFIG_ENABLE_VERIFY_DCACHE
+	bk_printf("data_cache_verification_main\r\n");
 	data_cache_verification_main();
 	#endif
 
@@ -202,6 +203,7 @@ void verification_main(void)
 {
 	#if CONFIG_ENABLE_VERIFICAION
 	verification_secure();
+	bk_printf("verification_secure over\r\n");
 	#endif
 	
 	/* Boot the non-secure code. */	

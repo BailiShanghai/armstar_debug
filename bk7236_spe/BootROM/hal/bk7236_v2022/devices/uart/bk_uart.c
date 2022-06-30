@@ -41,6 +41,14 @@ UINT8 uart_is_tx_fifo_full(UINT8 uport)
     return (param & TX_FIFO_FULL) != 0 ? 1 : 0;
 }
 
+void bk_send_over(UINT8 uport)
+{	
+    if(UART1_PORT == uport)
+        while(UART1_TX_FIFO_COUNT);
+    else
+        while(UART2_TX_FIFO_COUNT);
+}
+
 void bk_send_byte(UINT8 uport, UINT8 data)
 {
 	if(0 == g_uart_init_flag)
@@ -70,6 +78,7 @@ void bk_send_string(UINT8 uport, const char *string)
 		}
         bk_send_byte(uport, *string++);
     }
+	bk_send_over(uport);
 }
 
 /*uart2 as deubg port*/

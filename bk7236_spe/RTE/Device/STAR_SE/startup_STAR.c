@@ -147,35 +147,35 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0200);
-	bk_printf("HardFault_Handler\r\n");
+	bk_printf("HardFault_Handler\r\n");
 	while(1);
 }
 
 void UsageFault_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0300);
-	bk_printf("UsageFault_Handler\r\n");
+	bk_printf("UsageFault_Handler\r\n");
 	while(1);
 }
 
 void BusFault_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0400);
-	bk_printf("BusFault_Handler\r\n");
+	bk_printf("BusFault_Handler\r\n");
 	while(1);
 }
 
 void SecureFault_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0500);
-	bk_printf("SecureFault_Handler\r\n");
+	bk_printf("SecureFault_Handler\r\n");
 	while(1);
 }
 
 void MemManage_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0600);
-	bk_printf("MemManage_Handler\r\n");
+	bk_printf("MemManage_Handler\r\n");
 	while(1);
 }
 

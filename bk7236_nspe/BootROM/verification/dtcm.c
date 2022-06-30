@@ -86,6 +86,8 @@ uint32_t dtcm_data_access(uint32_t start, uint32_t end)
 	uint32_t *tail_ptr = (uint32_t *)(end - 32);
 	uint8_t *h, *t;
 	uint32_t pos, i = 0;
+	
+	bk_printf("ns_world dtcm_data_access 0x%x----0x%x\r\n", start, end);
 
 	*head_ptr = 0x5a5a5a5a;
 	if(0x5a5a5a5a != *head_ptr){

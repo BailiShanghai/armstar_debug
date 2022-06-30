@@ -86,6 +86,8 @@ uint32_t dtcm_data_access(uint32_t start, uint32_t end)
 	uint32_t *tail_ptr = (uint32_t *)(end - 32);
 	uint8_t *h, *t;
 	uint32_t pos, i = 0;
+	
+	bk_printf("dtcm_data_access 0x%x--0x%x\r\n", start, end);
 
 	*head_ptr = 0x5a5a5a5a;
 	if(0x5a5a5a5a != *head_ptr){
@@ -135,6 +137,7 @@ uint32_t dtcm_verification_main(void)
 
 	dtcm_data_access(DTCM_S_MEM_BASE_ADDR, DTCM_S_MEM_BASE_ADDR + 16 * 1024);
 	dtcm_data_access(DTCM_NS_MEM_BASE_ADDR + 16 * 1024, DTCM_S_MEM_BASE_ADDR + 32 * 1024);
+	bk_printf("dtcm_verification_main over\r\n");
 	
 	return 0;
 }

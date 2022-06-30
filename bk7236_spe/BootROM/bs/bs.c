@@ -82,10 +82,13 @@ extern int32_t mem_leak_check_init(void);
     apps_init();
 
     verification_main();
+	
 finish:
     /* should not be here */
     while (1)
+    {
         ;
+    }
 		
 		return 0;
 }
