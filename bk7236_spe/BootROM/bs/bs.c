@@ -25,11 +25,76 @@ extern void verification_main(void);
 const char build_message[] =
     "Build Time: " __DATE__ " " __TIME__ " " BUILD_TYPE;
 
+#define CONFIG_ENABLE_PLL    1
+
+#if CONFIG_ENABLE_PLL
+#define addSYSTEM_Reg0x40                 *((volatile unsigned long *) (0x44010000+0x40*4))
+#define addSYSTEM_Reg0x45                 *((volatile unsigned long *) (0x44010000+0x45*4))
+#define addSYSTEM_Reg0x46                 *((volatile unsigned long *) (0x44010000+0x46*4))
+#define addSYSTEM_Reg0x8                  *((volatile unsigned long *) (0x44010000+0x8*4))
+#define addSYSTEM_Reg0x9                  *((volatile unsigned long *) (0x44010000+0x9*4))
+
+void hal_delay(int count)
+{
+	volatile int i = count;
+	while (i > 0)
+	{
+		i --;
+	}
+}
+
+/* From Wangjian, method to enable 7236 DPLL:
+  * ana_reg5 set bit5
+  * ana_reg0 set to 0x81185B57
+  * ana_reg0 clear bit19
+  * ana_reg0 set bit19
+  */
+void hal_enable_pll_120mhz(void)
+{
+	addSYSTEM_Reg0x45 = addSYSTEM_Reg0x45 | 0x20; 
+	hal_delay(2000);
+	
+	addSYSTEM_Reg0x40 = 0x81185B57;
+
+	hal_delay(2000);
+
+	addSYSTEM_Reg0x40 &= 0xfff7ffff;
+	addSYSTEM_Reg0x40 |= 0x00080000;
+
+	addSYSTEM_Reg0x8 |= 0x033; 	// sel 480M PLL ; div4
+}
+
+void hal_enable_pll_240mhz(void)
+{
+	addSYSTEM_Reg0x45 = addSYSTEM_Reg0x45 | 0x20; 
+	hal_delay(2000);
+	
+	addSYSTEM_Reg0x40 = 0x81185B57;
+
+	hal_delay(2000);
+
+	addSYSTEM_Reg0x40 &= 0xfff7ffff;
+	addSYSTEM_Reg0x40 |= 0x00080000;
+
+	addSYSTEM_Reg0x8 |= 0x031; 	// sel 480M PLL ; div2
+}
+
+void hal_printf_pll_registers(void)
+{
+	bk_printf("addSYSTEM_Reg0x45:0x%x\r\n", addSYSTEM_Reg0x45);
+	bk_printf("addSYSTEM_Reg0x40:0x%x\r\n", addSYSTEM_Reg0x40);
+	bk_printf("addSYSTEM_Reg0x8:0x%x\r\n", addSYSTEM_Reg0x8);
+}
+#endif /* CONFIG_ENABLE_PLL*/
+
 int main(void)
 {
     int32_t ret = 0;
 
 	uart_init(0);
+	hal_enable_pll_120mhz();
+	hal_printf_pll_registers();
+	
 	bk_printf("welcome to the secure world\r\n");
 	
     ret = hal_platform_early_init();

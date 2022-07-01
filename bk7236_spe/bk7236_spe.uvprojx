@@ -868,6 +868,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\data_cache.c</FilePath>
             </File>
+            <File>
+              <FileName>post_sim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\post_sim.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -92,6 +92,10 @@
 #include "data_cache.h"
 #endif
 
+#if CONFIG_ENABLE_POST_SIMULATION_VERIFICATION
+#include "post_sim.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -194,8 +198,11 @@ void verification_secure(void)
 	#if CONFIG_ENABLE_VERIFY_PSRAM_CODE
 	psram_code_test();
 	#endif
+
+	#if CONFIG_ENABLE_POST_SIMULATION_VERIFICATION
+	post_sim_verification_main();
+	#endif
 	
-	*((volatile uint32_t *)(0x44010014)) = (0xaaaaaa00);
 	bk_printf("test end at the secure world\r\n");
 }
 
