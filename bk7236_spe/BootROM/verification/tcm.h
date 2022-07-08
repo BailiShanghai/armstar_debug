@@ -10,7 +10,7 @@ enum
 	STATE_NON_SECURE
 };
 
-#define REG_GAP_LOCATION_NUM    ((0x50 - 0x14) >> 2)
+#define REG_GAP_LOCATION_NUM    (((0x50 - 0x14) >> 2) - 1)
 
 typedef volatile struct {
 	/* REG_0x00 ITCMCR */
@@ -50,7 +50,7 @@ typedef volatile struct {
 } tcm_hw_t;
 
 #define TGU_LOOKUP_TABLE_MAX_CNT   (16)
-#define TGU_RESV_CNT ((0x10 - 0x04) >> 2)
+#define TGU_RESV_CNT (((0x10 - 0x04) >> 2) - 1)
 
 typedef volatile struct {
 	/* REG_0x00 */

@@ -126,7 +126,7 @@ uint32_t dtcm_data_access(uint32_t start, uint32_t end)
 
 uint32_t dtcm_printf_ro_info(void)
 {
-	bk_printf("dtcm size:0x%x, 32kB: b0110\r\n", tcm_hardware_ptr->dtcm_ctrl.size);
+	bk_printf("dtcm size:0x%x, 16kB--b0101\r\n", tcm_hardware_ptr->dtcm_ctrl.size);
 	bk_printf("mem_model feature:0x%x\r\n", tcm_hardware_ptr->mem_model);
 	
 	return 0;
