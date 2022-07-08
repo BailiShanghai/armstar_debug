@@ -44,8 +44,18 @@ uint32_t data_access_mem(uint32_t start_addr, uint32_t end_addr)
 	return 0;
 }
 
+extern uint32_t dtcm_init(void);
+extern uint32_t dtcm_printf_ro_info(void);
+
 uint32_t post_sim_verification_main(void)
 {
+	dtcm_init();
+	dtcm_printf_ro_info();
+	
+#if CONFIG_ENABLE_TEST_MORE	
+	bk_printf("data_access_dtcm\r\n");
+	data_access_mem(VERIFY_DTCM_START_ADDR, VERIFY_DTCM_END_ADDR);
+
 	bk_printf("data_access_SHARED_MEM0\r\n");
 	data_access_mem(VERIFY_SHARED_MEM0_START_ADDR, VERIFY_SHARED_MEM0_END_ADDR);
 	
@@ -63,10 +73,8 @@ uint32_t post_sim_verification_main(void)
 	
 	bk_printf("data_access_itcm\r\n");
 	data_access_mem(VERIFY_ITCM_START_ADDR, VERIFY_ITCM_END_ADDR);
-	
-	bk_printf("data_access_dtcm\r\n");
-	data_access_mem(VERIFY_DTCM_START_ADDR, VERIFY_DTCM_END_ADDR);
-	
+#endif
+
 	return 0;
 }
 // eof

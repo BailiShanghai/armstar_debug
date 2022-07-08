@@ -47,7 +47,7 @@ uint32_t dtcm_lut_config(uint32_t total_blk_num, uint32_t previous_blk_num, uint
 
 uint32_t dtcm_config(void)
 {
-	uint32_t ret;
+	uint32_t ret = 0;
 	uint32_t tcm_size, blk_num, blk_size;
 
 	dtgu_hw_ptr->tgu_ctrl.data_busfault_en = 1;
@@ -63,7 +63,9 @@ uint32_t dtcm_config(void)
 				blk_size);
 
 	/* previous section is secure, and the other is non-secure*/
-	ret = dtcm_lut_config(blk_num, blk_num >> 1, STATE_SECURE);
+	//ret = dtcm_lut_config(blk_num, blk_num >> 1, STATE_SECURE);
+	//ret = dtcm_lut_config(blk_num, blk_num >> 1, STATE_NON_SECURE);
+	dtgu_hw_ptr->sec_lookup_tab[0] = 0xFF00;
 	
 	return ret;
 }

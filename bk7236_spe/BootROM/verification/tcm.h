@@ -50,6 +50,7 @@ typedef volatile struct {
 } tcm_hw_t;
 
 #define TGU_LOOKUP_TABLE_MAX_CNT   (16)
+#define TGU_RESV_CNT ((0x10 - 0x04) >> 2)
 
 typedef volatile struct {
 	/* REG_0x00 */
@@ -73,6 +74,8 @@ typedef volatile struct {
 		};
 		uint32_t v;
 	} tgu_cfg;
+	
+	uint32_t resv[TGU_RESV_CNT];
 	
 	/* REG_0x01 */
 	uint32_t sec_lookup_tab[TGU_LOOKUP_TABLE_MAX_CNT];

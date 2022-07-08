@@ -83,7 +83,7 @@ uint32_t dtcm_init(void)
 uint32_t dtcm_data_access(uint32_t start, uint32_t end)
 {
 	uint32_t *head_ptr = (uint32_t *)start;
-	uint32_t *tail_ptr = (uint32_t *)(end - 32);
+	uint32_t *tail_ptr = (uint32_t *)(end - 16);
 	uint8_t *h, *t;
 	uint32_t pos, i = 0;
 	

@@ -4,6 +4,9 @@
 #define GPIO_UART1_TX_ID    (11)
 #define GPIO_UART1_RX_ID    (10)
 
+#define GPIO_UART2_TX_ID    (0)
+#define GPIO_UART2_RX_ID    (1)
+
 #define GPIO_QSPI_CLK_ID    (22)
 #define GPIO_QSPI_CSN_ID    (23)
 #define GPIO_QSPI_IO0_ID    (24)

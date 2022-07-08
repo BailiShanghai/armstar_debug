@@ -200,8 +200,8 @@ typedef struct _uart_
 
 #define REG_UART_STATUS                     (UART_BASE_ADDR + 3 * 4)
 
-#define UART1_BASE_ADDR			            (0x54820000 + 4 * 4) /* offset 16 bytes, compared with UART_BASE_ADDR*/
-#define UART2_BASE_ADDR			            (0x54820000 + 4 * 4)
+#define UART1_BASE_ADDR			            (UART_BASE_ADDR + 4 * 4) /* offset 16 bytes, compared with UART_BASE_ADDR*/
+#define UART2_BASE_ADDR			            (UART_BASE_ADDR + 4 * 4)
 
 #define REG_UART1_CONFIG                     (UART1_BASE_ADDR + 4 * 0)
 #define REG_UART2_CONFIG                     (UART2_BASE_ADDR + 4 * 0)

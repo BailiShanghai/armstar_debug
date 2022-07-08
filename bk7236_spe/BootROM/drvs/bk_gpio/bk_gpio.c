@@ -15,6 +15,15 @@ uint32_t gpio_uart1_config(void)
 	return 0;
 }
 
+uint32_t gpio_uart2_config(void)
+{
+	gpio_hw_ptr = (gpio_hw_t *)SOC_AON_GPIO_REG_BASE;
+	gpio_hw_ptr->gpio_num[GPIO_UART2_TX_ID].cfg.v = 0x78;
+	gpio_hw_ptr->gpio_num[GPIO_UART2_RX_ID].cfg.v = 0x78;
+	
+	return 0;
+}
+
 uint32_t gpio_qspi_config(void)
 {
 	gpio_hw_ptr = (gpio_hw_t *)SOC_AON_GPIO_REG_BASE;

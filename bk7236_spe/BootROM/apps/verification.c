@@ -206,8 +206,25 @@ void verification_secure(void)
 	bk_printf("test end at the secure world\r\n");
 }
 
+uint32_t config_cpu1(void)
+{
+	/* 1, configure the interrupt vector*/
+	/* 2, reset cpu1*/
+	*((volatile uint32_t *)(0x44010014)) = (0x02010000);
+	bk_printf("[CPU0]config cpu1 reg_addr:0x%x, val:0x%x\r\n", 0x44010014, *((volatile uint32_t *)(0x44010014)));
+
+	*((volatile uint32_t *)(0x44010014)) = (*((volatile uint32_t *)(0x44010014))) | 0x01;
+	bk_printf("[CPU0]config cpu1 reg_addr:0x%x, val:0x%x\r\n", 0x44010014, *((volatile uint32_t *)(0x44010014)));
+
+	return 0;
+}
+
 void verification_main(void)
 {
+#if CONFIG_ENABLE_CO_CPU
+	config_cpu1();
+#endif
+	
 	#if CONFIG_ENABLE_VERIFICAION
 	verification_secure();
 	bk_printf("verification_secure over\r\n");
