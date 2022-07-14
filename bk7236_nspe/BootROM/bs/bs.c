@@ -36,14 +36,16 @@ int main(void)
 
     bk_printf("==================================================================="
            "=======\n");
-    bk_printf("| %-70s |\n", "version 1.0");
+    bk_printf("| %-70s |\n", 
+"version 1.0");
     bk_printf("| %-70s |\n", __DATE__);
     bk_printf("| %-70s |\n", __TIME__);
     bk_printf("==================================================================="
            "=======\n");
 	#endif
-
+		
     proof_main();
+	
 finish:
     /* should not be here */
     while (1)

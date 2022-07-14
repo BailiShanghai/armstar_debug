@@ -30,10 +30,11 @@
 #define CONFIG_ENABLE_PROOF    1
 #define CONFIG_ENABLE_PROOF_SHARED_MEMORY        0
 #define CONFIG_ENABLE_VERIFY_NON_SECURE_FIELD    0
-#define CONFIG_ENABLE_PROOF_DTCM                 1
+#define CONFIG_ENABLE_PROOF_DTCM                 0
 #define CONFIG_ENABLE_PROOF_ITCM                 0
 #define CONFIG_ENABLE_PROOF_FLASH                0
 #define CONFIG_ENABLE_PROOF_PSRAM                0
+#define CONFIG_ENABLE_PROOF_NSC                  1
 
 #if CONFIG_ENABLE_PROOF_SHARED_MEMORY
 #include "shared_mem.h"
@@ -57,6 +58,10 @@
 
 #if CONFIG_ENABLE_PROOF_PSRAM
 #include "psram.h"
+#endif
+
+#if CONFIG_ENABLE_PROOF_NSC
+#include "nsc_caller.h"
 #endif
 
 void proof_non_secure(void)
@@ -83,6 +88,10 @@ void proof_non_secure(void)
 
 	#if CONFIG_ENABLE_PROOF_PSRAM
 	psram_read_write_demo();
+	#endif
+
+	#if CONFIG_ENABLE_PROOF_NSC
+	nsc_proof_main();
 	#endif
 }
 

@@ -798,6 +798,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\psram.c</FilePath>
             </File>
+            <File>
+              <FileName>nsc_caller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\nsc_caller.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

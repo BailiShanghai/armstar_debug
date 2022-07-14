@@ -44,7 +44,9 @@ secureportNON_SECURE_CALLABLE uint32_t NSCFunction( Callback_t pxCallback )
 {
     /* Increment the secure side counter. */
     ulSecureCounter += 1;
-
+	
+	bk_printf("ulSecureCounter:0x%x\r\n", ulSecureCounter);
+	
     /* Return the secure side counter. */
     return ulSecureCounter;
 }
