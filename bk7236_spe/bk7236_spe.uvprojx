@@ -873,6 +873,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\post_sim.c</FilePath>
             </File>
+            <File>
+              <FileName>privilege_peri.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\privilege_peri.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

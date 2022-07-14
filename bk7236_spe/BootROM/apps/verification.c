@@ -96,6 +96,10 @@
 #include "post_sim.h"
 #endif
 
+#if CONFIG_ENABLE_PRIVILEGE_PERIPHERAL_ACCESS
+#include "privilege_peri.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -201,6 +205,10 @@ void verification_secure(void)
 
 	#if CONFIG_ENABLE_POST_SIMULATION_VERIFICATION
 	post_sim_verification_main();
+	#endif
+
+	#if CONFIG_ENABLE_PRIVILEGE_PERIPHERAL_ACCESS
+	privilege_verification_main();
 	#endif
 	
 	bk_printf("test end at the secure world\r\n");
