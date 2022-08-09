@@ -186,6 +186,10 @@ uint32_t dc_mpu_config(void)
 	ARM_MPU_Enable_NS(4);
 	
 	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
+#if CONFIG_INVALIDATE_DCACHE_BEFORE_MPU_ENABLE
+	SCB_CleanInvalidateDCache();
+#endif
+
 	ARM_MPU_Enable(4);
 	
 #if CONFIG_ENABLE_DCACHE_AFTER_MPU_ENABLE
