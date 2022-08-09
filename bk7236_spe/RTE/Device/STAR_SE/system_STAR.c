@@ -42,6 +42,8 @@
   #error device not specified!
 #endif
 
+	#include "verification_config.h"
+
 /*----------------------------------------------------------------------------
   Define clocks
  *----------------------------------------------------------------------------*/
@@ -101,8 +103,10 @@ void SystemInit (void)
     SCB_EnableICache();
 #endif
 
+#if (0 == CONFIG_ENABLE_DCACHE_AFTER_MPU_ENABLE)
 #if defined __EN_DCACHE
   if (SCB->CLIDR & SCB_CLIDR_IC_Msk)
     SCB_EnableDCache();
 #endif 
+#endif
 }

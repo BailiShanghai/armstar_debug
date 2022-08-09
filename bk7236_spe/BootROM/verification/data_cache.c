@@ -188,6 +188,14 @@ uint32_t dc_mpu_config(void)
 	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
 	ARM_MPU_Enable(4);
 	
+#if CONFIG_ENABLE_DCACHE_AFTER_MPU_ENABLE
+#if defined __EN_DCACHE
+	bk_printf("SCB_EnableDCache\r\n");
+	  if (SCB->CLIDR & SCB_CLIDR_IC_Msk)
+	    SCB_EnableDCache();
+#endif 
+#endif
+	
 	MPU->RNR = 0;
 	bk_printf("MPU->TYPE:0x%x\r\n", MPU->TYPE);
 	bk_printf("MPU->CTRL:0x%x\r\n", MPU->CTRL);
