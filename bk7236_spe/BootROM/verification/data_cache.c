@@ -183,10 +183,10 @@ uint32_t dc_mpu_config(void)
 	#endif
 	
 	bk_printf("revoke the function-ARM_MPU_NS_Enable\r\n");
-	ARM_MPU_Enable_NS(0);
+	ARM_MPU_Enable_NS(4);
 	
 	bk_printf("revoke the function-ARM_MPU_Enable\r\n");
-	ARM_MPU_Enable(0);
+	ARM_MPU_Enable(4);
 	
 	MPU->RNR = 0;
 	bk_printf("MPU->TYPE:0x%x\r\n", MPU->TYPE);
