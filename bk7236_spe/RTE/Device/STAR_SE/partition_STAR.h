@@ -78,7 +78,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END0       0xFFFFFFFF      /* end address of SAU region 0 */
+#define SAU_INIT_END0       0x0FFFFFFF      /* end address of SAU region 0 */
 
 /*
 //     <o>Region is

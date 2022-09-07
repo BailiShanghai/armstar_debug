@@ -137,10 +137,21 @@ void Reset_Handler(void)
 	__PROGRAM_START();                        /* Enter PreMain (C library entry point) */
 }
 
+void exception_dump_reg(void)
+{
+	bk_printf("cfsr:0x%x\r\n", *((volatile UINT32 *)(0xe000ed28)));
+	bk_printf("hfsr:0x%x\r\n", *((volatile UINT32 *)(0xe000ed2c)));
+	bk_printf("dfsr:0x%x\r\n", *((volatile UINT32 *)(0xe000ed30)));
+	bk_printf("mmfar:0x%x\r\n", *((volatile UINT32 *)(0xe000ed34)));
+	bk_printf("bfar:0x%x\r\n", *((volatile UINT32 *)(0xe000ed38)));
+	bk_printf("afsr:0x%x\r\n", *((volatile UINT32 *)(0xe000ed3c)));
+}
+
 void NMI_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0100);
 	bk_printf("NMI_Handler\r\n");
+	exception_dump_reg();
 	while(1);
 }
 
@@ -148,6 +159,7 @@ void HardFault_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0200);
 	bk_printf("HardFault_Handler\r\n");
+	exception_dump_reg();
 	while(1);
 }
 
@@ -162,6 +174,7 @@ void BusFault_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0400);
 	bk_printf("BusFault_Handler\r\n");
+	exception_dump_reg();
 	while(1);
 }
 
@@ -169,6 +182,7 @@ void SecureFault_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0500);
 	bk_printf("SecureFault_Handler\r\n");
+	exception_dump_reg();
 	while(1);
 }
 
@@ -176,6 +190,7 @@ void MemManage_Handler(void)
 {
 	*((volatile UINT32 *)(0x44010014)) = (0xdead0600);
 	bk_printf("MemManage_Handler\r\n");
+	exception_dump_reg();
 	while(1);
 }
 
@@ -184,87 +199,108 @@ void MemManage_Handler(void)
  *----------------------------------------------------------------------------*/
 void Default_Handler(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 
 void Default_Handler_0(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_1(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_2(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_3(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_4(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_5(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_6(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_7(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_8(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_9(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_10(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_11(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_12(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_13(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_14(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_15(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_16(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_17(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_18(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 void Default_Handler_19(void)
 {
-  while(1);
+	exception_dump_reg();
+	while(1);
 }
 // eof
