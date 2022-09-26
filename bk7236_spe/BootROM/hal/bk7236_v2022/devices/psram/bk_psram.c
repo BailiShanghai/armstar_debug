@@ -349,7 +349,7 @@ UINT32 bk_psram_read(char *user_buf, UINT32 count, UINT32 address)
 		}
 
 		count -= read_cnt;
-		address += read_cnt;
+		address += 1024;
 	}
 
 	return 0;
@@ -381,7 +381,7 @@ UINT32 bk_psram_write(char *user_buf, UINT32 count, UINT32 address)
 		bk_printf("psram write: %x:%x\r\n", address, value);
 		REG_WRITE(address, value);
 		count -= write_cnt;
-		address += write_cnt;
+		address += 1024;
 	}
 
 	return 0;

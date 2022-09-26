@@ -53,6 +53,7 @@ void psram_read_write_demo(void)
 
 	bk_printf("psram s world\r\n");
 
+	dc_mpu_config();
 	bk_psram_mpc_cofig();
 
 	bk_psram_init();

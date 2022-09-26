@@ -9,7 +9,7 @@
 #define CONFIG_ENABLE_MIN_REGIONS    1
 
 #if CONFIG_ENABLE_MIN_REGIONS
-const ARM_MPU_Region_t mpu_table[1][16] = {
+const ARM_MPU_Region_t mpu_table[1][17] = {
   {
     /*                     BASE          SH              RO   NP   XN                         LIMIT         ATTR */
     /* text:flash bootrom space*/
@@ -36,6 +36,9 @@ const ARM_MPU_Region_t mpu_table[1][16] = {
     { .RBAR = ARM_MPU_RBAR(0x90150000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90160000UL, 2UL) },
     { .RBAR = ARM_MPU_RBAR(0x90170000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x90180000UL, 2UL) },
     { .RBAR = ARM_MPU_RBAR(0x90190000UL, ARM_MPU_SH_NON, 0UL, 0UL, 1UL), .RLAR = ARM_MPU_RLAR(0x901a0000UL, 2UL) },
+
+	/*psram, 512KB to cache, 0~255 is ns, 256~512 is s*/
+    { .RBAR = ARM_MPU_RBAR(0x60000000UL, ARM_MPU_SH_NON, 0UL, 0UL, 0UL), .RLAR = ARM_MPU_RLAR(0x60080000UL, 0UL) },
   }
 };
 const ARM_MPU_Region_t mpu_table_ns[1][16] = {
@@ -177,7 +180,7 @@ uint32_t dc_mpu_config(void)
 	));
 
 	#if CONFIG_ENABLE_MIN_REGIONS
-	ARM_MPU_Load(0, mpu_table[0], 16); /* just code, and data*/
+	ARM_MPU_Load(0, mpu_table[0], 17); /* just code, and data*/
 	#else
 	ARM_MPU_Load(0, mpu_table[0], 7);
 	#endif
