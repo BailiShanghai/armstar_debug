@@ -89,8 +89,8 @@ void Interrupt9_Handler     (void) __attribute__ ((weak, alias("Default_Handler_
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 
-extern const pFunc __VECTOR_TABLE[496];
-       const pFunc __VECTOR_TABLE[496] __VECTOR_TABLE_ATTRIBUTE = {
+extern const pFunc __VECTOR_TABLE[];
+       const pFunc __VECTOR_TABLE[] __VECTOR_TABLE_ATTRIBUTE = {
   (pFunc)(&__INITIAL_SP),                   /*     Initial Stack Pointer */
   Reset_Handler,                            /*     Reset Handler */
   NMI_Handler,                              /* -14 NMI Handler */
@@ -107,20 +107,9 @@ extern const pFunc __VECTOR_TABLE[496];
   0,                                        /*     Reserved */
   PendSV_Handler,                           /*  -2 PendSV Handler */
   SysTick_Handler,                          /*  -1 SysTick Handler */
-
-  /* Interrupts */
-  Interrupt0_Handler,                       /*   0 Interrupt 0 */
-  Interrupt1_Handler,                       /*   1 Interrupt 1 */
-  Interrupt2_Handler,                       /*   2 Interrupt 2 */
-  Interrupt3_Handler,                       /*   3 Interrupt 3 */
-  Interrupt4_Handler,                       /*   4 Interrupt 4 */
-  Interrupt5_Handler,                       /*   5 Interrupt 5 */
-  Interrupt6_Handler,                       /*   6 Interrupt 6 */
-  Interrupt7_Handler,                       /*   7 Interrupt 7 */
-  Interrupt8_Handler,                       /*   8 Interrupt 8 */
-  Interrupt9_Handler                        /*   9 Interrupt 9 */
-                                            /* Interrupts 10 .. 480 are left out */
 };
+
+__attribute__((section(".ARM.__AT_0x02000100"))) const uint32_t boot_rom_exit_flag[2] = {0x32374B42, 0x00003633};
 
 #if defined ( __GNUC__ )
 #pragma GCC diagnostic pop
