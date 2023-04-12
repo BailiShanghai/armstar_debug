@@ -9,9 +9,9 @@ extern "C" {
 #define ITGU_BASE_ADDR  (0xE001E500)
 #define ITCM_MEM_BASE_ADDR   (0x0)
 
-typedef volatile tgu_hw_t itgu_hw_t;
+    typedef volatile tgu_hw_t itgu_hw_t;
 
-extern uint32_t itcm_verification_main(void);
+    extern uint32_t itcm_verification_main(void);
 
 #ifdef __cplusplus
 }

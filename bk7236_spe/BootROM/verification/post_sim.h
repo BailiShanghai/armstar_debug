@@ -7,7 +7,7 @@
  * smem3	 0x28040000
  * smem4	 0x28060000
  */
- 
+
 #define VERIFY_SHARED_MEM0_START_ADDR         (0x28008000)
 #define VERIFY_SHARED_MEM0_END_ADDR           (0x28008000 + 20)
 

@@ -35,240 +35,261 @@ uint8_t qspi_rx_buffer[BUFFER_SIZE];
 
 static void fill_buffer(uint8_t *pBuffer, uint32_t uwBufferLenght, uint32_t uwOffset)
 {
-	uint32_t tmpIndex = 0;
+    uint32_t tmpIndex = 0;
 
-	/* Put in global buffer different values */
-	for (tmpIndex = 0; tmpIndex < uwBufferLenght; tmpIndex++ ) {
-		pBuffer[tmpIndex] = tmpIndex + uwOffset;
-	}
+    /* Put in global buffer different values */
+    for (tmpIndex = 0; tmpIndex < uwBufferLenght; tmpIndex++ )
+    {
+        pBuffer[tmpIndex] = tmpIndex + uwOffset;
+    }
 }
 
-static uint8_t compare_buffer(uint8_t* pBuffer1, uint8_t* pBuffer2, uint32_t BufferLength)
+static uint8_t compare_buffer(uint8_t *pBuffer1, uint8_t *pBuffer2, uint32_t BufferLength)
 {
-	while (BufferLength--) {
-		if (*pBuffer1 != *pBuffer2) {
-			return 1;
-		}
+    while (BufferLength--)
+    {
+        if (*pBuffer1 != *pBuffer2)
+        {
+            return 1;
+        }
 
-		pBuffer1++;
-		pBuffer2++;
-	}
+        pBuffer1++;
+        pBuffer2++;
+    }
 
-	return 0;
+    return 0;
 }
 
 void qspi_read_write_aps6404(void)
 {
-	qspi_config_t qspi_config;
+    qspi_config_t qspi_config;
 
-	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
+    fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
 
-	bk_printf("qspi s world\r\n");
+    bk_printf("qspi s world\r\n");
 
-	bk_qspi_mpc_config();
+    bk_qspi_mpc_config();
 
-	bk_qspi_init();
+    bk_qspi_init();
 
-	bk_printf("qspi aps6404 id %x\r\n", bk_qspi_read_id(APS6404_CMD_READ_ID));
+    bk_printf("qspi aps6404 id %x\r\n", bk_qspi_read_id(APS6404_CMD_READ_ID));
 
-	/*enter quad mode*/
-	bk_qspi_enter_quad_mode(APS6404_CMD_ENTER_QUAD_MODE);
+    /*enter quad mode*/
+    bk_qspi_enter_quad_mode(APS6404_CMD_ENTER_QUAD_MODE);
 
-	bk_printf("cpu quad\r\n");
-	/*write data to secure address with cpu mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_QUAD_WRITE;
-	qspi_config.cmd_line = QSPI_4_LINE;
-	qspi_config.addr_line = QSPI_4_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 0;
-	qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
-	bk_qspi_cpu_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
+    bk_printf("cpu quad\r\n");
+    /*write data to secure address with cpu mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_QUAD_WRITE;
+    qspi_config.cmd_line = QSPI_4_LINE;
+    qspi_config.addr_line = QSPI_4_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 0;
+    qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
+    bk_qspi_cpu_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
-	/*read data from secure address with cpu mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
-	qspi_config.cmd_line = QSPI_4_LINE;
-	qspi_config.addr_line = QSPI_4_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 6;
-	qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
-	bk_qspi_cpu_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
+    /*read data from secure address with cpu mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
+    qspi_config.cmd_line = QSPI_4_LINE;
+    qspi_config.addr_line = QSPI_4_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 6;
+    qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
+    bk_qspi_cpu_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
 
-	/*compare data*/
-	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("cpu quad s error\r\n");
-	} else {
-		bk_printf("cpu quad s success\r\n");
-	}
+    /*compare data*/
+    if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE))
+    {
+        bk_printf("cpu quad s error\r\n");
+    }
+    else
+    {
+        bk_printf("cpu quad s success\r\n");
+    }
 
-	bk_printf("io quad\r\n");
-	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START_IO);
-	/*write data to secure address with io mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_QUAD_WRITE;
-	qspi_config.cmd_line = QSPI_4_LINE;
-	qspi_config.addr_line = QSPI_4_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 0;
-	qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
-	bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
+    bk_printf("io quad\r\n");
+    fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START_IO);
+    /*write data to secure address with io mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_QUAD_WRITE;
+    qspi_config.cmd_line = QSPI_4_LINE;
+    qspi_config.addr_line = QSPI_4_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 0;
+    qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
+    bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
-	/*read data from secure address with io mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
-	qspi_config.cmd_line = QSPI_4_LINE;
-	qspi_config.addr_line = QSPI_4_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 6;
-	qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
-	bk_qspi_io_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
+    /*read data from secure address with io mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
+    qspi_config.cmd_line = QSPI_4_LINE;
+    qspi_config.addr_line = QSPI_4_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 6;
+    qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
+    bk_qspi_io_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
 
-	/*compare data*/
-	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("io quad s error\r\n");
-	} else {
-		bk_printf("io quad s success\r\n");
-	}
+    /*compare data*/
+    if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE))
+    {
+        bk_printf("io quad s error\r\n");
+    }
+    else
+    {
+        bk_printf("io quad s success\r\n");
+    }
 
-	/*exit quad mode*/
-	bk_qspi_exit_quad_mode(APS6404_CMD_EXIT_QUAD_MODE);
+    /*exit quad mode*/
+    bk_qspi_exit_quad_mode(APS6404_CMD_EXIT_QUAD_MODE);
 
-	bk_printf("cpu single");
-	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
-	/*write data to secure address with cpu mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_WRITE;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_1_LINE;
-	qspi_config.data_line = QSPI_1_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 0;
-	qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
-	bk_qspi_cpu_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
+    bk_printf("cpu single");
+    fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
+    /*write data to secure address with cpu mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_WRITE;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_1_LINE;
+    qspi_config.data_line = QSPI_1_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 0;
+    qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
+    bk_qspi_cpu_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
-	/*read data from secure address with cpu mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_4_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 6;
-	qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
-	bk_qspi_cpu_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
+    /*read data from secure address with cpu mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_FAST_READ_QUAD;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_4_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 6;
+    qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
+    bk_qspi_cpu_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
 
-	/*compare data*/
-	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("cpu single s error\r\n");
-	} else {
-		bk_printf("cpu single s success\r\n");
-	}
+    /*compare data*/
+    if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE))
+    {
+        bk_printf("cpu single s error\r\n");
+    }
+    else
+    {
+        bk_printf("cpu single s success\r\n");
+    }
 
-	bk_printf("io single");
-	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START_IO);
-	/*write data to secure address with io mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_WRITE;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_1_LINE;
-	qspi_config.data_line = QSPI_1_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 0;
-	qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
-	bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
+    bk_printf("io single");
+    fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START_IO);
+    /*write data to secure address with io mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_WRITE;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_1_LINE;
+    qspi_config.data_line = QSPI_1_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 0;
+    qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
+    bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
-	/*read data from secure address with io mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = APS6404_CMD_FAST_READ;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_1_LINE;
-	qspi_config.data_line = QSPI_1_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 8;
-	qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
-	bk_qspi_io_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
+    /*read data from secure address with io mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = APS6404_CMD_FAST_READ;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_1_LINE;
+    qspi_config.data_line = QSPI_1_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 8;
+    qspi_config.dummy_mode = CMD4_DUMMY_CMD5;
+    bk_qspi_io_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
 
-	/*compare data*/
-	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("io single s error\r\n");
-	} else {
-		bk_printf("io single s success\r\n");
-	}
+    /*compare data*/
+    if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE))
+    {
+        bk_printf("io single s error\r\n");
+    }
+    else
+    {
+        bk_printf("io single s success\r\n");
+    }
 }
 
 void qspi_read_write_gd25q32b(void)
 {
-	qspi_config_t qspi_config;
+    qspi_config_t qspi_config;
 
-	fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
+    fill_buffer(qspi_tx_buffer, BUFFER_SIZE, TEST_VALUE_START);
 
-	bk_printf("qspi gd25q32b s world\r\n");
+    bk_printf("qspi gd25q32b s world\r\n");
 
-	bk_qspi_mpc_config();
+    bk_qspi_mpc_config();
 
-	bk_qspi_init();
+    bk_qspi_init();
 
-	/*write data to secure address with cpu mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = GD25Q32B_CMD_WRITE;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_1_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 0;
-	qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
-	bk_qspi_cpu_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
+    /*write data to secure address with cpu mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = GD25Q32B_CMD_WRITE;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_1_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 0;
+    qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
+    bk_qspi_cpu_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
-	/*read data from secure address with cpu mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = GD25Q32B_CMD_READ;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_4_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_6_LINE;
-	qspi_config.dummy_clk = 4;
-	qspi_config.dummy_mode = CMD5_DUMMY_CMD6;
-	bk_qspi_cpu_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
+    /*read data from secure address with cpu mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = GD25Q32B_CMD_READ;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_4_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_6_LINE;
+    qspi_config.dummy_clk = 4;
+    qspi_config.dummy_mode = CMD5_DUMMY_CMD6;
+    bk_qspi_cpu_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
 
-	/*compare data*/
-	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("cpu single qspi read or write s error\r\n");
-	} else {
-		bk_printf("cpu single qspi read or write s success\r\n");
-	}
+    /*compare data*/
+    if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE))
+    {
+        bk_printf("cpu single qspi read or write s error\r\n");
+    }
+    else
+    {
+        bk_printf("cpu single qspi read or write s success\r\n");
+    }
 
-	/*write data to secure address with io mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = GD25Q32B_CMD_WRITE;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_1_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_5_LINE;
-	qspi_config.dummy_clk = 0;
-	qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
-	bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
+    /*write data to secure address with io mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = GD25Q32B_CMD_WRITE;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_1_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_5_LINE;
+    qspi_config.dummy_clk = 0;
+    qspi_config.dummy_mode = NO_INSERT_DUMMY_CLK;
+    bk_qspi_io_write(&qspi_config, qspi_tx_buffer, BUFFER_SIZE);
 
-	/*read data from secure address with io mode*/
-	qspi_config.addr = QSPI_START_ADDRESS_S;
-	qspi_config.cmd = GD25Q32B_CMD_READ;
-	qspi_config.cmd_line = QSPI_1_LINE;
-	qspi_config.addr_line = QSPI_4_LINE;
-	qspi_config.data_line = QSPI_4_LINE;
-	qspi_config.line_num = QSPI_CMD_6_LINE;
-	qspi_config.dummy_clk = 4;
-	qspi_config.dummy_mode = CMD5_DUMMY_CMD6;
-	bk_qspi_io_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
+    /*read data from secure address with io mode*/
+    qspi_config.addr = QSPI_START_ADDRESS_S;
+    qspi_config.cmd = GD25Q32B_CMD_READ;
+    qspi_config.cmd_line = QSPI_1_LINE;
+    qspi_config.addr_line = QSPI_4_LINE;
+    qspi_config.data_line = QSPI_4_LINE;
+    qspi_config.line_num = QSPI_CMD_6_LINE;
+    qspi_config.dummy_clk = 4;
+    qspi_config.dummy_mode = CMD5_DUMMY_CMD6;
+    bk_qspi_io_read(&qspi_config, qspi_rx_buffer, BUFFER_SIZE);
 
-	/*compare data*/
-	if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE)) {
-		bk_printf("io single qspi read or write s error\r\n");
-	} else {
-		bk_printf("io single qspi read or write s success\r\n");
-	}
+    /*compare data*/
+    if (compare_buffer(qspi_tx_buffer, qspi_rx_buffer, BUFFER_SIZE))
+    {
+        bk_printf("io single qspi read or write s error\r\n");
+    }
+    else
+    {
+        bk_printf("io single qspi read or write s success\r\n");
+    }
 }
 
