@@ -1,0 +1,82 @@
+l; --------------------------------------------------------------------------------
+; @Title: Example Script File for ARM Development Board with Cortex M33 Pid Header Card
+; @Description:
+;   Example script file for ARM development board with Cortex M33 pid
+; @Author: zhilei.wang@bekencorp.com
+; @Board: bk7236-ver2022
+; @Chip: armstar cortex m33
+; @Copyright: (C) 2022-2045 Beken Corp, licensed for use with TRACE32(R) only
+; --------------------------------------------------------------------------------
+
+;WinCLEAR
+
+;Refresh when printing
+SCREEN.ON
+
+; Debugger Reset
+;WinPAGE.RESet
+;AREA.RESet
+;WinPOS 0. 24. 75. 8.
+;AREA.view
+
+PRINT "resetting..."
+sYmbol.RESet
+SYStem.RESet
+TASK.RESet
+;Break.Delete
+
+;The mapping system is reset to its default state
+MAP.RESet
+
+;Reset MMU configuration
+;TRANSlation.RESet
+
+// select CPU type:CortexM33F
+SYStem.CPU STARF
+
+// set endianism according to the selection
+SYStem.Option BigEndian OFF
+
+;Disable interrupts while single stepping
+SYStem.Option IMASKASM ON
+
+;Disable interrupts while HLL single stepping
+SYStem.Option IMASKHLL ON
+SYStem.JtagClock CTCK 1000kHz
+
+SYStem.CONFIG ETM Base E:0xE0041000
+SYStem.CONFIG ITM Base E:0xE0000000
+SYStem.CONFIG TPIU Base E:0xE0040000
+SYStem.CONFIG.CTI Base E:0xE0042000
+
+SYStem.CONFIG MEMORYACCESSPORT 0
+system.CONFIG.ahbaccessport 0.
+SYStem.CONFIG.DEBUGPORTTYPE SWD
+
+SYStem.Option.ZoneSPACES ON
+SYStem.Option DUALPORT ON
+
+SYStem.MemAccess DAP
+
+Trace.DISable
+
+SYStem.Attach
+//Register.Set ns 0
+
+// load selected example program
+
+Data.LOAD.ELF "../bk7236_spe/output/Objects/bk7236_spe.axf" z:  /NoCODE
+Data.LOAD.ELF "../bk7236_nspe/output/Objects/bk7236_nspe.axf" n:  /NoCODE /NoClear
+
+Data.Set ZSD:0x41040010 %LE %Long 0
+Data.Set ZSD:0x41040014 %LE %Long 0
+Data.Set ZSD:0x41040018 %LE %Long 0
+Data.Set ZSD:0x4104001C %LE %Long 0
+Data.Set ZSD:0x41040020 %LE %Long 0
+Data.Set ZSD:0x41040024 %LE %Long 0
+Data.Set ZSD:0x41040028 %LE %Long 0
+Data.Set ZSD:0x41040030 %LE %Long 0
+Data.Set ZSD:0x4104002C %LE %Long 0
+
+ENDDO
+

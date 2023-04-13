@@ -100,6 +100,10 @@
 #include "privilege_peri.h"
 #endif
 
+#if CONFGI_ENABEL_SECURE_FLASH
+#include "secure_flash.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -211,6 +215,10 @@ void verification_secure(void)
 	privilege_verification_main();
 	#endif
 	
+	#if CONFGI_ENABEL_SECURE_FLASH
+	secure_flash_verification_main();
+	#endif
+
 	bk_printf("test end at the secure world\r\n");
 }
 

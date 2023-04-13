@@ -1,0 +1,11 @@
+// T32 Mon Feb 20 14:50:55 2023
+
+B::
+
+sYmbol.SourcePATH.RESet
+sYmbol.SourcePATH.SetBaseDir "E:\"
+
+sYmbol.SourcePATH.Translate "\home\wangzhilei\Desktop\junlong_fwu_issue\" "E:\workspace\bk7236\3-soc_pl2\"
+sYmbol.SourcePATH.Translate "\home\jl\work\freertos\bk7236\ota\" "E:\workspace\bk7236\3-soc_pl2\"
+
+ENDDO

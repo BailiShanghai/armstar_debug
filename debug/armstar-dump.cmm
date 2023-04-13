@@ -1,0 +1,7 @@
+system.cpu STARF
+SYStem.CONFIG MEMORYACCESSPORT 0
+system.config.ahbaccessport 0. 
+SYStem.CONFIG.DEBUGPORTTYPE SWD
+
+sys.mode prepare
+data.dump eahb:0xe000ed00++0xff

@@ -14,20 +14,7 @@
 
 #pragma once
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include "bk_common_types.h"
 #include "bk_err.h"
-#include "reg.h"
-#include "reg_base.h"
-#include "os_port.h"
-#include "ps_port.h"
-#include "printf_port.h"
-#include "bk_assert.h"
-#include "bk_log.h"
-#include "pal_string.h"
-#include "hal_log.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -84,6 +71,35 @@ extern "C" {
 #ifndef BIT64
 #define BIT64(i)                  (1LL << (i))
 #endif
+
+#define GPIO_UP(id) *(volatile uint32_t*) (SOC_AON_GPIO_REG_BASE + ((id) << 2)) = 2
+#define GPIO_DOWN(id) *(volatile uint32_t*) (SOC_AON_GPIO_REG_BASE + ((id) << 2)) = 0
+
+#define GPIO_UP_DOWN(id) do {\
+	volatile uint32_t cnt;\
+	for (int i = 0; i < 10; i++) {\
+		if ((i % 2) == 0) GPIO_UP((id));\
+		else GPIO_DOWN(id);\
+		cnt = 1000;\
+		while(--cnt > 0);\
+	}\
+} while(0)
+
+#define REG_SET(r, l, h, v) do { \
+	uint32_t reg_v = *(volatile uint32_t*)(r);\
+	reg_v &= ~((( 1 << ((h) + 1)) - 1) & (~( (1 << (l)) - 1)));\
+	reg_v |= ((v) << (l));\
+	*(volatile uint32_t*)(r) = reg_v;\
+} while(0)
+
+#define REG_OR(r, l, h, v) do { \
+	uint32_t reg_v = *(volatile uint32_t*)(r);\
+	reg_v |= ((v) << (l));\
+	*(volatile uint32_t*)(r) = reg_v;\
+} while(0)
+
+#define SYS_REG_SET(reg_id, l, h, v) REG_SET((SOC_SYSTEM_REG_BASE + ((reg_id) << 2)), (l), (h), (v))
+#define SYS_REG_OR(reg_id, l, h, v)  REG_OR((SOC_SYSTEM_REG_BASE + ((reg_id) << 2)), (l), (h), (v))
 
 #ifdef __cplusplus
 }

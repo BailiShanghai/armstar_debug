@@ -199,10 +199,13 @@ typedef struct
 
 #define REG_FLASH_SEC_START_ADDR0           (FLASH_BASE + 13 * 4)
 #define REG_FLASH_SEC_END_ADDR0             (FLASH_BASE + 14 * 4)
+
 #define REG_FLASH_SEC_START_ADDR1           (FLASH_BASE + 15 * 4)
 #define REG_FLASH_SEC_END_ADDR1             (FLASH_BASE + 16 * 4)
+
 #define REG_FLASH_SEC_START_ADDR2           (FLASH_BASE + 17 * 4)
 #define REG_FLASH_SEC_END_ADDR2             (FLASH_BASE + 18 * 4)
+
 #define REG_FLASH_SEC_START_ADDR3           (FLASH_BASE + 19 * 4)
 #define REG_FLASH_SEC_END_ADDR3             (FLASH_BASE + 20 * 4)
 #define FIELD_SEC_ADDR_POSI                    (0)

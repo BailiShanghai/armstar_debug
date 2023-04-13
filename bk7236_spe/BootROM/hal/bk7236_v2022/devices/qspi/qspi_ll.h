@@ -13,7 +13,7 @@ qspi_hw_t *g_qspi_hw_cfg;
 
 static inline void qspi_ll_init(void)
 {
-	g_qspi_hw_cfg = (qspi_hw_t *)SOC_QSPI_REG_BASE;
+	g_qspi_hw_cfg = (qspi_hw_t *)SOC_QSPI0_REG_BASE;
 }
 
 static inline uint32_t qspi_get_device_id(qspi_hw_t *hw)

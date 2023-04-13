@@ -1,0 +1,183 @@
+; --------------------------------------------------------------------------------
+; @Title: Demo script for CortexM33 on V2M-MPS2+
+; @Description:
+;   Programs the sieve demo application into the processor internal flash and
+;   sets up a demo debug scenario.
+;   This script can be used as a template for flashing an application.
+;   Prerequisites:
+;    * Connect Debug Cable to ARM JTAG 20
+;      or
+;      Connect Combiprobe/uTrace to Coresight20 connector
+;        and remove RC7&RC8
+;    * select the AN505 V4 image in board.txt
+; @Keywords: ARM, Cortex-M33, ETM, ITM
+; @Author: AME
+; @Board: ARM V2M-MPS2+
+; @Chip: CORTEX-M33
+; @Copyright: (C) 1989-2021 Lauterbach GmbH, licensed for use with TRACE32(R) only
+; --------------------------------------------------------------------------------
+; $Id: cortexm33_secure_nonsecure_trace.cmm 18621 2021-12-02 15:50:54Z bschroefel $
+
+
+;WinCLEAR
+
+; --------------------------------------------------------------------------------
+; initialize and start the debugger
+RESet
+SYStem.RESet
+SYStem.CPU CortexM33F
+SYStem.CONFIG ETM Base E:0xE0041000
+SYStem.CONFIG ITM Base E:0xE0000000
+SYStem.CONFIG TPIU Base E:0xE0040000
+SYStem.CONFIG.DEBUGPORTTYPE SWD
+IF COMBIPROBE()||UTRACE()
+(
+  SYStem.CONFIG.CONNECTOR MIPI20T
+)
+SYStem.Option DUALPORT ON
+SYStem.MemAccess DAP
+SYStem.JtagClock CTCK 1MHz
+Trace.DISable
+SYStem.Up
+
+; --------------------------------------------------------------------------------
+; switch to Secure Mode
+Register.Set NS 0
+; hardware & security-attribution-unit initialization
+GOSUB InitMPS
+GOSUB InitSAU
+
+; --------------------------------------------------------------------------------
+; load demo program (uses internal RAM only)
+; secure_flash_...elf runs in    Secure zone -> load symbols to Z: zone
+; sieve_flash_...elf  runs in NonSecure zone -> load symbols to N: zone
+Data.LOAD.Elf ~~~~/secure_flash_thumb_ii_v8m_main_secure.elf Z:
+Data.LOAD.Elf ~~~~/sieve_flash_thumb_ii_v8m_main.elf N: /NoRegister /NoClear
+GROUP.CreatePrograms "Secure" secure_flash_thumb_ii_v8m_main_secure /RED
+GROUP.CreatePrograms "NonSecure" sieve_flash_thumb_ii_v8m_main /TEAL
+
+; --------------------------------------------------------------------------------
+; initialize OFFCHIP trace (ETM, ITM)
+IF COMBIPROBE()||UTRACE()||Analyzer()
+(
+  TPIU.PortSize 2
+  TPIU.PortMode Continuous
+  ITM.DataTrace CorrelatedData
+  ITM.ON
+  ETM.Trace ON
+  ETM.ON
+)
+IF hardware.COMBIPROBE()||hardware.UTRACE()
+(
+  Trace.METHOD CAnalyzer
+  Trace.AutoInit ON
+  CAnalyzer.AutoFocus
+)
+ELSE IF Analyzer()
+(
+  Trace.METHOD Analyzer
+  Trace.AutoInit ON
+  Trace.AutoFocus
+)
+
+; --------------------------------------------------------------------------------
+; start program execution
+Go \secure\main\1
+WAIT !STATE.RUN()
+
+; assign a non-secure function pointer - used in secure_func10
+Var.Assign s_fnNonsecure=&func2
+
+; prepare some DISabled breakpoints for the demonstration
+Break.Set \sieve\main\63 /DISable
+Break.Set \secure\__acle_se_secure_func10 /DISable
+Break.Set \secure\__acle_se_secure_func10\50 /DISable
+
+
+; --------------------------------------------------------------------------------
+; open some windows
+WinCLEAR
+Mode.Hll
+WinPOS 0. 0. 116. 26.
+List.auto
+WinPOS 120. 0. 100. 8.
+Frame.view
+WinPOS 120. 14.
+Var.Watch
+Var.AddWatch %SpotLight %LOCation plot1 plot2 nPwm25 nPwm64
+WinPOS 120. 25.
+Register.view /SpotLight
+WinPOS 0. 32.
+Var.DRAW %DEFault sinewave
+
+ENDDO
+
+; --------------------------------------------------------------------------------
+
+InitMPS: ;()
+(
+  ; init 0x00000000--0x001fffff on SSRAM1 as Secure only
+  ; init 0x00200000--0x00200000 on SSRAM1 as NonSecure
+
+  PRIVATE &MpsBaseSsRam1Base
+  &MpsBaseSsRam1Base=0x58007000
+
+  ; create bus errors if the memory range is accessed with wrong permission
+  Data.Set AZSD:&MpsBaseSsRam1Base+0x0 %Long 0x10
+
+  ; init 0x00000000--0x003fffff on SSRAM1 as Secure only
+  PER.Set.SaveIndex AZSD:&MpsBaseSsRam1Base+0x18 %Long 0x0 AZSD:&MpsBaseSsRam1Base+0x1c %Long 0x0
+  PER.Set.SaveIndex AZSD:&MpsBaseSsRam1Base+0x18 %Long 0x1 AZSD:&MpsBaseSsRam1Base+0x1c %Long 0x0
+
+  ; init 0x00200000--0x00200000 on SSRAM1 as NonSecure
+  PRIVATE &blkSize &firstNsBit
+  &blkSize=1<<(Data.Long(AZSD:&MpsBaseSsRam1Base+0x14)+5.)
+
+  &firstNsBit=0x00200000/&blkSize
+
+  PER.Set.SaveIndex AZSD:&MpsBaseSsRam1Base+0x18 %Long 0x0 AZSD:&MpsBaseSsRam1Base+0x1c %Long (~(1<<&firstNsBit-1))&~((1<<&firstNsBit)-0x1)&0xffffffff
+  PER.Set.SaveIndex AZSD:&MpsBaseSsRam1Base+0x18 %Long 0x1 AZSD:&MpsBaseSsRam1Base+0x1c %Long ((~(1<<&firstNsBit-1))&~((1<<&firstNsBit)-0x1))>>32.
+
+  ; init 0x20000000--0x00003fff on IntSram as Secure only
+  ; init 0x20004000--0x20007fff on IntSram as NonSecure
+
+  PRIVATE &MpsBaseIntRamBase
+  &MpsBaseIntRamBase=0x50083000
+
+  ; create bus errors if the memory range is accessed with wrong permission
+  Data.Set AZSD:&MpsBaseIntRamBase+0x0 %Long 0x10
+
+  ; init 0x20000000--0x20007fff on intSram as Secure only
+  PER.Set.SaveIndex AZSD:&MpsBaseIntRamBase+0x18 %Long 0x0 AZSD:&MpsBaseIntRamBase+0x1c %Long 0x0
+  PER.Set.SaveIndex AZSD:&MpsBaseIntRamBase+0x18 %Long 0x1 AZSD:&MpsBaseIntRamBase+0x1c %Long 0x0
+  PER.Set.SaveIndex AZSD:&MpsBaseIntRamBase+0x18 %Long 0x2 AZSD:&MpsBaseIntRamBase+0x1c %Long 0x0
+  PER.Set.SaveIndex AZSD:&MpsBaseIntRamBase+0x18 %Long 0x3 AZSD:&MpsBaseIntRamBase+0x1c %Long 0x0
+
+  ; init 0x20004000--0x20007fff on SSRAM1 as NonSecure
+  PER.Set.SaveIndex AZSD:&MpsBaseIntRamBase+0x18 %Long 0x2 AZSD:&MpsBaseIntRamBase+0x1c %Long 0xffffffff
+  PER.Set.SaveIndex AZSD:&MpsBaseIntRamBase+0x18 %Long 0x3 AZSD:&MpsBaseIntRamBase+0x1c %Long 0xffffffff
+  RETURN
+)
+
+InitSAU: ;()
+(
+  ; init the SAU
+  ; R0 - 0x00000000--0x001fffff - secure gateable
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x0 AZSD:0xE000EDDC %Long 0x0
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x0 AZSD:0xE000EDE0 %Long 0x1FFFE3
+  ; R1 - 0x00200000--0x003fffff - nonsecure
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x1 AZSD:0xE000EDDC %Long 0x00200000
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x1 AZSD:0xE000EDE0 %Long 0x003FFFE1
+  ; R2 - 0x20004000--0x20007fff - nonsecure
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x2 AZSD:0xE000EDDC %Long 0x20004000
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x2 AZSD:0xE000EDE0 %Long 0x20007FE1
+  ; R3 onwards disable
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x3 AZSD:0xE000EDE0 %Long 0x0
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x4 AZSD:0xE000EDE0 %Long 0x0
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x5 AZSD:0xE000EDE0 %Long 0x0
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x6 AZSD:0xE000EDE0 %Long 0x0
+  PER.Set.SaveIndex AZSD:0xE000EDD8 %Long 0x7 AZSD:0xE000EDE0 %Long 0x0
+  ; enable
+  PER.Set.simple AD:0xE000EDD0 %Long 0x1
+  RETURN
+)

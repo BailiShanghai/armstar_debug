@@ -1,0 +1,14 @@
+// T32 Mon Dec  5 14:15:38 2022
+
+B::
+
+sYmbol.SourcePATH.RESet
+sYmbol.SourcePATH.SetBaseDir "E:\workspace\bk7236\2-soc-verify\components\tfm\"
+sYmbol.SourcePATH.Set "E:\workspace\bk7236\2-soc-verify\components\tfm\tfm\platform\ext\cmsis"
+sYmbol.SourcePATH.SetBaseDir "E:\workspace\bk7236\2-soc-verify\components\tfm\tfm_build\"
+sYmbol.SourcePATH.Set "E:\workspace\bk7236\2-soc-verify\components\middleware\soc\bk7236a\hal"
+
+sYmbol.SourcePATH.Translate "\home\wangzhilei\Desktop\commit_spm_debug_commit4\" "E:\workspace\bk7236\2-soc-verify\"
+sYmbol.SourcePATH.Translate "\home\wangzhilei\Desktop\commit_spm_debug_commit5\" "E:\workspace\bk7236\2-soc-verify\components\"
+
+ENDDO

@@ -57,20 +57,22 @@ LR_ROM __RO_BASE   {                       ; load region size_region
    .ANY (+XO)
   }
 
+/*
   PS_RAM 0x60000000  0x20000  {
      *.o(psramcode)
   }
-
+*/
   DEV_INIT +0
   {
 	*(.init_level_*)
   }
 
+/*
   AES_SEC_TEST 0x28046000 2048
   {
 	*(aes_sec*)
   }
-
+  
   NON_CACHE_TEST 0x28040000 0x6000
   {
 	*(non_cache_wzl)
@@ -80,7 +82,7 @@ LR_ROM __RO_BASE   {                       ; load region size_region
   {
 	*(cache_wzl)
   }
-  
+*/  
   RW_RAM __RW_BASE __RW_SIZE  {                     ; RW data
    .ANY (+RW +ZI)
   }

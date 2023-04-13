@@ -15,6 +15,8 @@
 #include "app.h"
 #include "bk_uart.h"
 #include "verification_config.h"
+#include "reg_base.h"
+#include "soc.h"
 
 #define DBG_PRE_PROMPT "BS"
 #include "dbg.h"
@@ -87,10 +89,21 @@ void hal_printf_pll_registers(void)
 }
 #endif /* CONFIG_ENABLE_PLL*/
 
+void close_wdt(void)
+{
+	REG_WRITE(SOC_AON_WDT_REG_BASE, 0x5A0000);
+	REG_WRITE(SOC_AON_WDT_REG_BASE, 0xA50000);
+	REG_SET(SOC_WDT_REG_BASE + 4 * 2, 1, 1, 1);
+	REG_WRITE(SOC_WDT_REG_BASE + 4 * 4, 0x5A0000);
+	REG_WRITE(SOC_WDT_REG_BASE + 4 * 4, 0xA50000);
+}
+
 int main(void)
 {
     int32_t ret = 0;
 
+	close_wdt();
+	
 	uart_init(0);
 	hal_enable_pll_120mhz();
 	hal_printf_pll_registers();
@@ -112,7 +125,8 @@ extern int32_t mem_leak_check_init(void);
 
     bk_printf("==================================================================="
            "=======\n");
-    bk_printf("| %-70s |\n", "version 1.0");
+    bk_printf("| %-70s |\n", 
+"version 1.0");
     bk_printf("| %-70s |\n", __DATE__);
     bk_printf("| %-70s |\n", __TIME__);
     bk_printf("==================================================================="
