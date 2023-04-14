@@ -89,10 +89,8 @@ uint32_t sflash_access(void)
 	return 0;
 }
 
-uint32_t secure_flash_verification_main(void)
+uint32_t secure_flash_proof_main(void)
 {
-	secure_flash_config();
-
 	if(0 == g_debug_flag)
 		sflash_access();
 	

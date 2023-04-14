@@ -19,7 +19,7 @@ extern "C" {
 
 #include "asm.h"
 
-#define CONFIG_SYSTEM_HEAP_SIZE     (2 * 1024) /* 20k heap */
+#define CONFIG_SYSTEM_HEAP_SIZE     (20 * 1024) /* 20k heap */
 #define KERNEL_HEAP_DEFINE(name, align, size)		\
 	uint8_t __ALIGNED(align) _GENERIC_SECTION(.uninitialized) \
         name[size];
