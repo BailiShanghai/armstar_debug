@@ -31,6 +31,7 @@
 #define CONFIG_ENABLE_PRIVILEGE_PERIPHERAL_ACCESS             0
 
 #define CONFGI_ENABEL_SECURE_FLASH                1
+#define CONFIG_DIABLE_DEBUG_FEATURE               0
 
 // eof
 

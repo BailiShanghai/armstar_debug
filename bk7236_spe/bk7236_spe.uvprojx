@@ -883,6 +883,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\secure_flash.c</FilePath>
             </File>
+            <File>
+              <FileName>debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\debug.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

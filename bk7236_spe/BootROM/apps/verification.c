@@ -218,7 +218,14 @@ void verification_secure(void)
 	#if CONFGI_ENABEL_SECURE_FLASH
 	secure_flash_verification_main();
 	#endif
-
+	
+	#if CONFIG_DIABLE_DEBUG_FEATURE
+	while(1)
+	{
+		;
+	}
+	#endif
+	
 	bk_printf("test end at the secure world\r\n");
 }
 

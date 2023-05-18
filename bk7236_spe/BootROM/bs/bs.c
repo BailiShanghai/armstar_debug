@@ -39,11 +39,11 @@ const char build_message[] =
 
 void hal_delay(int count)
 {
-	volatile int i = count;
-	while (i > 0)
-	{
-		i --;
-	}
+    volatile int i = count;
+    while (i > 0)
+    {
+        i --;
+    }
 }
 
 /* From Wangjian, method to enable 7236 DPLL:
@@ -54,49 +54,49 @@ void hal_delay(int count)
   */
 void hal_enable_pll_120mhz(void)
 {
-	addSYSTEM_Reg0x45 = addSYSTEM_Reg0x45 | 0x20; 
-	hal_delay(2000);
-	
-	addSYSTEM_Reg0x40 = 0x81185B57;
+    addSYSTEM_Reg0x45 = addSYSTEM_Reg0x45 | 0x20;
+    hal_delay(2000);
 
-	hal_delay(2000);
+    addSYSTEM_Reg0x40 = 0x81185B57;
 
-	addSYSTEM_Reg0x40 &= 0xfff7ffff;
-	addSYSTEM_Reg0x40 |= 0x00080000;
+    hal_delay(2000);
 
-	addSYSTEM_Reg0x8 |= 0x033; 	// sel 480M PLL ; div4
+    addSYSTEM_Reg0x40 &= 0xfff7ffff;
+    addSYSTEM_Reg0x40 |= 0x00080000;
+
+    addSYSTEM_Reg0x8 |= 0x033; 	// sel 480M PLL ; div4
 }
 
 void hal_enable_pll_240mhz(void)
 {
-	addSYSTEM_Reg0x45 = addSYSTEM_Reg0x45 | 0x20; 
-	hal_delay(2000);
-	
-	addSYSTEM_Reg0x40 = 0x81185B57;
+    addSYSTEM_Reg0x45 = addSYSTEM_Reg0x45 | 0x20;
+    hal_delay(2000);
 
-	hal_delay(2000);
+    addSYSTEM_Reg0x40 = 0x81185B57;
 
-	addSYSTEM_Reg0x40 &= 0xfff7ffff;
-	addSYSTEM_Reg0x40 |= 0x00080000;
+    hal_delay(2000);
 
-	addSYSTEM_Reg0x8 |= 0x031; 	// sel 480M PLL ; div2
+    addSYSTEM_Reg0x40 &= 0xfff7ffff;
+    addSYSTEM_Reg0x40 |= 0x00080000;
+
+    addSYSTEM_Reg0x8 |= 0x031; 	// sel 480M PLL ; div2
 }
 
 void hal_printf_pll_registers(void)
 {
-	bk_printf("addSYSTEM_Reg0x45:0x%x\r\n", addSYSTEM_Reg0x45);
-	bk_printf("addSYSTEM_Reg0x40:0x%x\r\n", addSYSTEM_Reg0x40);
-	bk_printf("addSYSTEM_Reg0x8:0x%x\r\n", addSYSTEM_Reg0x8);
+    bk_printf("addSYSTEM_Reg0x45:0x%x\r\n", addSYSTEM_Reg0x45);
+    bk_printf("addSYSTEM_Reg0x40:0x%x\r\n", addSYSTEM_Reg0x40);
+    bk_printf("addSYSTEM_Reg0x8:0x%x\r\n", addSYSTEM_Reg0x8);
 }
 #endif /* CONFIG_ENABLE_PLL*/
 
 void close_wdt(void)
 {
-	REG_WRITE(SOC_AON_WDT_REG_BASE, 0x5A0000);
-	REG_WRITE(SOC_AON_WDT_REG_BASE, 0xA50000);
-	REG_SET(SOC_WDT_REG_BASE + 4 * 2, 1, 1, 1);
-	REG_WRITE(SOC_WDT_REG_BASE + 4 * 4, 0x5A0000);
-	REG_WRITE(SOC_WDT_REG_BASE + 4 * 4, 0xA50000);
+    REG_WRITE(SOC_AON_WDT_REG_BASE, 0x5A0000);
+    REG_WRITE(SOC_AON_WDT_REG_BASE, 0xA50000);
+    REG_SET(SOC_WDT_REG_BASE + 4 * 2, 1, 1, 1);
+    REG_WRITE(SOC_WDT_REG_BASE + 4 * 4, 0x5A0000);
+    REG_WRITE(SOC_WDT_REG_BASE + 4 * 4, 0xA50000);
 }
 
 #if 1
@@ -109,36 +109,37 @@ typedef portSTACK_TYPE StackType_t;
 
 typedef struct MPURegionSettings
 {
-	uint32_t ulRBAR; /**< RBAR for the region. */
-	uint32_t ulRLAR; /**< RLAR for the region. */
+    uint32_t ulRBAR; /**< RBAR for the region. */
+    uint32_t ulRLAR; /**< RLAR for the region. */
 } MPURegionSettings_t;
 
 typedef struct MPU_SETTINGS
 {
-	uint32_t ulMAIR0;											   /**< MAIR0 for the task containing attributes for all the 4 per task regions. */
-	MPURegionSettings_t xRegionsSettings[ portTOTAL_NUM_REGIONS ]; /**< Settings for 4 per task regions. */
+    uint32_t ulMAIR0;											   /**< MAIR0 for the task containing attributes for all the 4 per task regions. */
+    MPURegionSettings_t xRegionsSettings[ portTOTAL_NUM_REGIONS ]; /**< Settings for 4 per task regions. */
 } xMPU_SETTINGS;
 
 typedef struct _test_control_block_       /* The old naming convention is used to prevent breaking kernel aware debuggers. */
 {
-    volatile StackType_t * pxTopOfStack; /*< Points to the location of the last item placed on the tasks stack.  THIS MUST BE THE FIRST MEMBER OF THE TCB STRUCT. */
+    volatile StackType_t *pxTopOfStack;  /*< Points to the location of the last item placed on the tasks stack.  THIS MUST BE THE FIRST MEMBER OF THE TCB STRUCT. */
 
     xMPU_SETTINGS xMPUSettings; /*< The MPU settings are defined as part of the port layer.  THIS MUST BE THE SECOND MEMBER OF THE TCB STRUCT. */
-}TEST_TCB;
+} TEST_TCB;
 
 
 
-TEST_TCB g_test_tcb = {
-		NULL,
-		{
-			0,
-			{
-				{0x28001200, (0x28001200 + 64) | 1},
-				{0x28001300, (0x28001300 + 64) | 1},
-				{0x28001400, (0x28001400 + 64) | 1}
-			}
-		}
-	};
+TEST_TCB g_test_tcb =
+{
+    NULL,
+    {
+        0,
+        {
+            {0x28001200, (0x28001200 + 64) | 1},
+            {0x28001300, (0x28001300 + 64) | 1},
+            {0x28001400, (0x28001400 + 64) | 1}
+        }
+    }
+};
 TEST_TCB *pxTestTcb;
 
 
@@ -158,49 +159,49 @@ const ARM_MPU_Region_t t_mpu_table[1][7] =
 
 void test_cat_mpu_config(void)
 {
-	pxTestTcb = &g_test_tcb;
-	
-	__asm volatile
-	(
-		"	.syntax unified 								\n"
-		"													\n"
-		"	ldr  r2, pxCurrentTCBConst2 					\n"/* Read the location of pxCurrentTCB i.e. &( pxCurrentTCB ). */
-		"	ldr  r1, [r2]									\n"/* Read pxCurrentTCB. */
-		"	ldr  r0, [r1]									\n"/* Read top of stack from TCB - The first item in pxCurrentTCB is the task top of stack. */
-		"													\n"
-		"	dmb 											\n"/* Complete outstanding transfers before disabling MPU. */
-		"	ldr r2, xMPUCTRLConst2							\n"/* r2 = 0xe000ed94 [Location of MPU_CTRL]. */
-		"	ldr r4, [r2]									\n"/* Read the value of MPU_CTRL. */
-		"	bic r4, #1										\n"/* r4 = r4 & ~1 i.e. Clear the bit 0 in r4. */
-		"	str r4, [r2]									\n"/* Disable MPU. */
-		"													\n"
-		"	adds r1, #4 									\n"/* r1 = r1 + 4. r1 now points to MAIR0 in TCB. */
-		"	ldr  r3, [r1]									\n"/* r3 = *r1 i.e. r3 = MAIR0. */
-		"	ldr  r2, xMAIR0Const2							\n"/* r2 = 0xe000edc0 [Location of MAIR0]. */
-		//"	str  r3, [r2]									\n"/* Program MAIR0. */
-		"	ldr  r2, xRNRConst2 							\n"/* r2 = 0xe000ed98 [Location of RNR]. */
-		"	movs r3, #4 									\n"/* r3 = 4. */
-		"	str  r3, [r2]									\n"/* Program RNR = 4. */
-		"	adds r1, #4 									\n"/* r1 = r1 + 4. r1 now points to first RBAR in TCB. */
-		"	ldr  r2, xRBARConst2							\n"/* r2 = 0xe000ed9c [Location of RBAR]. */
-		"	ldmia r1!, {r4-r11} 							\n"/* Read 4 set of RBAR/RLAR registers from TCB. */
-		"	stmia r2!, {r4-r11} 							\n"/* Write 4 set of RBAR/RLAR registers using alias registers. */
-		"													\n"
-		"	ldr r2, xMPUCTRLConst2							\n"/* r2 = 0xe000ed94 [Location of MPU_CTRL]. */
-		"	ldr r4, [r2]									\n"/* Read the value of MPU_CTRL. */
-		"	orr r4, #1										\n"/* r4 = r4 | 1 i.e. Set the bit 0 in r4. */
-		"	str r4, [r2]									\n"/* Enable MPU. */
-		"	dsb 											\n"/* Force memory writes before continuing. */
-		"													\n"
+    pxTestTcb = &g_test_tcb;
 
-		"													\n"
-		"	.align 4										\n"
-		"pxCurrentTCBConst2: .word pxTestTcb    			\n"
-		"xMPUCTRLConst2: .word 0xe000ed94					\n"
-		"xMAIR0Const2: .word 0xe000edc0 					\n"
-		"xRNRConst2: .word 0xe000ed98						\n"
-		"xRBARConst2: .word 0xe000ed9c						\n"
-	);
+    __asm volatile
+    (
+        "	.syntax unified 								\n"
+        "													\n"
+        "	ldr  r2, pxCurrentTCBConst2 					\n"/* Read the location of pxCurrentTCB i.e. &( pxCurrentTCB ). */
+        "	ldr  r1, [r2]									\n"/* Read pxCurrentTCB. */
+        "	ldr  r0, [r1]									\n"/* Read top of stack from TCB - The first item in pxCurrentTCB is the task top of stack. */
+        "													\n"
+        "	dmb 											\n"/* Complete outstanding transfers before disabling MPU. */
+        "	ldr r2, xMPUCTRLConst2							\n"/* r2 = 0xe000ed94 [Location of MPU_CTRL]. */
+        "	ldr r4, [r2]									\n"/* Read the value of MPU_CTRL. */
+        "	bic r4, #1										\n"/* r4 = r4 & ~1 i.e. Clear the bit 0 in r4. */
+        "	str r4, [r2]									\n"/* Disable MPU. */
+        "													\n"
+        "	adds r1, #4 									\n"/* r1 = r1 + 4. r1 now points to MAIR0 in TCB. */
+        "	ldr  r3, [r1]									\n"/* r3 = *r1 i.e. r3 = MAIR0. */
+        "	ldr  r2, xMAIR0Const2							\n"/* r2 = 0xe000edc0 [Location of MAIR0]. */
+        //"	str  r3, [r2]									\n"/* Program MAIR0. */
+        "	ldr  r2, xRNRConst2 							\n"/* r2 = 0xe000ed98 [Location of RNR]. */
+        "	movs r3, #4 									\n"/* r3 = 4. */
+        "	str  r3, [r2]									\n"/* Program RNR = 4. */
+        "	adds r1, #4 									\n"/* r1 = r1 + 4. r1 now points to first RBAR in TCB. */
+        "	ldr  r2, xRBARConst2							\n"/* r2 = 0xe000ed9c [Location of RBAR]. */
+        "	ldmia r1!, {r4-r11} 							\n"/* Read 4 set of RBAR/RLAR registers from TCB. */
+        "	stmia r2!, {r4-r11} 							\n"/* Write 4 set of RBAR/RLAR registers using alias registers. */
+        "													\n"
+        "	ldr r2, xMPUCTRLConst2							\n"/* r2 = 0xe000ed94 [Location of MPU_CTRL]. */
+        "	ldr r4, [r2]									\n"/* Read the value of MPU_CTRL. */
+        "	orr r4, #1										\n"/* r4 = r4 | 1 i.e. Set the bit 0 in r4. */
+        "	str r4, [r2]									\n"/* Enable MPU. */
+        "	dsb 											\n"/* Force memory writes before continuing. */
+        "													\n"
+
+        "													\n"
+        "	.align 4										\n"
+        "pxCurrentTCBConst2: .word pxTestTcb    			\n"
+        "xMPUCTRLConst2: .word 0xe000ed94					\n"
+        "xMAIR0Const2: .word 0xe000edc0 					\n"
+        "xRNRConst2: .word 0xe000ed98						\n"
+        "xRBARConst2: .word 0xe000ed9c						\n"
+    );
 }
 
 
@@ -249,7 +250,7 @@ uint32_t test_mpu_config(void)
     bk_printf("revoke the function-ARM_MPU_Enable\r\n");
 
     ARM_MPU_Enable(4);
-	
+
     bk_printf("SCB_EnableDCache\r\n");
     if (SCB->CLIDR & SCB_CLIDR_IC_Msk)
         SCB_EnableDCache();
@@ -288,74 +289,77 @@ int main(void)
 {
     int32_t ret = 0;
 
-	close_wdt();
-	
-	uart_init(0);
-	hal_enable_pll_120mhz();
-	hal_printf_pll_registers();
-	
-	bk_printf("welcome to the secure world\r\n");
-	
+    close_wdt();
+	#if CONFIG_DIABLE_DEBUG_FEATURE
+    hal_cpu_debug_disable();
+	#endif
+
+    uart_init(0);
+    hal_enable_pll_120mhz();
+    hal_printf_pll_registers();
+
+    bk_printf("welcome to the secure world\r\n");
+
     ret = hal_platform_early_init();
     CHECK_RET("platform_early_init failed!\n");
 
 #if CONFIG_MEM_LEAK
-extern int32_t mem_leak_check_init(void);
+    extern int32_t mem_leak_check_init(void);
     ret = mem_leak_check_init();
     CHECK_RET("mem_leak_check_init failed!\n");
 #endif
 
-	bk_printf("DEVICE_LEVEL0\r\n");
+    bk_printf("DEVICE_LEVEL0\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL0);
     CHECK_RET("device level0 init fail 0x%08x\n", ret);
 
     bk_printf("==================================================================="
-           "=======\n");
-    bk_printf("| %-70s |\n", 
-"version 1.0");
+              "=======\n");
+    bk_printf("| %-70s |\n",
+              "version 1.0");
     bk_printf("| %-70s |\n", __DATE__);
     bk_printf("| %-70s |\n", __TIME__);
     bk_printf("==================================================================="
-           "=======\n");
+              "=======\n");
 
-	#if CONFIG_ENABLE_PLATFORM_INIT
+#if CONFIG_ENABLE_PLATFORM_INIT
     ret = hal_platform_init();
     CHECK_RET("platform_init failed!\n");
-	#else
-	bk_printf("hal_platform_init bypass\r\n");
-	#endif
+#else
+    bk_printf("hal_platform_init bypass\r\n");
+#endif
 
-	bk_printf("DEVICE_LEVEL1\r\n");
+    bk_printf("DEVICE_LEVEL1\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL1);
     CHECK_RET("device level1 init fail 0x%08x\n", ret);
 
-	#if CONFIG_ENABLE_PLATFORM_INIT
+#if CONFIG_ENABLE_PLATFORM_INIT
     ret = hal_platform_post_init();
     CHECK_RET("hal_platform_post_init failed!\n");
-	#else
-	bk_printf("hal_platform_post_init bypass\r\n");
-	#endif
+#else
+    bk_printf("hal_platform_post_init bypass\r\n");
+#endif
 
-	bk_printf("DEVICE_LEVEL2\r\n");
+    bk_printf("DEVICE_LEVEL2\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL2);
     CHECK_RET("device level2 init fail 0x%08x\n", ret);
 
-	bk_printf("DEVICE_LEVEL3\r\n");
+    bk_printf("DEVICE_LEVEL3\r\n");
     ret = sys_device_do_config_level(DEVICE_LEVEL3);
     CHECK_RET("device level2 init fail 0x%08x\n", ret);
 
     apps_init();
 
-    verification_mpu_main();
-	
+    verification_main();
+
 finish:
     /* should not be here */
     while (1)
     {
         ;
     }
-		
-		return 0;
+
+    return 0;
 }
 // eof
 
