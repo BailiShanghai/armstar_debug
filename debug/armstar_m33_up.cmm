@@ -66,7 +66,7 @@ Register.Set ns 0
 // load selected example program
 
 Data.LOAD.ELF "../bk7236_spe/output/Objects/bk7236_spe.axf" z:  /NoCODE
-//Data.LOAD.ELF "../bk7236_nspe/output/Objects/bk7236_nspe.axf" n:  /NoCODE /NoClear
+Data.LOAD.ELF "../bk7236_nspe/output/Objects/bk7236_nspe.axf" n:  /NoCODE /NoClear
 
 Data.Set ZSD:0x41040010 %LE %Long 0
 Data.Set ZSD:0x41040014 %LE %Long 0

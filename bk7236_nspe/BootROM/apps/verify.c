@@ -35,7 +35,7 @@
 #define CONFIG_ENABLE_PROOF_FLASH                0
 #define CONFIG_ENABLE_PROOF_PSRAM                0
 #define CONFIG_ENABLE_PROOF_NSC                  0
-#define CONFIG_ENABLE_FLASH_DATA_SECURE          1
+#define CONFIG_ENABLE_FLASH_DATA_SECURE          0
 
 #if CONFIG_ENABLE_PROOF_SHARED_MEMORY
 #include "shared_mem.h"
