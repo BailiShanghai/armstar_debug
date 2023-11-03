@@ -17,7 +17,7 @@
 #include "verification_config.h"
 #include "reg_base.h"
 #include "soc.h"
-#include "core_star.h"
+#include "STAR_SE.h"
 
 #define DBG_PRE_PROMPT "BS"
 #include "dbg.h"
@@ -295,8 +295,11 @@ int main(void)
 	#endif
 
     uart_init(0);
+
+#if CONFIG_ENABLE_PLL
     hal_enable_pll_120mhz();
     hal_printf_pll_registers();
+#endif
 
     bk_printf("welcome to the secure world\r\n");
 

@@ -47,5 +47,6 @@ typedef void ( * Callback_t ) ( void );
  * invocation of this function.
  */
 uint32_t NSCFunction( Callback_t pxCallback );
+uint32_t NSC_v_flash_dbus( Callback_t pxCallback );
 
 #endif /* __NSC_FUNCTIONS_H__ */
