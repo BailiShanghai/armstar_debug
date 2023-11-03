@@ -5,6 +5,22 @@
 #include "bk_flash.h"
 #include "verification_config.h"
 
+#if CONFIG_ENABLE_VERIFY_FLASH_DBUS
+#define REG_READ(addr) (*((volatile uint32_t*)(addr)))
+#define REG_WRITE(addr, v) (*((volatile uint32_t*)(addr))) = (v)
+
+void verify_flash_dbus(void)
+{
+#define PPRO_0x6  0x41040024
+#define FLASH_0xd 0x44030034
+#define FLASH_0xe 0x44030038
+        bk_printf("Before NS modify flash 0xd/0xe:\r\n");
+        bk_printf("flash reg xd/%x: %x\r\n", FLASH_0xd, REG_READ(FLASH_0xd));
+        bk_printf("flash reg xe/%x: %x\r\n", FLASH_0xe, REG_READ(FLASH_0xe));
+	NSC_verify_flash_dbus();
+}
+#endif
+
 mpc_hw_t *mpc_flash;
 uint32_t vrf_flash_config(void)
 {
@@ -16,6 +32,10 @@ uint32_t vrf_flash_config(void)
     mpc_flash->blk_lut[0] = 0x0;
 #else
     mpc_flash->blk_lut[0] = 0x0C;
+#endif
+
+#if CONFIG_ENABLE_VERIFY_FLASH_DBUS
+    verify_flash_dbus();
 #endif
 
     return 0;

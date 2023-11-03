@@ -104,6 +104,10 @@
 #include "secure_flash.h"
 #endif
 
+#if CONFGI_ENABLE_PPC
+#include "ppc.h"
+#endif
+
 /* typedef for non-secure Reset Handler. */
 typedef void ( *NonSecureResetHandler_t )	( void ) __attribute__( ( cmse_nonsecure_call ) );
 
@@ -255,11 +259,10 @@ void verification_main(void)
 	
 	/* Boot the non-secure code. */	
 	bk_printf("boot_non_secure\r\n");
-	
-	/* reg0x06 bit2=1*/
-	*((volatile uint32_t *)(0x41040000 + 8 * 4)) = ((*((volatile uint32_t *)(0x41040000 + 8 * 4))) | 0x04);
-	*((volatile uint32_t *)(0x41040000 + 5 * 4)) = ((*((volatile uint32_t *)(0x41040000 + 5 * 4))) | 0x06);
-	
+
+#if CONFIG_ENABLE_PPC
+	config_ppc();
+#endif	
 	boot_non_secure( NON_SECURE_START_ADDRESS );
 
 	/* Non-secure software does not return, this code is not executed. */
