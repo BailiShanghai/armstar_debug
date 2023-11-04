@@ -4,7 +4,7 @@
 
 #define CONFIG_ENABLE_VERIFICAION                 1
 #define CONFIG_ENABLE_FLASH_MPC                   1
-#define CONFIG_ENABLE_PPC                         1
+#define CONFIG_ENABLE_PPC                         0
 #define CONFIG_ENABLE_PLL                         0 //TODO fix it
 
 #define CONFIG_ENABLE_TT_IDAU                     0
@@ -25,7 +25,7 @@
 #define CONFIG_ENABLE_DCACHE_AFTER_MPU_ENABLE     0
 #define CONFIG_ENABLE_VERIFY_DCACHE               0
 #define CONFIG_ENABLE_VERIFY_PSRAM_CODE           0
-#define CONFIG_ENABLE_VERIFY_FLASH_DBUS           1
+#define CONFIG_ENABLE_VERIFY_FLASH_DBUS           0
 
 #define CONFIG_ENABLE_VERIFY_MULTI_CORE0_DCACHE               0
 #define CONFIG_ENABLE_VERIFY_MULTI_CORE1_DCACHE               0

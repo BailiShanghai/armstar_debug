@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<package schemaVersion="1.4" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="PACK.xsd">
+  <vendor>ArmChina</vendor>
+  <name>STAR</name>
+  <description>
+  The Arm China STAR processor is the first processor in the STAR series processor family.
+  It is a fully featured microcontroller class processor based on the Armv8-M mainline architecture with Arm TrustZone technology(depending on the actual core).
+  </description>
+  <url>http://www.armchina.com/</url>
+  <supportContact>support@armchina.com</supportContact>
+  <!-- optional license file -->
+  <license>license.txt</license>  
+  
+  <releases>
+    <release version="2.0.0" date="2022-02-24">
+      Support STAR-r1 feature: QCU driver.
+      Add corresponding example projects for demo of how to use STAR QCU to operate Flash device.
+    </release>  
+    <release version="1.4.0" date="2021-12-30">
+      Add support for Debug control and add MPS3 example project.
+      Minor upgrade of system and startup codes.
+    </release>  
+    <release version="1.3.0" date="2021-07-19">
+      Add support for STAR core, Cache, TCM
+      CMSIS-Core:
+        - STAR core supported.
+      Devices:
+        - Cache,TCM presented in STAR-SP,STAR-SE.
+      Components:
+        - Upgrade startup code for adding Cache support.
+      Examples:
+        - Add Coremark-Cache example
+    </release>  
+    <release version="1.2.1" date="2021-04-21">
+      Optimization for the usage with IAR
+    </release>  
+    <release version="1.2.0" date="2021-03-19">
+      Add APB UART driver
+      Add Keil project example of application software project
+    </release>  
+    <release version="1.1.0" date="2020-12-21">
+      IAR support added. 
+    </release>
+    <release version="1.0.0" date="2020-08-18">
+      The initial CMSIS Version supporting STAR device
+    </release>
+  </releases>
+
+  <keywords>
+    <!-- keywords for indexing -->
+    <keyword>ArmChina</keyword>
+    <keyword>STAR</keyword>
+  </keywords>
+
+ 
+  
+  <!-- devices section (mandatory for Device Family Packs) -->
+  <!--
+  <devices>
+  </devices>
+  -->
+  
+  <devices>    
+   <!-- ******************************  ArmChina STAR  ****************************** -->
+    <family Dfamily="ArmChina STAR Series" Dvendor="ArmChina:160">
+      <!--book name="Device/ARM/Documents/??_dgug.pdf"       title="?? Device Generic Users Guide"/-->
+      <description>
+The Arm China STAR processor is the first processor in the STAR series processor family.
+It is a fully featured microcontroller class processor based on the Armv8-M mainline architecture with Arm TrustZone technology(depending on the actual core).
+      </description>
+      <!-- debug svd="Device/ARM/SVD/ARMCM33.svd"/ SVD files do not contain any peripheral -->
+      <memory id="IROM1"                                start="0x00000000" size="0x00200000" startup="1" default="1"/>
+      <memory id="IROM2"                                start="0x00200000" size="0x00200000" startup="0" default="0"/>
+      <memory id="IRAM1"                                start="0x20000000" size="0x00020000" init   ="0" default="1"/>
+      <memory id="IRAM2"                                start="0x20200000" size="0x00020000" init   ="0" default="0"/>
+
+      <device Dname="STAR_CU">
+        <processor Dcore="Cortex-M33" DcoreVersion="r0p0" Dfpu="SP_FPU" Dmpu="MPU" Ddsp="DSP" Dtz="NO_TZ" Dendian="Configurable" Dclock="200000000"/>
+        <environment Pname="" name="iar">
+          <file category="i79file" name="iar/config/devices/STAR_CU.i79"/>
+          <!--file category="linkerfile" name="iar/config/linker/STAR_CU.icf"/-->
+          <!--file category="ddffile" name="iar/config/debugger/STAR_CU.ddf"/-->
+        </environment>
+        <description>
+           STAR-CU: Basic configuration. No trustzone extension, no memory system(Cache, TCM, XIPU(in case of r1p0)).
+        </description>
+        <compile header="Device/ArmChina/STAR/Include/STAR_CU.h" define="STAR_CU"/>
+      </device>
+
+      <device Dname="STAR_SP">
+        <processor Dcore="Cortex-M33" DcoreVersion="r0p0" Dfpu="SP_FPU" Dmpu="MPU" Ddsp="DSP" Dtz="NO_TZ" Dendian="Configurable" Dclock="170000000"/>
+        <environment Pname="" name="iar">
+          <file category="i79file" name="iar/config/devices/STAR_SP.i79"/>
+          <!--file category="linkerfile" name="iar/config/linker/STAR_SP.icf"/-->
+          <!--file category="ddffile" name="iar/config/debugger/STAR_SP.ddf"/-->
+        </environment>        
+        <description>
+          STAR-SP: Rich configuration. No trustzone extension compared with STAR-SE.
+        </description>
+        <compile header="Device/ArmChina/STAR/Include/STAR_SP.h" define="STAR_SP"/>             
+      </device>
+
+      <device Dname="STAR_SE">
+        <processor Dcore="Cortex-M33" DcoreVersion="r0p0" Dfpu="SP_FPU" Dmpu="MPU" Ddsp="DSP" Dtz="TZ" Dendian="Configurable" Dclock="150000000"/>
+        <environment Pname="" name="iar">
+          <file category="i79file" name="iar/config/devices/STAR_SE.i79"/>
+          <!--file category="linkerfile" name="iar/config/linker/STAR_SE.icf"/-->
+          <!--file category="ddffile" name="iar/config/debugger/STAR_SE.ddf"/-->
+        </environment>        
+        <description>
+           STAR-SE: Full configuration of STAR processor. With Cache/TCM, DSP Instructions, TrustZone.
+        </description>
+        <compile header="Device/ArmChina/STAR/Include/STAR_SE.h" define="STAR_SE"/>                
+      </device>
+    </family>
+
+    <family Dfamily="ArmChina STAR Series (MPS3)" Dvendor="ArmChina:160">
+      <!--book name="Device/ARM/Documents/??_dgug.pdf"       title="?? Device Generic Users Guide"/-->
+      <description>
+The Arm China STAR processor is the first processor in the STAR series processor family.
+It is a fully featured microcontroller class processor based on the Armv8-M mainline architecture with Arm TrustZone technology(depending on the actual core).
+      </description>
+      <!-- debug svd="Device/ARM/SVD/ARMCM33.svd"/ SVD files do not contain any peripheral -->
+      <memory id="IROM1"                                start="0x00000000" size="0x00200000" startup="1" default="1"/>
+      <memory id="IROM2"                                start="0x00200000" size="0x00200000" startup="0" default="0"/>
+      <memory id="IRAM1"                                start="0x20000000" size="0x00020000" init   ="0" default="1"/>
+      <memory id="IRAM2"                                start="0x20200000" size="0x00020000" init   ="0" default="0"/>
+      <algorithm name="Flash/SST26VF064B.FLM" start="0x00000000" size="0x00800000"          default="1"/>
+      
+      <!-- for MPS3 (FPGA image is AN524) -->
+      <debug __dp="0" __ap="1"/>
+      <sequences>
+        <sequence name="DebugDeviceUnlock">
+          <block>
+            __var RESET_MASK       = 0;
+            RESET_MASK  = Read32(0x50021104);
+            RESET_MASK |= (1 &lt;&lt; 4) | (1 &lt;&lt; 6);   // RESET_MASK: Enable SYSRESETREQ0_EN and LOCKUP0_EN
+            Write32(0x50021104, RESET_MASK);
+          </block>
+        </sequence>
+      </sequences>
+
+      <device Dname="STAR_CU_MPS3">
+        <processor Dcore="Cortex-M33" DcoreVersion="r0p0" Dfpu="SP_FPU" Dmpu="MPU" Ddsp="DSP" Dtz="NO_TZ" Dendian="Configurable" Dclock="200000000"/>
+        <environment Pname="" name="iar">
+          <file category="i79file" name="iar/config/devices/STAR_CU.i79"/>
+          <!--file category="linkerfile" name="iar/config/linker/STAR_CU.icf"/-->
+          <!--file category="ddffile" name="iar/config/debugger/STAR_CU.ddf"/-->
+        </environment>
+        <description>
+           STAR-CU on MPS3: Basic configuration. No trustzone extension, no memory system(Cache, TCM, XIPU(in case of r1p0)).
+        </description>
+        <compile header="Device/ArmChina/STAR/Include/STAR_CU.h" define="STAR_CU"/>
+      </device>
+
+      <device Dname="STAR_SP_MPS3">
+        <processor Dcore="Cortex-M33" DcoreVersion="r0p0" Dfpu="SP_FPU" Dmpu="MPU" Ddsp="DSP" Dtz="NO_TZ" Dendian="Configurable" Dclock="170000000"/>
+        <environment Pname="" name="iar">
+          <file category="i79file" name="iar/config/devices/STAR_SP.i79"/>
+          <!--file category="linkerfile" name="iar/config/linker/STAR_SP.icf"/-->
+          <!--file category="ddffile" name="iar/config/debugger/STAR_SP.ddf"/-->
+        </environment>        
+        <description>
+          STAR-SP on MPS3: Rich configuration. No trustzone extension compared with STAR-SE.
+        </description>
+        <compile header="Device/ArmChina/STAR/Include/STAR_SP.h" define="STAR_SP"/>             
+      </device>
+
+      <device Dname="STAR_SE_MPS3">
+        <processor Dcore="Cortex-M33" DcoreVersion="r0p0" Dfpu="SP_FPU" Dmpu="MPU" Ddsp="DSP" Dtz="TZ" Dendian="Configurable" Dclock="150000000"/>
+        <environment Pname="" name="iar">
+          <file category="i79file" name="iar/config/devices/STAR_SE.i79"/>
+          <!--file category="linkerfile" name="iar/config/linker/STAR_SE.icf"/-->
+          <!--file category="ddffile" name="iar/config/debugger/STAR_SE.ddf"/-->
+        </environment>        
+        <description>
+           STAR-SE on MSP3: Full configuration of STAR processor. With Cache/TCM, DSP Instructions, TrustZone.
+        </description>
+        <compile header="Device/ArmChina/STAR/Include/STAR_SE.h" define="STAR_SE"/>                
+      </device>
+    </family>	
+  </devices>
+  
+  
+  <!-- conditions section (optional for all Software Packs)-->
+  <!--
+  <conditions>
+  </conditions>
+  -->
+  <conditions>  
+    <condition id="ARMv8-M Device">
+      <description>Armv8-M architecture based device</description>
+      <accept Dcore="ARMV8MBL"/>
+      <accept Dcore="ARMV8MML"/>
+      <accept Dcore="ARMV81MML"/>
+      <accept Dcore="Cortex-M23"/>
+      <accept Dcore="Cortex-M33"/>
+      <accept Dcore="Cortex-M35P"/>
+    </condition>
+    <condition id="ARMv8-M TZ Device">
+      <description>Armv8-M architecture based device with TrustZone</description>
+      <require condition="ARMv8-M Device"/>
+      <require Dtz="TZ"/>
+    </condition>
+    <!-- compiler -->
+    <condition id="ARMCC6">
+      <accept Tcompiler="ARMCC" Toptions="AC6"/>
+      <accept Tcompiler="ARMCC" Toptions="AC6LTO"/>
+    </condition>
+    <condition id="ARMCC5">
+      <require Tcompiler="ARMCC" Toptions="AC5"/>
+    </condition>
+    <condition id="ARMCC">
+      <require Tcompiler="ARMCC"/>
+    </condition>
+    <condition id="GCC">
+      <require Tcompiler="GCC"/>
+    </condition>
+    <condition id="IAR">
+      <require Tcompiler="IAR"/>
+    </condition>
+    <condition id="ARMCC GCC">
+      <accept Tcompiler="ARMCC"/>
+      <accept Tcompiler="GCC"/>
+    </condition>
+    <condition id="ARMCC GCC IAR">
+      <accept Tcompiler="ARMCC"/>
+      <accept Tcompiler="GCC"/>
+      <accept Tcompiler="IAR"/>
+    </condition>  
+   
+    <!--condition id="ArmChinaSTAR CMSIS"-->
+    <condition id="ArmChinaSTAR CMSIS">
+      <!-- conditions selecting Devices -->
+      <description>ArmChina STAR Series devices startup and depends on CMSIS Core (Cortex-M)</description>
+      <require Cclass="CMSIS" Cgroup="CORE"/>
+      <require Dvendor="ArmChina:160" Dname="STAR*"/>
+    </condition>
+    <condition id="STAR USART Device">
+        <description>STAR CMSDK APB UART Device</description>      
+        <require Cclass="Driver" Cgroup="STAR UART"/>
+    </condition>
+  
+  </conditions>
+
+ 
+  <!-- component section (optional for all Software Packs)-->
+  <!--
+  <components>
+  </components>
+  -->
+  <!--component Cclass="Device" Cgroup="Startup" Cversion="1.0.0" condition="STAR CMSIS-Core">
+    
+  </component-->  
+  <components>  
+    <!-- CMSIS-Core component -->  
+    <component Cclass="Device" Cgroup="Startup"                      Cversion="1.1.0" condition="ArmChinaSTAR CMSIS">
+      <description>System and Startup for Generic ArmChina STAR Series device</description>
+      <files>
+        <!-- include folder / device header file -->
+        <file category="include" name="Device/ArmChina/STAR/Include/"/>
+        <!-- startup / system file -->
+  	  <file category="sourceC"      name="Device/ArmChina/STAR/Source/startup_STAR.c"             version="1.0.0" attr="config"/>
+        <!--file category="sourceAsm"    name="Device/ArmChina/STAR/Source/ARM/startup_STAR.s"         version="1.0.0" attr="config"  condition="ARMCC"/-->
+        <!--file category="sourceAsm"    name="Device/ArmChina/STAR/Source/GCC/startup_STAR.S"         version="1.0.0" attr="config" condition="GCC"/-->
+        <file category="linkerScript" name="Device/ArmChina/STAR/Source/ARM/STAR_ac6.sct"           version="1.0.0" attr="config" condition="ARMCC6"/>
+        <file category="linkerScript" name="Device/ArmChina/STAR/Source/GCC/gcc_arm.ld"             version="1.0.0" attr="config" condition="GCC"/>
+        <!--file category="sourceAsm"    name="Device/ArmChina/STAR/Source/IAR/startup_STAR.s"         version="1.0.0" attr="config" condition="IAR"/-->
+        <file category="sourceC"      name="Device/ArmChina/STAR/Source/system_STAR.c"              version="1.0.0" attr="config"/>
+        <!-- SAU configuration -->
+        <file category="header"       name="Device/ArmChina/STAR/Include/Template/partition_STAR.h" version="1.0.0" attr="config" condition="ARMv8-M TZ Device"/>
+      </files>
+    </component>
+  
+    <!-- CMSIS-Driver Custom components -->
+    <component Cclass="CMSIS Driver" Cgroup="USART" Csub="STAR USART" Cversion="1.1.0" condition="ArmChinaSTAR CMSIS">
+      <description>APB UART driver for STAR FPGA(MPS2/MPS2+,MPS3) reference implementation</description>
+      <files>
+        <file category="header" name="Driver/Include/UART_APB.h" version="1.1.0" attr="config"/>
+        <file category="sourceC" attr="config" name="Driver/DriverTemplates/UART_APB.c" version="1.0.0" select="UART"/>
+        <file category="header" name="Driver/Include/lowlevel_retarget.h" version="1.0.0" attr="config"/>
+        <file category="sourceC" attr="config" name="Driver/DriverTemplates/lowlevel_retarget.c" version="1.0.0" select="UART"/>
+      </files>
+    </component>
+
+    <component Cclass="CMSIS Driver" Cgroup="QSPI(Driver)" Csub="STAR QCU" Cversion="1.0.0" condition="ArmChinaSTAR CMSIS">
+      <description>STAR QCU driver,usually works with FLASH API and a specific FLASH device parameters</description>
+      <files>
+        <file category="header" name="Driver/Include/QCU_common.h" version="1.0.0" attr="config"/>
+        <file category="header" name="Driver/Include/QCU_driver.h" version="1.0.0" attr="config"/>   
+        <file category="sourceC" attr="config" name="Driver/DriverTemplates/QCU_driver.c" version="1.0.0" select="QSPI"/>          
+      </files>
+    </component>           
+  </components>
+
+  <boards>
+    <board name="uVision Simulator" vendor="Keil">
+      <description>uVision Simulator</description>
+      <mountedDevice    deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_CU"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_CU"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_SP"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_SE"/>
+    </board>
+    <board name="V2M-MPS2+ (B)" vendor="ARM">
+      <description>ARM Versatile Express Cortex-M Prototyping System Board : MPS2+ </description>
+      <mountedDevice    deviceIndex="0" Dvendor="ARM:82" Dname="CMSDK_CM7"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_CU"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_SP"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_SE"/>
+    </board>
+    <board name="V2M-MPS3 (B)" vendor="ARM">
+      <description>ARM Versatile Express Cortex-M Prototyping System Board: MPS3 </description>
+      <book category="overview" name="https://developer.arm.com/products/system-design/development-boards/fpga-prototyping-boards/mps3" title="Arm MPS3 FPGA protoyping Board (web page)"/>      
+      <mountedDevice    deviceIndex="0" Dvendor="ARM:82" Dname="CMSDK_CM7"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_CU_MPS3"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_SP_MPS3"/>
+      <compatibleDevice deviceIndex="0" Dvendor="ArmChina:160" Dname="STAR_SE_MPS3"/>
+    </board>      
+  </boards>
+
+  
+  <!-- examples section (optional for all Software Packs)-->
+  <examples>
+    <example name="STAR Hello World" doc="Abstract.txt" folder="Examples/Keil/STAR_HelloWorld">
+      <description>STAR Application Example with CMSIS Components: HelloWorld</description>
+      <!--board name="uVision Simulator" vendor="Keil"/-->
+      <board name="V2M-MPS2+ (B)" vendor="ARM"/>
+      <project>
+        <environment name="uv" load="STAR_HelloWorld.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="CMSIS Driver" Cgroup="USART" Csub="STAR USART"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDIN"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDOUT"/>
+        <component Cclass="Device" Cgroup="Startup"/>
+        <category>Getting Started</category>
+      </attributes>
+    </example>
+    <example name="STAR Hello World on MPS3" doc="Abstract.txt" folder="Examples/Keil/STAR_HelloWorld_MPS3">
+      <description>STAR Application Example with CMSIS Components on MPS3 FPGA board: HelloWorld</description>
+      <!--board name="uVision Simulator" vendor="Keil"/-->
+      <board name="V2M-MPS3 (B)" vendor="ARM"/>
+      <project>
+        <environment name="uv" load="STAR_HelloWorld.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="CMSIS Driver" Cgroup="USART" Csub="STAR USART"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDIN"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDOUT"/>
+        <component Cclass="Device" Cgroup="Startup"/>
+        <category>Getting Started</category>
+      </attributes>
+    </example>
+    <example name="STAR CoreMark Caches" doc="Abstract.txt" folder="Examples/Keil/CoreMark_Cache">
+      <description>STAR Application Example with CMSIS Components: CoreMark with Caches enabled/disabled.</description>
+      <board name="V2M-MPS2+ (B)" vendor="ARM"/>
+      <project>
+        <environment name="uv" load="CoreMark_Cache.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="CMSIS Driver" Cgroup="USART" Csub="STAR USART"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDIN"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDOUT"/>
+        <component Cclass="Device" Cgroup="Startup"/>
+        <category>Getting Started</category>
+      </attributes>
+    </example>
+    <example name="STAR Flash Programing Algorithm Creating on MPS3" doc="Abstract.txt" folder="Examples/Keil/STAR_FLM_MPS3">
+      <description>Shows how to create a new FLM with STAR QCU driver</description>
+      <board name="V2M-MPS3 (B)" vendor="ARM"/>
+      <project>
+        <environment name="uv" load="SST26VF064B.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="CMSIS Driver" Cgroup="QSPI(Driver)" Csub="STAR QCU"/>
+        <category>Getting Started</category>
+      </attributes>
+    </example>
+    <example name="STAR QCU Test on MPS3" doc="Abstract.txt" folder="Examples/Keil/STAR_QCU_Test_MPS3">
+      <description>Shows how to use STAR QCU driver to manipulate the Flash device</description>
+      <board name="V2M-MPS3 (B)" vendor="ARM"/>
+      <project>
+        <environment name="uv" load="STAR_QCU_Test.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="CMSIS Driver" Cgroup="USART" Csub="STAR USART"/>
+        <component Cclass="CMSIS Driver" Cgroup="QSPI(Driver)" Csub="STAR QCU"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDIN"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDOUT"/>
+        <component Cclass="Device" Cgroup="Startup"/>
+        <category>Getting Started</category>
+      </attributes>
+    </example>
+    <example name="STAR QCU Performance on MPS3" doc="Abstract.txt" folder="Examples/Keil/STAR_QCU_Perf_MPS3">
+      <description>Shows how to get Flash access performance uplift by using STAR QCU to drive in different modes</description>
+      <!--board name="uVision Simulator" vendor="Keil"/-->
+      <board name="V2M-MPS3 (B)" vendor="ARM"/>
+      <project>
+        <environment name="uv" load="STAR_QCU_Perf.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS" Cgroup="CORE"/>
+        <component Cclass="CMSIS Driver" Cgroup="USART" Csub="STAR USART"/>
+        <component Cclass="CMSIS Driver" Cgroup="QSPI(Driver)" Csub="STAR QCU"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDIN"/>
+        <component Cclass="Compiler" Cgroup="I/O" Csub="STDOUT"/>
+        <component Cclass="Device" Cgroup="Startup"/>
+        <category>Getting Started</category>
+      </attributes>
+    </example>    
+  </examples>
+
+</package>

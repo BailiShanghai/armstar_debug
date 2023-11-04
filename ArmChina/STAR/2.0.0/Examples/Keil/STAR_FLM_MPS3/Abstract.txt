@@ -1,0 +1,1 @@
+This is an example demostrating how to create a new FLM in MDK environment and as a result SST26VF064B.FLM is generated for STAR MPS3 system.

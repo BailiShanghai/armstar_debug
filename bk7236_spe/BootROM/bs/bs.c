@@ -28,8 +28,6 @@ extern void verification_main(void);
 const char build_message[] =
     "Build Time: " __DATE__ " " __TIME__ " " BUILD_TYPE;
 
-#define CONFIG_ENABLE_PLL    1
-
 #if CONFIG_ENABLE_PLL
 #define addSYSTEM_Reg0x40                 *((volatile unsigned long *) (0x44010000+0x40*4))
 #define addSYSTEM_Reg0x45                 *((volatile unsigned long *) (0x44010000+0x45*4))
