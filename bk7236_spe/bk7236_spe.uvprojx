@@ -888,6 +888,11 @@
               <FileType>1</FileType>
               <FilePath>.\BootROM\verification\debug.c</FilePath>
             </File>
+            <File>
+              <FileName>ppc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\BootROM\verification\ppc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

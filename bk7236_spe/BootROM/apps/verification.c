@@ -263,7 +263,10 @@ void verification_main(void)
 #if CONFIG_ENABLE_PPC
 	config_ppc();
 #endif	
+
+#if CONFIG_ENABLE_SPE_JUMP_NSPE
 	boot_non_secure( NON_SECURE_START_ADDRESS );
+#endif
 
 	/* Non-secure software does not return, this code is not executed. */
 	for( ; ; )

@@ -5,7 +5,8 @@
 #define CONFIG_ENABLE_VERIFICAION                 1
 #define CONFIG_ENABLE_FLASH_MPC                   1
 #define CONFIG_ENABLE_PPC                         0
-#define CONFIG_ENABLE_PLL                         0 //TODO fix it
+#define CONFIG_ENABLE_PLL                         0 
+#define CONFIG_ENABLE_SPE_JUMP_NSPE               0
 
 #define CONFIG_ENABLE_TT_IDAU                     0
 #define CONFIG_ENABLE_VERIFICATION_HASH256        0
